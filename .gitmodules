@@ -1,0 +1,3 @@
+[submodule "nim-de-blog"]
+	path = nim-de-blog
+	url = https://github.com/demotomohiro/nim-de-blog.git
