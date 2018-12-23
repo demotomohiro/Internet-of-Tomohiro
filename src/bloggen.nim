@@ -22,7 +22,18 @@ Internet of Tomohiro
 【en:by Tomohiro】
 】
 
-""" & indexLink
+""" & indexLink & """
+
+.. raw:: html
+
+   <script src="https://utteranc.es/client.js"
+     repo="demotomohiro/Internet-of-Tomohiro"
+     issue-term="pathname"
+     theme="github-light"
+     crossorigin="anonymous"
+     async>
+   </script>
+"""
   let rstSrcHead = """
 Internet of Tomohiro
 ======
