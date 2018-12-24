@@ -60,10 +60,29 @@ I wrote scripts to do that and published on `netlify-nim-test`_.
 】
 】
 
+【
+【ja:このブログのコメント機能について】
+【en:Comment widget in this blog】
+】
+------
+
+【
+【ja:静的サイトそのものではコメント機能を作ることはできません。
+そこでこのブログでは `utterances`_ を使ってコメントを書き込めるようにしました。
+`utterances`_ ではコメントがGithub issuesに記録されます。
+コメントを書き込むにはGithubアカウントが必要になりますが、Github issuesでコメントを管理したりMarkdownでコメントを書くことができます。
+】
+【en:It is impossible to make a comments system only with static site.
+So this blog use `utterances`_ comments widget.
+It is built on GitHub issues and you can manage comments on Github issues and post comments using Markdown but posting comments requires Github account.
+】
+】
+
 .. _Netlify: https://www.netlify.com/
 .. _Nim: https://nim-lang.org/
 .. _Nim De Blog: https://github.com/demotomohiro/nim-de-blog
 .. _netlify-nim-test: https://github.com/demotomohiro/netlify-nim-test
+.. _utterances: https://utteranc.es/
 """
 
 let articles = newTable([
