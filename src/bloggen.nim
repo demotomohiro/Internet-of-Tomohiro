@@ -37,6 +37,11 @@ Internet of Tomohiro
   let rstSrcHead = """
 Internet of Tomohiro
 ======
+
+| Twitter: @demotomohiro
+| Github: https://github.com/demotomohiro
+| pouët.net: http://www.pouet.net/user.php?who=54687
+
 【
 【ja:記事一覧】
 【en:Article list】
