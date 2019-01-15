@@ -19,6 +19,8 @@ proc main =
   【ja:1FoBiuf8E35BYdoEesV2v3BkcZBnZ7YfA6】
   【en:1A9Ar3vLYH4f2U7dKYuNgsaqXYUCpZmiGP】
   】-brightgreen.svg"/></a>
+
+  <a href="https://www.paypal.me/demotomohiro"><img src="https://img.shields.io/badge/ -paypal.me-blue.svg"/></a>
 """
 
   let articleHead = indexLink & fmt"""
