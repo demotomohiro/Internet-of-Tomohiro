@@ -30,6 +30,14 @@ You can check whether it is the latest Nim version by adding ``-v`` to compiler 
 Then hash value of the git commit will be displayed and you can check which commit is used to build Nim HEAD from `Nim commits`_.
 You can also use more than 30 programming languages. 】
 】
+- `【
+【ja:Nimコンパイラをビルドするときに使ったコミットのハッシュ値を確認するサンプルコード】
+【en:Sample code that prints commit hash that was used to build the Nim compiler】
+】 <https://wandbox.org/permlink/sH8rlyx7qKC8YBKm>`_
+- `【
+【ja:Wandboxマシンの各種情報を表示するサンプルコード】
+【en:Sample code that prints about Wandbox machine】
+】 <https://wandbox.org/permlink/B8F6l5uV6DMrCiyJ>`_
 
 【
 【ja:コードを共有できる】
@@ -68,6 +76,20 @@ Plugins for wandbox use wandbox `API`_ to send code and receive result.】
 【en:You can add a new file when you click + button above editor.
 You can import that file as module or read it as text file at compile time or runtime.】
 】
+- `【
+【ja:moduleをimportするサンプルコード】
+【en:Module import sample code】
+】 <https://wandbox.org/permlink/bZrPtLVwCTPsKeFv>`_
+
+- `【
+【ja:実行時とコンパイル時にテキストファイルを読み込むサンプルコード】
+【en:Sample code that read text file at runtime and compile time】
+】 <https://wandbox.org/permlink/nSbSG2L8oCGwjzzn>`_
+
+- `【
+【ja:C言語で書かれた関数をNimから呼ぶサンプルコード】
+【en:Sample code that call C function from Nim】
+】 <https://wandbox.org/permlink/mPtkFIPcolrTIT0e>`_
 
 【
 【ja:Wandboxはオープンソース】
