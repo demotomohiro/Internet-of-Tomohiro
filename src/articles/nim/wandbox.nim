@@ -7,10 +7,17 @@ const rstText = """
 
 【
 【ja:`Wandbox`_ というOnline compilerについて紹介します。
-Online compilerを使うとコンパイラ等をインストールしなくてもwebブラウザ上から `Nim`_ 言語を使うことができます。】
+Online compilerを使うとコンパイラ等をインストールしなくてもwebブラウザ上から `Nim`_ 言語を使うことができます。
+Wandboxは主に `@melponn`_ 氏と `@kikairoya`_ 氏によって開発されています。】
 【en:I introduce online compiler: `Wandbox`_.
-You can use `Nim`_ programming language on Web browser without installing Nim compiler.】
+You can use `Nim`_ programming language on Web browser without installing Nim compiler.
+It is developed by `@melponn`_ and `@kikairoya`_.】
 】
+
+- `【
+【ja:こちらでスポンサーを募集しています。】
+【en:You can become a sponsor(Japanese)】
+】 <https://gist.github.com/melpon/8f5d7a8e991ed466d09cf887bd8d92ce>`_
 
 【
 【ja:Wandboxでは最新のNimやnightly buildのNimが使える】
@@ -112,6 +119,8 @@ Scripts related to Nim can be found at `build/nim-head`_ and `build/nim`_ direct
 
 
 .. _Wandbox: https://wandbox.org/
+.. _@melponn: https://twitter.com/melponn
+.. _@kikairoya: https://twitter.com/kikairoya
 .. _Nim: https://nim-lang.org/
 .. _Nim commits: https://github.com/nim-lang/Nim/commits/devel
 .. _Vim: https://www.vim.org/
