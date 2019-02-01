@@ -14,6 +14,11 @@ You can stop your program at specified point and print a value of variable or ru
 】
 】
 
+- `【
+【ja:Nim公式のGDBの使い方を説明したYoutube動画もあります。】
+【en:There is official Nim GDB Youtube Video.】
+】 <https://www.youtube.com/watch?v=DmYOPkI_LzU>`_
+
 【
 【ja:GDBをインストールする】
 【en:Install GDB】
@@ -26,12 +31,12 @@ You can stop your program at specified point and print a value of variable or ru
 】
 】
 - Linux:
-.. code-block::
+.. code::
 
    which gdb
 
 - Windows:
-.. code-block::
+.. code::
 
    where gdb
 
@@ -59,7 +64,7 @@ Or you can download it from `TDM-GCC`_.
 】
 】
 
-.. code-block::
+.. code::
 
    nim c --debugger:native test.nim
 
@@ -70,15 +75,466 @@ Or you can download it from `TDM-GCC`_.
 -----
 
 【
+【ja:以下のコードを ``test.nim`` に保存しGDBでデバッグしてみます。
+】
+【en:Let's debug following code with GDB. Save it as filename ``test.nim``.
+】
+】
+
+.. code-block::
+  type
+    TestObj = object
+      num: int
+      val: float
+      str: string
+
+  proc initTestObj(num: int): TestObj =
+    TestObj(num: num, val: 3.141, str: "TestObj")
+
+  proc foo(x: int): int =
+    let y = x + 2
+    return y * 10
+
+  proc bar(x: int): int =
+    if x == 3:
+      return foo(x)
+    return x * 100
+
+  proc main =
+    var a = 1
+    a += 3
+    let str = "foobar"
+    var seq1 = @[0, 1, 2, 3, 4]
+    a = bar(1)
+    a = bar(2)
+    a = bar(3)
+    let tobj = initTestObj(11)
+
+  main()
+
+【
+【ja:このコードを ``--debugger:native`` をつけてコンパイルした後に ``nim-gdb`` に読み込ませます。
+】
+【en:Compile this code with ``--debugger:native`` and load it to ``nim-gdb``.
+】
+】
+
+.. code::
+
+   nim c --debugger:native test.nim
+   nim-gdb test
+
+【
+【ja:もしnim-gdbが無い場合は `Nim repository`_ から ``Nim/bin/nim-gdb`` と ``Nim/tools/nim-gdb.py`` をダウンロードして下さい。
+nim-gdbを使わない場合はGDBを起動した後に ``source Nim/tools/nim-gdb.py`` を実行して下さい。
+nim-gdbはGDBを実行し ``Nim/tools/nim-gdb.py`` を読み込ませるbashスクリプトです。
+nim-gdb.pyはNimの変数がGDBで綺麗に表示されるようにするためのPythonスクリプトです。
+】
+【en:If you cannot find nim-gdb, you can download ``Nim/bin/nim-gdb`` and ``Nim/tools/nim-gdb.py`` from `Nim repository`_.
+If you don't use nim-gdb, execute ``source Nim/tools/nim-gdb.py`` command after you run gdb.
+nim-gdb is a bash script that execute GDB and let GDB load ``Nim/tools/nim-gdb.py``.
+And nim-gdb.py is a Python script that make GDB print Nim variables nicely.
+】
+】
+
+【
+【ja:nim-gdbが実行されると以下のようなメッセージが表示されます。
+実行ファイルにデバッグに必要な情報が含まれていれば ``Reading symbols from test...done.`` と表示されるはずです。
+もし ``--debugger:native`` オプションをつけ忘れてコンパイルすると ``Reading symbols from test...(no debugging symbols found)...done`` と表示されます。
+.
+】
+【en:Following message will be displayed after run nim-gdb.
+If a executable file contains information that help debuging, GDB prints ``Reading symbols from test...done``.
+If you compiled a code without ``--debugger:native`` options, it will print ``Reading symbols from test...(no debugging symbols found)...done``.
+】
+】
+
+.. code::
+
+  GNU gdb (Gentoo 8.1 p1) 8.1
+  Copyright (C) 2018 Free Software Foundation, Inc.
+  License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+  This is free software: you are free to change and redistribute it.
+  There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+  and "show warranty" for details.
+  This GDB was configured as "x86_64-pc-linux-gnu".
+  Type "show configuration" for configuration details.
+  For bug reporting instructions, please see:
+  <https://bugs.gentoo.org/>.
+  Find the GDB manual and other documentation resources online at:
+  <http://www.gnu.org/software/gdb/documentation/>.
+  For help, type "help".
+  Type "apropos word" to search for commands related to "word"...
+  Reading symbols from test...done.
+  (gdb)
+
+【
+【ja:``quit`` または ``q`` コマンドを実行するか ``Ctrl-d`` キーを押すとGDBを終了できます。】
+【en:You can quit GDB with the ``quit`` or ``q`` command or Ctrl-d key.】
+】
+
+
+【
+【ja:まずbreak pointを設定してみます。コードの中にブレークポイントを設定することによって、プログラムが実行中にその場所に到達すると一時停止させることができます。
+``b`` または ``break`` コマンドにプロシージャ名を与えることによってそのプロシージャが始まる場所にbreak pointを設定できます。
+GDBではNimで書いたプロシージャの名前を直接指定することができず、プロシージャ名にハッシュ値が付いた名前で指定する必要があります。
+例えば、``foo`` という名前のプロシージャにbreak pointを設定するときは ``break foo_`` と入力した後にtabキーを入力するとプロシージャ名についたハッシュ値が補完されます。
+】
+【en:let's set a break point. If you set a break point inside souce code, the program will pause when it reached to that point.
+You can make a break point by executing ``b`` or ``break`` command with procedure name.
+But you cannot specify a procedure name as is to ``break`` command.
+You have to specify a procedure name with hash value.
+For example, when you make a break point to procedure ``foo``, Type ``break foo_`` and push a tab key.
+Then, hash value added to that procedure name will be complemented.
+】
+】
+
+.. code::
+
+  (gdb) break foo_yBfYXi2FBVfUOybMAWEXjA_2
+  Breakpoint 1 at 0x10544: file /tmp/tmp/test.nim, line 10.
+
+【
+【ja:ファイル名と行番号を指定してbreak pointを設定することもできます。
+】
+【en:You can also make a break point with filename and line number.
+】
+】
+
+.. code::
+
+  (gdb) break test.nim:21
+  Breakpoint 2 at 0x1088a: file /tmp/tmp/test.nim, line 21.
+
+【
+【ja:``run`` コマンドでプログラムを実行します。
+先程設定したtest.nimの21行目のbreak pointでプログラムが停止します。
+なので ``a += 3`` が実行される直前で停止します。
+】
+【en:``run`` command start your program under GDB.
+Then, the program stop at the break point in line 21 of test.nim.
+It stops right before the ``a += 3`` is executed.
+】
+】
+
+.. code::
+
+  Starting program: /tmp/tmp/test
+
+  Breakpoint 2, main_Ak9bvQf5hr5bnkcYq9cDinOw ()
+      at /tmp/tmp/test.nim:21
+  21        a += 3
+
+【
+【ja:``print`` または ``p`` コマンドで変数の中身を見ることができます。
+】
+【en:You can see the value of an variable using ``print`` or ``p`` command.
+】
+】
+
+.. code::
+
+  (gdb) print a
+  $$1 = 1
+
+【
+【ja:``next`` または ``n`` コマンドで一行だけ実行します。
+このときに ``a += 3`` が実行されます。
+】
+【en:You can execute only 1 line with ``next`` or ``n`` command.
+Then, ``a += 3`` is executed.
+】
+】
+
+.. code::
+
+  (gdb) next
+  22        let str = "foobar"
+  (gdb) print a
+  $$2 = 4
+
+【
+【ja:``next`` コマンドに実行したい行数を指定することができます。
+】
+【en:You can specify a number of lines to execute to ``next`` command.
+】
+】
+
+.. code::
+
+  (gdb) next 3
+  25        a = bar(2)
+  (gdb) print a
+  $$3 = 100
+
+【
+【ja:``step`` または ``s`` コマンドで次の行で呼ばれるプロシージャの中に入ることができます。
+】
+【en:You can enter a procedure that will be called in next line with ``step`` or ``s`` command.
+】
+】
+
+.. code::
+
+  (gdb) step
+  bar_yBfYXi2FBVfUOybMAWEXjA (x=2) at /tmp/tmp/test.nim:14
+  14      proc bar(x: int): int =
+
+【
+【ja:``finish`` または ``fin`` コマンドで今いるプロシージャから抜けるまでプログラムを実行します。
+】
+【en:``finish`` or ``fin`` command run the program until it exits currently executing procedure.
+】
+】
+
+.. code::
+
+  (gdb) finish
+  Run till exit from #0  bar_yBfYXi2FBVfUOybMAWEXjA (x=2)
+      at /tmp/tmp/test.nim:14
+  0x000055555556494b in main_Ak9bvQf5hr5bnkcYq9cDinOw ()
+      at /tmp/tmp/test.nim:25
+  25        a = bar(2)
+  Value returned is $$4 = 200
+  (gdb) next
+  26        a = bar(3)
+  (gdb) print a
+  $$5 = 200
+
+【
+【ja:``continue`` または ``c`` コマンドでプログラムが終了するかbreakpointに引っかかるまで実行されます。
+】
+【en:``continue`` or ``c`` command resume program execution util the program ends or it reach to a breakpoint.
+】
+】
+
+.. code::
+  (gdb) continue
+  Continuing.
+
+  Breakpoint 1, foo_yBfYXi2FBVfUOybMAWEXjA_2 (x=3)
+      at /tmp/tmp/test.nim:10
+  10      proc foo(x: int): int =
+
+【
+【ja:``backtrace`` または ``bt`` コマンドでbacktraceを表示します。
+``main`` プロシージャの26行目から ``bar(3)`` プロシージャが呼ばれ、``bar`` プロシージャの16行目から ``foo(3)`` プロシージャが呼ばれているのがわかります。
+】
+【en:``backtrace`` or ``bt`` command display a backtrace.
+You can see ``bar(3)`` procedure was called from ``main`` procedure at line 26, and ``foo(3)`` procedure was called from ``bar`` procedure at line 16.
+】
+】
+
+.. code::
+
+  (gdb) backtrace
+  #0  foo_yBfYXi2FBVfUOybMAWEXjA_2 (x=3) at /tmp/tmp/test.nim:10
+  #1  0x0000555555564697 in bar_yBfYXi2FBVfUOybMAWEXjA (x=3)
+      at /tmp/tmp/test.nim:16
+  #2  0x000055555556496c in main_Ak9bvQf5hr5bnkcYq9cDinOw ()
+      at /tmp/tmp/test.nim:26
+  #3  0x0000555555564b38 in NimMainModule ()
+      at /tmp/tmp/test.nim:29
+  #4  0x0000555555564a46 in NimMainInner ()
+      at /tmp/tmp/Nim/lib/system.nim:3154
+  #5  0x0000555555564a82 in NimMain ()
+      at /tmp/tmp/Nim/lib/system.nim:3162
+  #6  0x0000555555564ad0 in main (argc=1, args=0x7fffffffde58,
+      env=0x7fffffffde68) at /tmp/tmp/Nim/lib/system.nim:3169
+
+【
+【ja:``list`` または ``l`` コマンドで現在いる場所付近のソースコードを表示します。
+】
+【en:``list`` or ``l`` command print lines from source code.
+】
+】
+
+.. code::
+
+  (gdb) list
+  5           str: string
+  6
+  7       proc initTestObj(num: int): TestObj =
+  8         TestObj(num: num, val: 3.141, str: "TestObj")
+  9
+  10      proc foo(x: int): int =
+  11        let y = x + 2
+  12        return y * 10
+  13
+  14      proc bar(x: int): int =
+
+【
+【ja:``info breakpoints`` または ``info break`` コマンドでbreak pointのリストを表示します。
+】
+【en:``info breakpoints`` or ``info break`` command prints a table of all breakpoints.
+】
+】
+
+.. code::
+  (gdb) info breakpoints
+  Num     Type           Disp Enb Address            What
+  1       breakpoint     keep y   0x0000555555564544 in foo_yBfYXi2FBVfUOybMAWEXjA_2 at /tmp/tmp/test.nim:10
+          breakpoint already hit 1 time
+  2       breakpoint     keep y   0x000055555556488a in main_Ak9bvQf5hr5bnkcYq9cDinOw at /tmp/tmp/test.nim:21
+          breakpoint already hit 1 time
+
+【
+【ja:ここに表示されている番号を ``delete`` または ``d`` コマンドに指定することによってbreakpointを削除することができます。
+】
+【en:You can delete a breakpoint by specifying a number on above list to ``delete`` or ``d`` command.
+】
+】
+
+.. code::
+
+  (gdb) delete 2
+  (gdb) info breakpoints
+  Num     Type           Disp Enb Address            What
+  1       breakpoint     keep y   0x0000555555564544 in foo_yBfYXi2FBVfUOybMAWEXjA_2 at /tmp/tmp/test.nim:10
+          breakpoint already hit 1 time
+
+【
+【ja:``info locals`` コマンドで現在いるプロシージャの全ローカル変数を表示することができます。
+】
+【en:``info locals`` command prints all local variables of a procedure.
+】
+】
+
+.. code::
+
+  (gdb) next
+  11        let y = x + 2
+  (gdb) next
+  12        return y * 10
+  (gdb) info locals
+  result = 0
+  y = 5
+  TM_ipcYmBC9bj9a1BW35ABoB1Kw_6 = 5
+  TM_ipcYmBC9bj9a1BW35ABoB1Kw_7 = 93824992304216
+  FR_ = {prev = 0x7fffffffdc20,
+    procname = 0x555555565d58 "foo", line = 11,
+    filename = 0x555555565d5c "test.nim", len = 0,
+    calldepth = 3}
+  (gdb) finish
+  Run till exit from #0  foo_yBfYXi2FBVfUOybMAWEXjA_2 (x=3)
+      at /tmp/tmp/test.nim:12
+  0x0000555555564697 in bar_yBfYXi2FBVfUOybMAWEXjA (x=3)
+      at /tmp/tmp/test.nim:16
+  16          return foo(x)
+  Value returned is $$2 = 50
+  (gdb) finish
+  Run till exit from #0  0x0000555555564697 in bar_yBfYXi2FBVfUOy
+  bMAWEXjA (x=3) at /tmp/tmp/test.nim:16
+  0x000055555556496c in main_Ak9bvQf5hr5bnkcYq9cDinOw ()
+      at /tmp/tmp/test.nim:26
+  26        a = bar(3)
+  Value returned is $$3 = 50
+  (gdb) next
+  27        let tobj = initTestObj(11)
+  (gdb) next
+  28
+  (gdb) info locals
+  a = 50
+  TM_ipcYmBC9bj9a1BW35ABoB1Kw_2 = 4
+  str = "foobar"
+  seq1 = seq(5, 5) = {0, 1, 2, 3, 4}
+  tobj = {num = 11, val = 3.141, str = "TestObj"}
+  FR_ = {prev = 0x7fffffffdce0,
+    procname = 0x555555565d75 "main", line = 27,
+    filename = 0x555555565d5c "test.nim", len = 0,
+    calldepth = 1}
+
+GDB Text User Interface
+-----
+【
+【ja:GDBでText User Interface(TUI) modeにすると画面を分割してソースコード、アセンブリ言語、レジスタの値を表示できるようになります。
+``tui enable`` コマンドでTUI modeになり、 ``tui disable`` で元のモードに戻ります。
+Ctrl-aキーを押した後にaキーを押すことでもTUI modeを切り替えられます。
+GDB起動時に ``-tui`` オプションを指定するとTUI modeがデフォルトになります。
+】
+【en:In GDB Text User Interface(TUI) mode, screen is split and it can show source code, assembly, or regisers.
+You can enable TUI mode with ``tui enable`` command, and disable with ``tui disable``.
+You can also change mode by pushing a key after Ctrl-a key.
+TUI mode is enabled by default by adding ``-tui`` option when you execute GDB command.
+】
+】
+
+
+
+【
+【ja:GDBで簡単なプログラムをデバッグしてみる2】
+【en:Debug other simple program with GDB】
+】
+-----
+
+【
+【ja:以下のコードを ``test2.nim`` に保存しGDBでデバッグしてみます。
+】
+【en:Let's debug following code with GDB. Save it as filename ``test2.nim``.
+】
+】
+
+.. code::
+
+  import os, strutils
+
+  proc main =
+    let params = commandLineParams()
+    if params.len == 0:
+      return
+
+    let count = parseInt(params[0])
+
+    var x = 0
+    var sum = 0
+    for i in 0..count:
+      inc sum
+      if sum == 10:
+        inc x
+
+    echo sum
+
+main()
+
+【
 【ja:
 】
 【en:
 】
 】
 
+.. code::
+
+【
+【ja:
+】
+【en:
+】
+】
+
+.. code::
+
+【
+【ja:
+】
+【en:
+】
+】
+
+.. code::
+
+【
+【ja:
+】
+【en:
+】
+】
+
+.. code-block::
 .. _GDB: https://www.gnu.org/software/gdb/
 .. _Scoop: https://scoop.sh/
-.. _TDM-GCC _http://tdm-gcc.tdragon.net/
+.. _TDM-GCC: http://tdm-gcc.tdragon.net/
+.. _Nim repository: https://github.com/nim-lang/nim
 """
 
 let articles = newTable([
