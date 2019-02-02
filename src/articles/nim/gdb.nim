@@ -8,9 +8,11 @@ const rstText = """
 【
 【ja:`GDB`_ はコマンドライン上でプログラムをデバッグするツールです。
 GDBを使えばプログラムを実行中に特定の箇所で停止して変数の値を見たり一行づつプログラムを実行することなどができます。
+GDBについて詳しく知りたい方は `GDB User Manual`_ を参照して下さい。
 】
 【en:`GDB`_ is a command line debug tool.
 You can stop your program at specified point and print a value of variable or run it line by line.
+If you want to learn more about GDB, check `GDB User Manual`_.
 】
 】
 
@@ -141,7 +143,6 @@ And nim-gdb.py is a Python script that make GDB print Nim variables nicely.
 【ja:nim-gdbが実行されると以下のようなメッセージが表示されます。
 実行ファイルにデバッグに必要な情報が含まれていれば ``Reading symbols from test...done.`` と表示されるはずです。
 もし ``--debugger:native`` オプションをつけ忘れてコンパイルすると ``Reading symbols from test...(no debugging symbols found)...done`` と表示されます。
-.
 】
 【en:Following message will be displayed after run nim-gdb.
 If a executable file contains information that help debuging, GDB prints ``Reading symbols from test...done``.
@@ -497,41 +498,184 @@ TUI mode is enabled by default by adding ``-tui`` option when you execute GDB co
 main()
 
 【
-【ja:
+【ja:デバッグするプログラムに引数を与えるときはnim-gdbを起動するときに ``--args`` を指定し実行ファイル名の後に引数を指定します。
 】
-【en:
-】
-】
-
-.. code::
-
-【
-【ja:
-】
-【en:
+【en:You can specify the arguments to your program by adding ``--args`` option to nim-gdb and append the arguments after the program filenae.
 】
 】
 
 .. code::
 
+  nim-gdb --args test2 1000 foo
+  (gdb) break test2.nim:11
+  Breakpoint 1 at 0x11b35: file /tmp/tmp/test2.nim, line 11.
+  (gdb) run
+  Starting program: /tmp/tmp/test2 1000 foo
+  [Thread debugging using libthread_db enabled]
+  Using host libthread_db library "/lib64/libthread_db.so.1".
+
+  Breakpoint 1, main_3iLAKFrCD49cjgkzKbLZt2A () at /tmp/tmp/test2.nim:11
+  11        var sum = 0
+  (gdb) print params
+  $$1 = seq(2, 2) = {"1000", "foo"}
+
 【
-【ja:
+【ja:``run`` コマンドに引数を指定することもできます。
 】
-【en:
+【en:You can also specify the arguments to your program to ``run`` command.
 】
 】
 
 .. code::
 
+  nim-gdb test2
+  (gdb) break test2.nim:11
+  Breakpoint 1 at 0x11b35: file /tmp/tmp/test2.nim, line 11.
+  (gdb) run 1000 foo
+  Starting program: /tmp/tmp/test2 1000 foo
+  [Thread debugging using libthread_db enabled]
+  Using host libthread_db library "/lib64/libthread_db.so.1".
+
+  Breakpoint 1, main_3iLAKFrCD49cjgkzKbLZt2A () at /tmp/tmp/test2.nim:11
+  11        var sum = 0
+  (gdb) print params
+  $$1 = seq(2, 2) = {"1000", "foo"}
+
 【
-【ja:
+【ja:Watchpointを使うことによって指定した変数の値が変化したときにプログラムを停止させることができます。
 】
-【en:
+【en:Watchpoint stop your program whenever the value of the specified variable changed.
 】
 】
 
-.. code-block::
+.. code::
+
+  (gdb) watch x
+  Hardware watchpoint 2: x
+  (gdb) continue
+  Continuing.
+
+  Hardware watchpoint 2: x
+
+  Old value = 0
+  New value = 1
+  0x0000555555565c3b in main_3iLAKFrCD49cjgkzKbLZt2A () at /tmp/tmp/test2.nim:15
+  15            inc x
+  (gdb) print sum
+  $$1 = 10
+  (gdb) print x
+  $$2 = 1
+
+【
+【ja:``print`` コマンドで変数の値を変更することができます。
+】
+【en:You can change the value of the specified variable using ``print`` command.
+】
+】
+
+.. code::
+
+  (gdb) print sum = 0
+  $$3 = 0
+  (gdb) print sum
+  $$4 = 0
+  (gdb) continue
+  Continuing.
+
+  Hardware watchpoint 2: x
+
+  Old value = 1
+  New value = 2
+  0x0000555555565c3b in main_3iLAKFrCD49cjgkzKbLZt2A () at /tmp/tmp/test2.nim:15
+  15            inc x
+  (gdb) print sum
+  $$5 = 10
+  (gdb) print x
+  $$6 = 2
+
+【
+【ja:``until`` または ``u`` コマンドで一行だけ実行することができますが、ループがある場合はループが終わるまで実行されます。
+】
+【en:You can execute only 1 line with ``until`` or ``u`` command and it can be used to exit loop.
+】
+】
+
+.. code::
+
+  (gdb) until
+  2166            inc(res)
+  (gdb) until
+  2164          while res <= int(b):
+  (gdb) until
+  17        echo sum
+
+【
+【ja:NimコンパイラをGDBでデバッグ】
+【en:Debug Nim compiler with GDB】
+】
+-----
+
+【
+【ja:NimコンパイラはNim言語で書かれNimコンパイラでコンパイルされます。なのでnim-gdbでデバッグできます。
+まずは普通にNim compilerをビルドします。
+】
+【en:Nim compiler is written with Nim language and compiled with Nim compiler. So you can debug it with nim-gdb.
+At first, compile Nim as written on readme.md.
+】
+】
+
+.. code::
+
+  git clone https://github.com/nim-lang/Nim.git
+  cd Nim
+
+On linux:
+
+.. code::
+
+  sh build_all.sh
+
+On windows:
+
+.. code::
+
+  git clone --depth 1 https://github.com/nim-lang/csources.git
+  cd csources
+  build64.bat
+  cd ..
+
+  bin\nim c koch
+  koch boot -d:release
+  koch tools # Compile Nimble and other tools
+
+【
+【ja:Nimコンパイラをデバッグ用にコンパイルします。
+``bin`` ディレクトリに ``nim_temp`` が出力されます。
+】
+【en:Compile Nim compiler for debug.
+``nim_temp`` will be created in ``bin`` directory.
+】
+】
+
+.. code::
+
+  koch temp
+
+
+【
+【ja:``nim_temp`` をデバッグします。
+】
+【en:Debug ``nim_temp``.
+】
+】
+
+.. code::
+
+  nim-gdb --args bin/nim_temp c ../test.nim
+
+
 .. _GDB: https://www.gnu.org/software/gdb/
+.. _GDB User Manual: https://sourceware.org/gdb/current/onlinedocs/gdb/
 .. _Scoop: https://scoop.sh/
 .. _TDM-GCC: http://tdm-gcc.tdragon.net/
 .. _Nim repository: https://github.com/nim-lang/nim
