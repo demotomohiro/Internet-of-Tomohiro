@@ -83,6 +83,7 @@ Internet of Tomohiro
                                【en:Blog site created by Tomohiro】
                                】""",
           preIndex        = rstSrcHead,
-          postIndex       = rstSrcFoot)
+          postIndex       = rstSrcFoot,
+          cssPath         = "../public/style.css")
 when isMainModule:
   main()
