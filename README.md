@@ -1,4 +1,5 @@
 # Internet-of-Tomohiro
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c4b089ca-68e0-4353-add4-87bd9db9281b/deploy-status)](https://app.netlify.com/sites/internet-of-tomohiro/deploys)
 ## [My blog site](https://internet-of-tomohiro.netlify.com/)
 
 This repository contains source code of my blog.
