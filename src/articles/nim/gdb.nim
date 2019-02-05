@@ -32,12 +32,15 @@ If you want to learn more about GDB, check `GDB User Manual`_.
 【en:You can check if GDB is installed on your PC with following command.
 】
 】
-- Linux:
+
+On Linux:
+
 .. code::
 
    which gdb
 
-- Windows:
+On Windows:
+
 .. code::
 
    where gdb
@@ -138,6 +141,32 @@ nim-gdb is a bash script that execute GDB and let GDB load ``Nim/tools/nim-gdb.p
 And nim-gdb.py is a Python script that make GDB print Nim variables nicely.
 】
 】
+
+【
+【ja:nim-gdbはbashスクリプトなのでWindowsではbash等をインストールしないとそのまま使えません。
+なので以下のようにして ``tools\nim-gdb.py`` をGDBに読み込む必要があります。
+GDB起動後に
+】
+【en:On Windows, nim-gdb is a bash script and you cannot use it without bash.
+So you need to load ``tools\nim-gdb.py`` using ``source`` command.
+Please run following command on GDB:
+】
+】
+
+.. code::
+
+  source {path-to-nim}\tools\nim-gdb.py
+
+【
+【ja:を実行するか以下のようにGDBを起動して下さい。
+】
+【en:Or execute GDB like this:
+】
+】
+
+.. code::
+
+  gdb -eval-command "source {path-to-nim}\tools\nim-gdb.py" test
 
 【
 【ja:nim-gdbが実行されると以下のようなメッセージが表示されます。
@@ -448,12 +477,17 @@ You can see ``bar(3)`` procedure was called from ``main`` procedure at line 26, 
 GDB Text User Interface
 -----
 【
-【ja:GDBでText User Interface(TUI) modeにすると画面を分割してソースコード、アセンブリ言語、レジスタの値を表示できるようになります。
+【ja:(Windowsでは使えないっぽい)
+
+GDBでText User Interface(TUI) modeにすると画面を分割してソースコード、アセンブリ言語、レジスタの値を表示できるようになります。
 ``tui enable`` コマンドでTUI modeになり、 ``tui disable`` で元のモードに戻ります。
 Ctrl-aキーを押した後にaキーを押すことでもTUI modeを切り替えられます。
 GDB起動時に ``-tui`` オプションを指定するとTUI modeがデフォルトになります。
 】
-【en:In GDB Text User Interface(TUI) mode, screen is split and it can show source code, assembly, or regisers.
+【en:
+(This mode is not available on windows?)
+
+In GDB Text User Interface(TUI) mode, screen is split and it can show source code, assembly, or regisers.
 You can enable TUI mode with ``tui enable`` command, and disable with ``tui disable``.
 You can also change mode by pushing a key after Ctrl-a key.
 TUI mode is enabled by default by adding ``-tui`` option when you execute GDB command.
@@ -495,7 +529,7 @@ TUI mode is enabled by default by adding ``-tui`` option when you execute GDB co
 
     echo sum
 
-main()
+  main()
 
 【
 【ja:デバッグするプログラムに引数を与えるときはnim-gdbを起動するときに ``--args`` を指定し実行ファイル名の後に引数を指定します。
