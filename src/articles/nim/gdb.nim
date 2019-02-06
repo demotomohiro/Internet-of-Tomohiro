@@ -483,6 +483,8 @@ GDBでText User Interface(TUI) modeにすると画面を分割してソースコ
 ``tui enable`` コマンドでTUI modeになり、 ``tui disable`` で元のモードに戻ります。
 Ctrl-aキーを押した後にaキーを押すことでもTUI modeを切り替えられます。
 GDB起動時に ``-tui`` オプションを指定するとTUI modeがデフォルトになります。
+
+画面が乱れたときは ``Ctrl + L`` キーで画面をリフレッシュできます。
 】
 【en:
 (This mode is not available on windows?)
@@ -491,6 +493,8 @@ In GDB Text User Interface(TUI) mode, screen is split and it can show source cod
 You can enable TUI mode with ``tui enable`` command, and disable with ``tui disable``.
 You can also change mode by pushing a key after Ctrl-a key.
 TUI mode is enabled by default by adding ``-tui`` option when you execute GDB command.
+
+If the screen messed up, you can refresh it with ``Ctrl + L`` key.
 】
 】
 
