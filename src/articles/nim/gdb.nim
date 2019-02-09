@@ -47,11 +47,14 @@ On Windows:
 
 【
 【ja:もしインストールされていなければパッケージマネージャ(apt, pacman, emergeなど)を使ってインストールしてください。
-Windowsでは `Scoop`_ というパッケージマネージャを使うと ``scoop install gdb`` でインストールできます。
-`Scoop`_ を使いたくなければ `TDM-GCC`_ からダウンロードして下さい。
+GDBはMinGWに含まれています。
+Windowsで `Scoop`_ というパッケージマネージャを使う場合、``scoop install gcc`` でgccをインストールするとGDBも一緒にインストールされます。``scoop install gdb`` でGDBだけをインストールできますが、gccに付属するGDBよりも古いです。
+`Scoop`_ を使いたくなければ `TDM-GCC`_ からダウンロードできます。
 】
 【en:If GDB is not installed on your PC, install it using your package manager (apt, pacman, emerge, etc).
-If you use package manager `Scoop`_ on Windows, you can install it with ``scoop install gdb``.
+GDB is included in MinGW.
+If you use package manager `Scoop`_ on Windows, GDB is installed when you install gcc with ``scoop install gcc``.
+You can also install it alone with ``scoop install gdb`` command, but it is older than the GDB included in gcc.
 Or you can download it from `TDM-GCC`_.
 】
 】
