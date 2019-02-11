@@ -714,6 +714,63 @@ On windows:
 
   nim-gdb --args bin/nim_temp c ../test.nim
 
+【
+【ja:他のGDBの便利な機能】
+【en:Other useful GDB commands】
+】
+-----
+* ``skip``
+
+  【
+  【ja:このコマンドを使うと ``step`` コマンドを使ったときなどに指定したプロシージャに入らないようにできます。
+  ``-file`` や ``-gfile`` オプションでソースコードを指定するとそこで定義されているすべてのプロシージャがスキップされるようになります。
+  例えば以下のコマンドで ``system`` モジュールにあるプロシージャがスキップされるようになります。
+  】
+  【en:You can use this command so that ``step`` command don't step into specified procedure.
+  With ``-file`` or ``-gfile`` option, all procedures defined in specified source code will be skipped.
+  For example, all procedures in ``system`` module will be skipped with following commands.
+  】
+  】
+
+  .. code::
+
+    skip -gfile lib/system.nim
+    skip -gfile lib/system/*.nim
+
+  `【
+  【ja:skipコマンドの詳細】
+  【en:More info about skip command】
+  】 <https://sourceware.org/gdb/current/onlinedocs/gdb/Skipping-Over-Functions-and-Files.html>`_
+
+* ``rbreak`` *regex*
+
+  【
+  【ja:このコマンドを使うと正規表現 *regex* に名前がマッチするすべてのプロシージャにbreakpointを設定します。
+  】
+  【en:Set breakpoints on all procedures matching the regular expression *regex*.
+  】
+  】
+
+  `【
+  【ja:rbreakコマンドの詳細】
+  【en:More info about rbreak command】
+  】 <https://sourceware.org/gdb/current/onlinedocs/gdb/Set-Breaks.html#index-breakpoints-at-functions-matching-a-regexp>`_
+
+* ``save breakpoints`` *filename*
+
+  【
+  【ja:設定されているすべてのbreakpointを *filename* に保存します。
+  後で ``source`` コマンドを使って 読み込むことができます。
+  】
+  【en:Saves all current breakpoint definitions to *filename*.
+  Use the ``source`` command to read the saved breakpoints.
+  】
+  】
+
+  `【
+  【ja:save breakpointsコマンドの詳細】
+  【en:More info about save breakpoints】
+  】 <https://sourceware.org/gdb/current/onlinedocs/gdb/Save-Breakpoints.html#Save-Breakpoints>`_
 
 .. _GDB: https://www.gnu.org/software/gdb/
 .. _GDB User Manual: https://sourceware.org/gdb/current/onlinedocs/gdb/
