@@ -12,6 +12,8 @@ const rstText = """
    【en:Unigine Valley Running on Google Colaboratory】
    】
 
+.. contents::
+
 【
 【ja:必要なもの】
 【en:Requirements】
