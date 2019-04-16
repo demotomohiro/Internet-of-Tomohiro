@@ -9,6 +9,11 @@ proc main =
 】 <$indexPageLink>`_
 """
   let donate = """
+【
+【ja:よろしければ投げ銭をお願いします。】
+【en:If you found my articles interesting or useful, please donate using following links:】
+】
+
 .. raw:: html
 
   <a href="https://blockchain.info/address/【
