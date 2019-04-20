@@ -6,10 +6,21 @@ const rstText = """
 ======
 
 【
+【ja:`VNCを使ってGoogle Colaboratory上のデスクトップ環境を使うこともできます。 <vnc.ja.html>`_】
+【en:`You can also use desktop environment on Google Colaboratory using VNC. <vnc.en.html>`_】
+】
+
+【
 【ja:必要なもの】
 【en:Requirements】
 】
 -----
+
+
+【
+【ja:- パソコンまたはAndroidスマートフォン】
+【en:- PC or Android smartphone】
+】
 
 【
 【ja:- Googleアカウント】
@@ -24,9 +35,11 @@ const rstText = """
 【
 【ja:- sshクライアント
    Windowsを使う場合は `scoop`_ を使うと簡単にopensshをインストールできます。
+   Androidスマートフォンを使う場合は `JuiceSSH`_ が使えます。
 】
 【en:- ssh client
    If you use Windows, you can install openssh with `scoop`_ . 
+   If you use Android smartphone, you can use `JuiceSSH`_ .
 】
 】
 
@@ -176,6 +189,7 @@ Execute following command:
 .. _Serveo: https://serveo.net/
 .. _Google Colaboratory SSH samples: https://github.com/demotomohiro/Google-Colaboratory-SSH-samples
 .. _Nim: https://nim-lang.org/
+.. _JuiceSSH: https://juicessh.com/
 
 """
 
