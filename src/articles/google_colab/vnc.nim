@@ -310,5 +310,5 @@ let articles = newTable([
   (Lang("en"),
   ArticleSrcLocal(
     title:"How to run OpenGL desktop programs on Google Colaboratory",
-    description:"Explains how to VNC server on Google Colaboratory and use OpenGL desktop program on it"))])
+    description:"Explains how to run a VNC server and OpenGL desktop program on Google Colaboratory"))])
 newArticle(articles, rstText)
