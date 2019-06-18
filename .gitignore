@@ -1,3 +1,4 @@
 nimcache/
 public/*.html
 src/bin/
+src/bloggen.exe
