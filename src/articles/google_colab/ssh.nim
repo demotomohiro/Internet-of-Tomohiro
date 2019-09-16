@@ -54,41 +54,54 @@ const rstText = """
 【ja:1. `ngrok`_ にサインアップ
 
    - 無料のプランでかまいません。
-     `ngrok`_ にサインアップしたくない場合は `Serveo`_ を使ったバージョンもあります。
-     次のステップで ``ssh_ngrok.ipynb`` の代わりに ``ssh_serveo.ipynb`` を使って下さい。
+     `ngrok`_ にサインアップしたくない場合は以下のリンクに `Serveo`_ を使ったバージョンもあります。
      しかし `ngrok`_ より遅くなります。
 】
 【en:1. Sign up for `ngrok`_
 
    - You don't need to buy paid plans.
-     If you don't want to sign up for anything, there is `Serveo`_ version.
-     Use ``ssh_serveo.ipynb`` instead of ``ssh_ngrok.ipynb`` in next step.
+     If you don't want to sign up for anything, there is `Serveo`_ version in following link.
      But it is slower than `ngrok`_ version.
 】
 】
+     https://github.com/demotomohiro/Google-Colaboratory-SSH-samples/blob/master/src/ssh_serveo.ipynb
 【
-【ja:2. ssh_ngrok.ipynbをGoogleドライブへコピーする
+【ja:2. コードをセルへコピペする
 
-   - `Google Colaboratory SSH samples`_ の ``src`` ディレクトリから ``ssh_ngrok.ipynb`` をダウンロードして自分のGoogleドライブへコピーし、Colaboratoryで開きます。
+   - Colaboratoryでセルに以下のコードをコピペします。
 】
 【en:2. Copy ssh_ngrok.ipynb to your Google drive
 
-   - Download ``ssh_ngrok.ipynb`` from ``src`` directory of `Google Colaboratory SSH samples`_, copy it to your Google drive and open it with Colaboratory.
+   - Copy & paste one of following code to the cell in Colaboratory.
 】
 】
 【
-【ja:3. 左上の再生ボタンのようなところをクリック
+【ja:     - SSHのみの場合】
+【en:     - SSH only】
+】
+     .. code::
 
-   自動的に ``colab`` という名前のアカウントを作成され、しばらくするとコードの下のほうに ``root`` と ``colab`` ユーザのパスワードが表示されます。
-   このパスワードはこのコードが実行される度にランダムに生成されます。
-】
-【en:3. Click run bottom in top left
+        !pip install git+https://github.com/demotomohiro/remocolab.git
+        import remocolab
+        remocolab.setupSSHD()
 
-   - User account called ``colab`` will be created and passwords for ``root`` and ``colab`` user will be displayed under that code.
-     These passwords are randomly generated everytime you run this code.
+【
+【ja:     - SSHとVNCを使う場合】
+【en:     - SSH and VNC】
 】
+     .. code::
+
+        !pip install git+https://github.com/demotomohiro/remocolab.git
+        import remocolab
+        remocolab.setupVNC()
+
+【
+【ja:3. 左上の再生ボタンのようなところをクリック】
+【en:3. Click run bottom in top left】
 】
-   .. image:: https://user-images.githubusercontent.com/1882512/55267426-651dd680-52c5-11e9-80d3-7e418a46e4b2.png
+
+   .. image:: https://user-images.githubusercontent.com/1882512/64982179-12ed6380-d8ad-11e9-8f1a-acb5d34d0ab4.png
+
 【
 【ja:4. ngrokのauthtokenをコピペする
 
@@ -99,11 +112,11 @@ const rstText = """
    - After the message that ask you to copy ngrok authtoken displayed, login to ngrok, click Auth on left side menu, click Copy, return to Google Colaboratory, paste it and push enter key.
 】
 】
-   .. image:: https://user-images.githubusercontent.com/1882512/55278529-c2ab3500-5350-11e9-81ef-8bae46b2c21a.png
+   .. image:: https://user-images.githubusercontent.com/1882512/64982180-12ed6380-d8ad-11e9-9db0-71854fb66d0b.png
 【
 【ja:5. ngrok regionを訊かれるので自分に一番近い場所を選んで入力
 
-   日本からだとap - Asia/Pacificよりus - United Statesを選んだほうが速いようです。
+   今日本にいるならjpと入力してエンターキーを押します。
 】
 【en:5. Select ngrok region
 
@@ -111,8 +124,24 @@ const rstText = """
 】
 】
 【
-【ja:6. sshコマンドが表示されるのでそれをコマンドラインにコピペして実行】
-【en:6. Copy ssh command to your terminal and execute it】
+【ja:6. SSHサーバ立ち上がるまで待つ
+
+   - OpenSSHサーバのインストールやSSHサーバに接続できるようにするための処理が行われます。
+   - 自動的に ``colab`` という名前のアカウントを作成され、しばらくするとコードの下のほうに ``root`` と ``colab`` ユーザのパスワードが表示されます。このパスワードはこのコードが実行される度にランダムに生成されます。
+】
+【en:6. Wait for starting SSH server
+
+   - It install OpenSSH server and configure the server for login from your machine.
+   - User account called ``colab`` will be created and passwords for ``root`` and ``colab`` user will be displayed under that code. These passwords are randomly generated everytime you run this code.
+】
+】
+【
+【ja:7. サーバにログイン
+   - セットアップが完了するとsshコマンドが表示されるのでそれを自分のPCのコマンドラインにコピペして実行します。
+】
+【en:7. Login to the server
+  - After setup completed, SSH command to login to the server is displayed. Copy it to your terminal and execute it.
+】
 】
 
 
