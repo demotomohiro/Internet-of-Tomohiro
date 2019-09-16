@@ -70,7 +70,7 @@ const rstText = """
 
    - Colaboratoryでセルに以下のコードをコピペします。
 】
-【en:2. Copy ssh_ngrok.ipynb to your Google drive
+【en:2. Copy & paste setup code
 
    - Copy & paste one of following code to the cell in Colaboratory.
 】
@@ -216,7 +216,6 @@ Execute following command:
 .. _Scoop: https://scoop.sh/
 .. _ngrok: https://ngrok.com/ 
 .. _Serveo: https://serveo.net/
-.. _Google Colaboratory SSH samples: https://github.com/demotomohiro/Google-Colaboratory-SSH-samples
 .. _Nim: https://nim-lang.org/
 .. _JuiceSSH: https://juicessh.com/
 
