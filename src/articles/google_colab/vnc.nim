@@ -54,52 +54,95 @@ const rstText = """
 -----
 
 1. 【
+   【ja:`ngrok`_ にサインアップ
+
+   - 無料のプランでかまいません。】
+   【en:Sign up for `ngrok`_
+
+   - You don't need to buy paid plans.】
+   】
+
+2. 【
+   【ja: OpenGLを使いたい場合はランタイムタイプを変更
+
+   - `Google Colaboratory`_ を開いたら、上部メニューの"ランタイム"→"ランタイムのタイプを変更"からハードウェアアクセラレータをGPUに設定してください。】
+   【en: Change runtime type if you want to use OpenGL
+
+   - After you open `Google Colaboratory`_, click "Runtime" -> "Change runtime type" in top menu and change Hardware accelerator to GPU.】
+   】
+
+3. 【
+   【ja:セルに以下のコードをコピペ】
+   【en:Copy following code to a cell in Colaboratory】
+   】
+
+     .. code::
+
+        !pip install git+https://github.com/demotomohiro/remocolab.git
+        import remocolab
+        remocolab.setupVNC()
+
+4. 【
+   【ja:左上の再生ボタンのようなところをクリック】
+   【en:Click run bottom in top left】
+   】
+
+   .. image:: https://user-images.githubusercontent.com/1882512/64982179-12ed6380-d8ad-11e9-8f1a-acb5d34d0ab4.png
+
+5. 【
+   【ja:ngrokのauthtokenをコピペする
+
+   - ngrokのauthtokenをコピペするようメッセージが表示されるのでngrokにログインして左のメニューからAuthをクリックし、Copyをクリックし、Google Colaboratoryの画面に戻ってペーストしてエンターキーを押して下さい。】
+   【en:Copy ngrok authtoken
+
+   - After the message that ask you to copy ngrok authtoken displayed, login to ngrok, click Auth on left side menu, click Copy, return to Google Colaboratory, paste it and push enter key.】
+   】
+
+   .. image:: https://user-images.githubusercontent.com/1882512/64982180-12ed6380-d8ad-11e9-9db0-71854fb66d0b.png
+
+6. 【
+   【ja:ngrok regionを訊かれるので自分に一番近い場所を選んで入力
+
+   - 今日本にいるならjpと入力してエンターキーを押します。
+   】
+   【en:Select ngrok region
+
+   - Probably the region closest to you is fastest.
+   】
+   】
+7. 【
+   【ja:TurboVNCが立ち上がるまで待つ
+
+   - OpenSSHサーバやVirtualGL, TurboVNCのセットアップなどがおこなわれます。
+   - 完了するとVNCサーバにログインするためのパスワードが表示されます。
+   】
+   【en:Wait for TurboVNC running
+
+   - It setup OpenSSH server, VirtualGL and TurboVNC.
+   - When it done, VNC password is displayed.
+   】
+   】
+8. 【
    【ja:`Google Colaboratory`_ にSSHでログイン
 
-   - `こちらの記事 <ssh.ja.html>`_ を参考にして `Google Colaboratory`_ にsshでログインします。
-     このときにあらかじめ上部メニューの"ランタイム"→"ランタイムのタイプを変更"からハードウェアアクセラレータをGPUに設定してください。
-     sshクライアントを実行するときに使うコマンドは"If you use VNC:"の下にあるコマンドを使用して下さい。
-     sshでログインしたままの状態で以下の手順を実行して下さい。】
+   - "If you use VNC:"の下にあるコマンドを使ってColaboratoryのSSHサーバにログインして下さい。
+   - ログイン時に必要なパスワードは"colab password: "の右に表示されています。
+   - VNCを使っている間はsshでログインしたままの状態にして下さい。】
    【en:Login to `Google Colaboratory`_ using SSH
 
-   - Please read `this post <ssh.en.html>`_ and login to `Google Colaboratory`_ using ssh.
-     Before executing that script, you need to click "Runtime" -> "Change runtime type" in top menu and change Hardware accelerator to GPU.
-     When you run ssh client, use command under "If you use VNC:".
-     Execute following steps with keep logined.  】
+   - Login to the SSH server running on your Colaboratory's virtual machine by using the command under "If you use VNC:" message.
+   - Use the password displayed right side of "colab password: ".
+   - Keep logined while you use VNC.】
    】
-2. 【
-   【ja:TurboVNC_VirtualGL.ipynbをGoogleドライブへコピーする
-
-   - `Google Colaboratory SSH samples`_ の ``src`` ディレクトリから ``TurboVNC_VirtualGL.ipynb`` をダウンロードして自分のGoogleドライブへコピーし、Colaboratoryで開きます。】
-   【en:Copy TurboVNC_VirtualGL.ipynb to your Google drive
-
-   - Download ``TurboVNC_VirtualGL.ipynb`` from ``src`` directory of `Google Colaboratory SSH samples`_, copy it to your Google drive and open it with Colaboratory.】
-   】
-3. 【
-   【ja:ハードウェアアクセラレータをGPUに設定
-
-   - 上部メニューの"ランタイム"→"ランタイムのタイプを変更"からハードウェアアクセラレータをGPUに設定してください。】
-   【en:set Hardware accelerator to GPU
-
-   - In top menu, "Runtime" -> "Change runtime type" and set Hardware accelerator to GPU.】
-   】
-4. 【
-   【ja:左上の再生ボタンのようなところをクリック
-
-   - 実行してしばらくすると下のほうにVNC passwordが表示されます。】
-   【en:Click run button in top left
-
-   - After few seconds, VNC password will be displayed.】
-   】
-5. 【
+9. 【
    【ja:TurboVNC Viewerを実行
 
    - サーバのアドレスを ``localhost:1`` にして接続します。
-     パスワードが要求されるので4で表示されたVNC passwordを入力してください。】
+   - パスワードが要求されるので"VNC password: "の右に表示されているパスワードをコピペしてください。】
    【en:Run TurboVNC Viewer
 
    - Set server address to ``localhost:1`` and connect.
-     When password is required, input VNC password that is displayed in step 4.】
+   - When password is required, copy & paste the password displayed right side of "VNC password: ".】
    】
 
 【
