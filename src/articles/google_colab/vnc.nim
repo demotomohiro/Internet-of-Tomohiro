@@ -169,11 +169,11 @@ const rstText = """
 
 .. code::
 
-  OpenGL vendor string: NVIDIA Corporation
-  OpenGL core profile version string: 4.6.0 NVIDIA 410.79
-  OpenGL core profile shading language version string: 4.60 NVIDIA
-  OpenGL version string: 4.6.0 NVIDIA 410.79
-  OpenGL shading language version string: 4.60 NVIDIA
+   OpenGL vendor string: NVIDIA Corporation
+   OpenGL core profile version string: 4.6.0 NVIDIA 418.67
+   OpenGL core profile shading language version string: 4.60 NVIDIA
+   OpenGL version string: 4.6.0 NVIDIA 418.67
+   OpenGL shading language version string: 4.60 NVIDIA
 
 【
 【ja:OpenGLを使ったプログラムを実行する】
@@ -293,21 +293,21 @@ The, extract the file and run it like following command.
 -----
 
 【
-【ja:``TurboVNC_VirtualGL.ipynb`` では `TurboVNC`_ 、 `libjpeg-turbo`_ 、 `VirtualGL`_ 、 `Xfce`_ のダウンロードとインストールを行っています。
-`TurboVNC`_ を使って `Google Colaboratory`_ のサーバ上にデスクトップを起動しリモートPCからアクセスできるようにしています。
+【ja:`remocolab`_ はOpenSSH、 `TurboVNC`_ 、 `libjpeg-turbo`_ 、 `VirtualGL`_ 、 `Xfce`_ のダウンロードとインストールを行っています。
+`TurboVNC`_ を使って `Google Colaboratory`_ の仮想マシン上にデスクトップを起動しリモートPCからアクセスできるようにしています。
 `TurboVNC`_ はサーバ上のデスクトップ画面を `TurboVNC Viewer`_ を実行しているクライアントPCに送り、クライアントPCからマウスとキーボード入力を受け取ります。
 `TurboVNC`_ は `libjpeg-turbo`_ を使って画面の画像を圧縮してから送信しています。
 SSH port forwardingを使うことによってこれらの通信を暗号化しています。
-``TurboVNC_VirtualGL.ipynb`` では外部からSSHを使わず直接TurboVNCに接続することができないように設定しています。
-OpenGLを使うプログラムを実行するときにVirtualGLを使うことによってTurboVNC上でも普通のデスクトップ上で実行したときと同じようにハードウェアアクセラレーションが効きくようにしています。
+`remocolab`_ では外部からSSHを使わず直接TurboVNCに接続することができないように設定しています。
+OpenGLを使うプログラムを実行するときにVirtualGLを使うことによってTurboVNC上でも普通のデスクトップ上で実行したときと同じようにサーバ上のGPUを使ったハードウェアアクセラレーションが効くようにしています。
 】
-【en:``TurboVNC_VirtualGL.ipynb`` install and download `TurboVNC`_ , `libjpeg-turbo`_, `VirtualGL`_ and `Xfce`_ .
-It run desktop on `Google Colaboratory`_ server and make it accessible to your PC using `TurboVNC`_ .
+【en:`remocolab`_ download and install OpenSSH, `TurboVNC`_ , `libjpeg-turbo`_, `VirtualGL`_ and `Xfce`_ .
+It run desktop on `Google Colaboratory`_ 's virtual machine and make it accessible from your PC using `TurboVNC`_.
 `TurboVNC`_ send desktop screen on the server to the client PC running `TurboVNC Viewer`_ , and receive mouse and keyboard input from the client PC.
 `TurboVNC`_  compress desktop screen image using `libjpeg-turbo`_ before sending it.
 These communications are encrypted by using SSH port forwarding.
-``TurboVNC_VirtualGL.ipynb`` configures TurboVNC so that connecting to it without using SSH is forbidden.
-VirtualGL allow OpenGL programs can use Hardware accelerator like they are executed on normal desktop.
+`remocolab`_ configures TurboVNC so that connecting to it without using SSH is forbidden.
+VirtualGL allow OpenGL programs can use Hardware accelerator using a GPU on server like they are executed on normal desktop.
 】
 】
 
@@ -334,7 +334,7 @@ Some noise will appear but looks smoother.
 .. _ngrok: https://ngrok.com/ 
 .. _Scoop: https://scoop.sh/
 .. _TurboVNC Viewer: https://sourceforge.net/projects/turbovnc/files
-.. _Google Colaboratory SSH samples: https://github.com/demotomohiro/Google-Colaboratory-SSH-samples
+.. _remocolab: https://github.com/demotomohiro/remocolab
 .. _Shadertoy: https://www.shadertoy.com/
 .. _Unigine Valley: https://benchmark.unigine.com/valley
 .. _Blender: https://www.blender.org/
