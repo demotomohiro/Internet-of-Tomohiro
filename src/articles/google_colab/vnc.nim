@@ -6,6 +6,7 @@ const rstText = """
 ======
 
 .. figure:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_unigine_valley_cap.png
+   :width: 100%
 
    【
    【ja:Unigine ValleyをGoogle Colaboratoryで動かしているところ】
@@ -151,7 +152,7 @@ const rstText = """
 】
 
 .. figure:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_first_screen.png
-   :scale: 100 %
+   :width: 100%
 
 【
 【ja:以下のコマンドでNVIDIAのOpenGL実装が使えるかどうか確認できます。】
@@ -208,6 +209,7 @@ Shadertoy
 .....
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_shadertoy.png
+   :width: 100%
 
 【
 【ja:ターミナルを開いて以下のコマンドでfirefoxをインストールして実行します。】
@@ -230,6 +232,7 @@ Unigine Valley
 .....
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_unigine_valley.png
+   :width: 100%
 
 【
 【ja:`Unigine Valley`_ のページからUnigine Valleyをダウンロードします。
@@ -251,6 +254,7 @@ Blender
 .....
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_blender.png
+   :width: 100%
 
 【
 【ja:`Blender`_ の公式サイトのDownloadページからLinux 64bit用のファイルをダウンロードします。
@@ -271,6 +275,7 @@ Godot
 .....
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_godot.png
+   :width: 100%
 
 【
 【ja:`Godot`_ の公式サイトのDownloadページからLinux 64bit用のファイルをダウンロードします。
