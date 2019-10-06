@@ -50,7 +50,7 @@ On Windows:
 【
 【ja:もしインストールされていなければパッケージマネージャ(apt, pacman, emergeなど)を使ってインストールしてください。
 GDBはMinGWに含まれています。
-Windowsで `Scoop`_ というパッケージマネージャを使う場合、``scoop install gcc`` でgccをインストールするとGDBも一緒にインストールされます。``scoop install gdb`` でGDBだけをインストールできますが、gccに付属するGDBよりも古いです。
+Windowsで `Scoop`_ というパッケージマネージャを使う場合、 ``scoop install gcc`` でgccをインストールするとGDBも一緒にインストールされます。 ``scoop install gdb`` でGDBだけをインストールできますが、gccに付属するGDBよりも古いです。
 `Scoop`_ を使いたくなければ `TDM-GCC`_ からダウンロードできます。
 】
 【en:If GDB is not installed on your PC, install it using your package manager (apt, pacman, emerge, etc).
@@ -213,7 +213,7 @@ If you compiled a code without ``--debugger:native`` options, it will print ``Re
 【ja:まずbreak pointを設定してみます。コードの中にブレークポイントを設定することによって、プログラムが実行中にその場所に到達すると一時停止させることができます。
 ``b`` または ``break`` コマンドにプロシージャ名を与えることによってそのプロシージャが始まる場所にbreak pointを設定できます。
 GDBではNimで書いたプロシージャの名前を直接指定することができず、プロシージャ名にハッシュ値が付いた名前で指定する必要があります。
-例えば、``foo`` という名前のプロシージャにbreak pointを設定するときは ``break foo_`` と入力した後にtabキーを入力するとプロシージャ名についたハッシュ値が補完されます。
+例えば、 ``foo`` という名前のプロシージャにbreak pointを設定するときは ``break foo_`` と入力した後にtabキーを入力するとプロシージャ名についたハッシュ値が補完されます。
 】
 【en:let's set a break point. If you set a break point inside souce code, the program will pause when it reached to that point.
 You can make a break point by executing ``b`` or ``break`` command with procedure name.
@@ -353,7 +353,7 @@ Then, ``a += 3`` is executed.
 
 【
 【ja:``backtrace`` または ``bt`` コマンドでbacktraceを表示します。
-``main`` プロシージャの26行目から ``bar(3)`` プロシージャが呼ばれ、``bar`` プロシージャの16行目から ``foo(3)`` プロシージャが呼ばれているのがわかります。
+``main`` プロシージャの26行目から ``bar(3)`` プロシージャが呼ばれ、 ``bar`` プロシージャの16行目から ``foo(3)`` プロシージャが呼ばれているのがわかります。
 】
 【en:``backtrace`` or ``bt`` command display a backtrace.
 You can see ``bar(3)`` procedure was called from ``main`` procedure at line 26, and ``foo(3)`` procedure was called from ``bar`` procedure at line 16.
