@@ -136,10 +136,12 @@ let articles = newTable([
   (Lang("ja"),
   ArticleSrcLocal(
     title:"Google Colaboratoryで見つけたセキュリティ問題について",
-    description:"Google ColaboratoryでOpenSSH serverを使うときに関係するセキュリティ問題を見つけたので説明します")),
+    description:"Google ColaboratoryでOpenSSH serverを使うときに関係するセキュリティ問題を見つけたので説明します",
+    category:"Google Colaboratory")),
   (Lang("en"),
   ArticleSrcLocal(
     title:"Security problem found in Google Colaboratory",
-    description:"Explain about security problem found in Google Colaboratory that related to OpenSSH server"))])
+    description:"Explain about security problem found in Google Colaboratory that related to OpenSSH server",
+    category:"Google Colaboratory"))])
 newArticle(articles, rstText)
 

@@ -1,7 +1,7 @@
 const rstText = """
 【
 【ja:WandboxでNimを使う】
-【en:Use Nim on oneline compiler: Wandbox】
+【en:Use Nim on online compiler: Wandbox】
 】
 ======
 
@@ -135,9 +135,11 @@ let articles = newTable([
   (Lang("ja"),
   ArticleSrcLocal(
     title:"WandboxでNimを使う",
-    description:"Nim言語をWandboxから使うには")),
+    description:"Nim言語をWandboxから使うには",
+    category:"Nim")),
   (Lang("en"),
   ArticleSrcLocal(
-    title:"Use Nim on oneline compiler: Wandbox",
-    description:""))])
+    title:"Use Nim on online compiler: Wandbox",
+    description:"How to use Nim programming language on online compiler Wandbox",
+    category:"Nim"))])
 newArticle(articles, rstText)

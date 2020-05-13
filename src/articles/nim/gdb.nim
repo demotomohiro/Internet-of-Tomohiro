@@ -785,9 +785,11 @@ let articles = newTable([
   (Lang("ja"),
   ArticleSrcLocal(
     title:"NimをGDBでデバッグする",
-    description:"Nim言語で書いたプログラムをGDBでデバッグする方法を紹介します")),
+    description:"Nim言語で書いたプログラムをGDBでデバッグする方法を紹介します",
+    category:"Nim")),
   (Lang("en"),
   ArticleSrcLocal(
     title:"Debug Nim with GDB",
-    description:"How to use GDB to debug a program written with Nim language"))])
+    description:"How to use GDB to debug a program written with Nim language",
+    category:"Nim"))])
 newArticle(articles, rstText)

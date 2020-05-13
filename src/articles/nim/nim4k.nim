@@ -239,9 +239,11 @@ let articles = newTable([
   (Lang("ja"),
   ArticleSrcLocal(
     title:"Nim言語で4k introを作る方法",
-    description:"Nim言語を使って4k introのような小さな実行ファイルを作る方法を解説します")),
+    description:"Nim言語を使って4k introのような小さな実行ファイルを作る方法を解説します",
+    category:"Nim")),
   (Lang("en"),
   ArticleSrcLocal(
     title:"How to make 4k intro with Nim programming language",
-    description:"Explains how to make a small executable file like 4k intro with Nim programming language"))])
+    description:"Explains how to make a small executable file like 4k intro with Nim programming language",
+    category:"Nim"))])
 newArticle(articles, rstText)

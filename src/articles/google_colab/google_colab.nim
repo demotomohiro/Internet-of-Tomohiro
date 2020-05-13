@@ -149,9 +149,11 @@ let articles = newTable([
   (Lang("ja"),
   ArticleSrcLocal(
     title:"Google Colaboratoryについて",
-    description:"Google Colaboratoryについて簡単に説明します。")),
+    description:"Google Colaboratoryについて簡単に説明します。",
+    category:"Google Colaboratory")),
   (Lang("en"),
   ArticleSrcLocal(
     title:"About Google Colaboratory",
-    description:"Explains about Google Colaboratory"))])
+    description:"Explains about Google Colaboratory",
+    category:"Google Colaboratory"))])
 newArticle(articles, rstText)

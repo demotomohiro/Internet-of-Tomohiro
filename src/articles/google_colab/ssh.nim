@@ -225,9 +225,11 @@ let articles = newTable([
   (Lang("ja"),
   ArticleSrcLocal(
     title:"sshでGoogle Colaboratoryを使う",
-    description:"Google Colaboratory上にsshサーバを稼働させてssh経由で利用する方法を紹介します")),
+    description:"Google Colaboratory上にsshサーバを稼働させてssh経由で利用する方法を紹介します",
+    category:"Google Colaboratory")),
   (Lang("en"),
   ArticleSrcLocal(
     title:"How to access Google Colaboratory using ssh",
-    description:"Explains how to run ssh server on Google Colaboratory and use it via ssh"))])
+    description:"Explains how to run ssh server on Google Colaboratory and use it via ssh",
+    category:"Google Colaboratory"))])
 newArticle(articles, rstText)

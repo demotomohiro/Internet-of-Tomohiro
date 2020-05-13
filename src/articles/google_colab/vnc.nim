@@ -354,9 +354,11 @@ let articles = newTable([
   (Lang("ja"),
   ArticleSrcLocal(
     title:"【素でタダ】Google ColaboratoryでOpenGLを使ったデスクトッププログラムを動かす",
-    description:"Google Colaboratory上にVNCサーバを稼働させてOpenGLを使ったデスクトッププログラムを利用する方法を紹介します")),
+    description:"Google Colaboratory上にVNCサーバを稼働させてOpenGLを使ったデスクトッププログラムを利用する方法を紹介します",
+    category:"Google Colaboratory")),
   (Lang("en"),
   ArticleSrcLocal(
     title:"How to run OpenGL desktop programs on Google Colaboratory",
-    description:"Explains how to run a VNC server and OpenGL desktop program on Google Colaboratory"))])
+    description:"Explains how to run a VNC server and OpenGL desktop program on Google Colaboratory",
+    category:"Google Colaboratory"))])
 newArticle(articles, rstText)

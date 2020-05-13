@@ -146,9 +146,11 @@ let articles = newTable([
   (Lang("ja"),
   ArticleSrcLocal(
     title:"Nim4Colabを使ってGoogle ColaboratoryでNim言語を使う",
-    description:"Nim4Colab拡張を使ってGoogle ColaboratoryでNim言語を利用する方法を紹介します")),
+    description:"Nim4Colab拡張を使ってGoogle ColaboratoryでNim言語を利用する方法を紹介します",
+    category:"Google Colaboratory")),
   (Lang("en"),
   ArticleSrcLocal(
     title:"Use Nim on Google Colaboratory by using Nim4Colab",
-    description:"Explains how to use Nim language on Google Colaboratory by using Nim4Colab extension"))])
+    description:"Explains how to use Nim language on Google Colaboratory by using Nim4Colab extension",
+    category:"Google Colaboratory"))])
 newArticle(articles, rstText)
