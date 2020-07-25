@@ -335,6 +335,20 @@ Some noise will appear but looks smoother.
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_turbovnc_enc.png
 
+【
+【ja:画面サイズを変更する方法】
+【en:Change remote desktop size】
+】
+-----
+【
+【ja:TurboVNC Viewer Optionsを開き、 *Connection* タブをクリックして *Remote desktop size* に好きなサイズを設定します。】
+【en:Open TurboVNC Viewer Options, click *Connection* tab and set *Remote desktop size*.】
+】
+
+.. image:: https://gist.githubusercontent.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/6bf176dbfa900158b910f3548ccb3672085cf53d/googlecolab_vnc_turbovnc_desktopsize.png
+
+`Frequently-Asked-Questions <https://github.com/demotomohiro/remocolab/wiki/Frequently-Asked-Questions>`_
+
 .. _Google Colaboratory: https://colab.research.google.com/
 .. _ngrok: https://ngrok.com/ 
 .. _Scoop: https://scoop.sh/
