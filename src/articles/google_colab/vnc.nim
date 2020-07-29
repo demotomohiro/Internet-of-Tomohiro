@@ -115,23 +115,23 @@ const rstText = """
    【ja:TurboVNCが立ち上がるまで待つ
 
    - OpenSSHサーバやVirtualGL, TurboVNCのセットアップなどがおこなわれます。
-   - 完了するとVNCサーバにログインするためのパスワードが表示されます。
+   - 完了するとrootとcolabユーザのパスワードとlocal port forwardingするためのsshコマンドとVNCサーバにログインするためのパスワードが表示されます。
    】
    【en:Wait for TurboVNC running
 
    - It setup OpenSSH server, VirtualGL and TurboVNC.
-   - When it done, VNC password is displayed.
+   - When it done, passwords of root and colab user, ssh command for local port forwarding and VNC password is displayed.
    】
    】
 8. 【
    【ja:`Google Colaboratory`_ にSSHでログイン
 
-   - "If you use VNC:"の下にあるコマンドを使ってColaboratoryのSSHサーバにログインして下さい。
+   - ✂️(ハサミの絵文字)で囲まれた ``ssh`` で始まる行にあるコマンドをお手元のPCのターミナルで実行してColaboratoryのSSHサーバにログインして下さい。
    - ログイン時に必要なパスワードは"colab password: "の右に表示されています。
    - VNCを使っている間はsshでログインしたままの状態にして下さい。】
    【en:Login to `Google Colaboratory`_ using SSH
 
-   - Login to the SSH server running on your Colaboratory's virtual machine by using the command under "If you use VNC:" message.
+   - Login to the SSH server running on your Colaboratory's virtual machine by executing the ssh command under "Execute following command on your local machine and login before running TurboVNC viewer:" message.
    - Use the password displayed right side of "colab password: ".
    - Keep logined while you use VNC.】
    】
