@@ -21,14 +21,44 @@ const rstText = """
 】
 -----
 
-- 【
-  【ja:Googleアカウント】
-  【en:Google account】
+【
+【ja:`Google Colaboratory`_ 上のデスクトップ環境にアクセスするには `ngrok`_ または `Argo Tunnel`_ のどちらかを使う必要があります。
+- ngrok
+  - ngrokにサインアップする必要がある
+  - 特定のソフトウェアを自分のマシンにインストールする必要がない
+  - remocolabを実行するたびにauthtokenをコピペする必要がある
+
+- Argo Tunnel
+  - アカウントを作る必要がない。`無料バージョンはアカウント不要。 <https://blog.cloudflare.com/a-free-argo-tunnel-for-your-next-project/>`_
+  - `cloudflared`_ を自分のマシンにダウンロードする必要がある
+  - Argo TunnelはArgo Smart Routing技術を使って自動的に最適な通信経路を見つけるらしいのでサーバの地域を指定できない。
+】
+【en:You need to use `ngrok`_ or `Argo Tunnel`_ to access desktop environment on `Google Colaboratory`_.
+- ngrok
+  - You need to sign up for ngrok
+  - You don't need to install specific software on client machine
+  - You need to copy and paste authtoken to colab everytime you run remocolab
+
+- Argo Tunnel
+  - You don't need to create account. `Cloudflare provide free version <https://blog.cloudflare.com/a-free-argo-tunnel-for-your-next-project/>`_
+  - You need to copy `cloudflared`_ on your client PC.
+  - You cannot specify argo tunnel server's region as it uses Argo Smart Routing technology to find the most performant path.
+】
+】
+
+- `ngrok`_ 【
+  【ja:アカウント(`ngrok`_ を使う場合)】
+  【en:account if you use `ngrok`_】
+  】
+
+- `cloudflared`_ 【
+  【ja:(`Argo Tunnel`_ を使う場合)】
+  【en:if you use `Argo Tunnel`_】
   】
 
 - 【
-  【ja:`ngrok`_ アカウント】
-  【en:`ngrok`_ account】
+  【ja:Googleアカウント】
+  【en:Google account】
   】
 
 - 【
@@ -54,13 +84,32 @@ const rstText = """
 】
 -----
 
+【
+【ja:詳しい手順は以下のサイトをご覧下さい。】
+【en:More details of this procedure:】
+】
+
+https://github.com/demotomohiro/remocolab/blob/master/README.md
+
+【
+【ja:うまくいかないときは以下のページが参考になるかもしれません。】
+【en:If you have questions:】
+】
+
+https://github.com/demotomohiro/remocolab/wiki/Frequently-Asked-Questions
+
 1. 【
-   【ja:`ngrok`_ にサインアップ
+   【ja:ngrokを使う場合は `ngrok`_ にサインアップ
 
    - 無料のプランでかまいません。】
-   【en:Sign up for `ngrok`_
+   【en:Sign up for `ngrok`_ if you use it
 
    - You don't need to buy paid plans.】
+   】
+
+1. 【
+   【ja:`Argo Tunnel`_ を使う場合は `cloudflared`_ をダウンロードしてインストールするか、解凍してパスが通っているディレクトリに実行ファイルをコピーする】
+   【en:If you use `Argo Tunnel`_,  download `cloudflared`_ to your PC and install it or put the executable file in one of directories in PATH environment variable】
    】
 
 2. 【
@@ -73,15 +122,26 @@ const rstText = """
    】
 
 3. 【
-   【ja:セルに以下のコードをコピペ】
+   【ja:セルに以下のコードをコピペ
+   】
    【en:Copy following code to a cell in Colaboratory】
    】
+
+   - ngrok
 
      .. code::
 
         !pip install git+https://github.com/demotomohiro/remocolab.git
         import remocolab
         remocolab.setupVNC()
+
+   - Argo Tunnel
+
+     .. code::
+
+        !pip install git+https://github.com/demotomohiro/remocolab.git
+        import remocolab
+        remocolab.setupVNC(tunnel = "argotunnel")
 
 4. 【
    【ja:左上の再生ボタンのようなところをクリック】
@@ -91,10 +151,10 @@ const rstText = """
    .. image:: https://user-images.githubusercontent.com/1882512/64982179-12ed6380-d8ad-11e9-8f1a-acb5d34d0ab4.png
 
 5. 【
-   【ja:ngrokのauthtokenをコピペする
+   【ja:ngrokを使う場合はngrokのauthtokenをコピペする
 
    - ngrokのauthtokenをコピペするようメッセージが表示されるのでngrokにログインして左のメニューからAuthをクリックし、Copyをクリックし、Google Colaboratoryの画面に戻ってペーストしてエンターキーを押して下さい。】
-   【en:Copy ngrok authtoken
+   【en:Copy ngrok authtoken if you use ngrok
 
    - After the message that ask you to copy ngrok authtoken displayed, login to ngrok, click Auth on left side menu, click Copy, return to Google Colaboratory, paste it and push enter key.】
    】
@@ -350,7 +410,9 @@ Some noise will appear but looks smoother.
 `Frequently-Asked-Questions <https://github.com/demotomohiro/remocolab/wiki/Frequently-Asked-Questions>`_
 
 .. _Google Colaboratory: https://colab.research.google.com/
-.. _ngrok: https://ngrok.com/ 
+.. _ngrok: https://ngrok.com/
+.. _Argo Tunnel: https://www.cloudflare.com/products/argo-tunnel/
+.. _cloudflared: https://developers.cloudflare.com/argo-tunnel/downloads
 .. _Scoop: https://scoop.sh/
 .. _TurboVNC Viewer: https://sourceforge.net/projects/turbovnc/files
 .. _remocolab: https://github.com/demotomohiro/remocolab

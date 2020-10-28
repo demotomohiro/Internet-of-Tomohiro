@@ -38,7 +38,7 @@ const rstText = """
    Androidスマートフォンを使う場合は `JuiceSSH`_ が使えます。
 】
 【en:- ssh client
-   If you use Windows, you can install openssh with `scoop`_ . 
+   If you use Windows, you can install openssh with `scoop`_ .
    If you use Android smartphone, you can use `JuiceSSH`_ .
 】
 】
@@ -49,6 +49,20 @@ const rstText = """
 【en:Procedure】
 】
 -----
+
+【
+【ja:詳しい手順は以下のサイトをご覧下さい。】
+【en:More details of this procedure:】
+】
+
+https://github.com/demotomohiro/remocolab/blob/master/README.md
+
+【
+【ja:うまくいかないときは以下のページが参考になるかもしれません。】
+【en:If you have questions:】
+】
+
+https://github.com/demotomohiro/remocolab/wiki/Frequently-Asked-Questions
 
 【
 【ja:1. `ngrok`_ にサインアップ
