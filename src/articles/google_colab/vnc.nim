@@ -1,9 +1,8 @@
 const rstText = """
-【
+# 【
 【ja:【【素でタダ】】Google ColaboratoryでOpenGLを使ったデスクトッププログラムを動かす【【STADIAモドキ】】】
 【en:How to run OpenGL desktop programs on Google Colaboratory】
 】
-======
 
 .. figure:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_unigine_valley_cap.png
    :width: 100%
@@ -15,11 +14,10 @@ const rstText = """
 
 .. contents::
 
-【
+## 【
 【ja:必要なもの】
 【en:Requirements】
 】
------
 
 【
 【ja:`Google Colaboratory`_ 上のデスクトップ環境にアクセスするには `ngrok`_ または `Argo Tunnel`_ のどちらかを使う必要があります。
@@ -78,11 +76,10 @@ const rstText = """
 
 - `TurboVNC Viewer`_
 
-【
+## 【
 【ja:手順】
 【en:Procedure】
 】
------
 
 【
 【ja:詳しい手順は以下のサイトをご覧下さい。】
@@ -236,11 +233,10 @@ https://github.com/demotomohiro/remocolab/wiki/Frequently-Asked-Questions
    OpenGL version string: 4.6.0 NVIDIA 418.67
    OpenGL shading language version string: 4.60 NVIDIA
 
-【
+## 【
 【ja:OpenGLを使ったプログラムを実行する】
 【en:Run OpenGL programs】
 】
------
 
 【
 【ja:
@@ -265,8 +261,7 @@ OpengL programs need to be run with ``vglrun`` command or it uses software GLX/O
 
   $$ DISPLAY=:1 vglrun firefox &
 
-Shadertoy
-.....
+### Shadertoy
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_shadertoy.png
    :width: 100%
@@ -288,8 +283,7 @@ Shadertoy
 【en:Then, open `Shadertoy`_ on the firefox.】
 】
 
-Unigine Valley
-.....
+### Unigine Valley
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_unigine_valley.png
    :width: 100%
@@ -310,8 +304,7 @@ Then, extract the file and run it like following command.
   $$ cd Unigine_Valley-1.0
   $$ vglrun ./valley
 
-Blender
-.....
+### Blender
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_blender.png
    :width: 100%
@@ -331,8 +324,7 @@ Then, extract the file and run it like following command.
   $$ cd blender-2.79b-linux-glibc219-x86_64
   $$ vglrun ./blender
 
-Godot
-.....
+### Godot
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_godot.png
    :width: 100%
@@ -351,11 +343,10 @@ The, extract the file and run it like following command.
   $$ unzip Godot_v3.1-stable_x11.64.zip
   $$ vglrun ./Godot_v3.1-stable_x11.64
 
-【
+## 【
 【ja:解説】
 【en:How it works】
 】
------
 
 【
 【ja:`remocolab`_ はOpenSSH、 `TurboVNC`_ 、 `libjpeg-turbo`_ 、 `VirtualGL`_ 、 `Xfce`_ のダウンロードとインストールを行っています。
@@ -376,11 +367,10 @@ VirtualGL allow OpenGL programs can use Hardware accelerator using a GPU on serv
 】
 】
 
-【
+## 【
 【ja:動きを滑らかにする方法】
 【en:Display smooth animation】
 】
------
 
 【
 【ja:TurboVNC Viewer Optionsを開き、Encoding methodを ``Tight + Medium-Quality JPEG`` または ``Tight + Low-Quality JPEG(WAN)`` に設定します。
@@ -395,11 +385,11 @@ Some noise will appear but looks smoother.
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_turbovnc_enc.png
 
-【
+## 【
 【ja:画面サイズを変更する方法】
 【en:Change remote desktop size】
 】
------
+
 【
 【ja:TurboVNC Viewer Optionsを開き、 *Connection* タブをクリックして *Remote desktop size* に好きなサイズを設定します。】
 【en:Open TurboVNC Viewer Options, click *Connection* tab and set *Remote desktop size*.】

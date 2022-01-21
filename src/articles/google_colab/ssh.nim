@@ -1,21 +1,18 @@
 const rstText = """
-【
+# 【
 【ja:sshでGoogle Colaboratoryを使う】
 【en:How to access Google Colaboratory using ssh】
 】
-======
 
 【
 【ja:`VNCを使ってGoogle Colaboratory上のデスクトップ環境を使うこともできます。 <vnc.ja.html>`_】
 【en:`You can also use desktop environment on Google Colaboratory using VNC. <vnc.en.html>`_】
 】
 
-【
+## 【
 【ja:必要なもの】
 【en:Requirements】
 】
------
-
 
 【
 【ja:- パソコンまたはAndroidスマートフォン】
@@ -44,11 +41,10 @@ const rstText = """
 】
 
 
-【
+## 【
 【ja:手順】
 【en:Procedure】
 】
------
 
 【
 【ja:詳しい手順は以下のサイトをご覧下さい。】
@@ -159,11 +155,10 @@ https://github.com/demotomohiro/remocolab/wiki/Frequently-Asked-Questions
 】
 
 
-【
+## 【
 【ja:仕組み】
 【en:How it works】
 】
------
 
 【
 【ja:`Google Colaboratory`_ ではpythonのコードだけでなく先頭に!をつけることでbashコマンドも実行することができます。
@@ -182,11 +177,10 @@ But there are large latency because all communication between the server and the
 】
 
 
-【
+## 【
 【ja:【【おまけ】】Nimをインストールして使ってみる】
 【en:【【Optional】】Install Nim】
 】
------
 
 【
 【ja:Pythonよりも使いやすくて高速な `Nim`_ 言語をインストールしてみます。

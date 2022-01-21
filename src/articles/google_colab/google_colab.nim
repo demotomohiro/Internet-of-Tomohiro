@@ -1,9 +1,8 @@
 const rstText = """
-【
+# 【
 【ja:Google Colaboratoryについて】
 【en:About Google Colaboratory】
 】
-======
 
 【
 【ja:
@@ -67,11 +66,10 @@ When you accidentally broke important files, you can reset virtual machine and r
 https://ipython.readthedocs.io/en/stable/interactive/reference.html#system-shell-access
 https://ipython.readthedocs.io/en/stable/interactive/shell.html
 
-【
+## 【
 【ja:GPUを有効にする方法】
 【en:How to enable GPU】
 】
------
 
 【
 【ja:
@@ -104,11 +102,10 @@ If GPU was available, ``!nvidia-smi`` command print following message:
   +-----------------------------------------------------------------------------+
 
 
-【
+## 【
 【ja:Vimキーバインドを有効にするプラグイン】
 【en:Enable Vim key bind plugin】
 】
------
 
 【
 【ja:
@@ -122,11 +119,10 @@ Autovim Chrome plugin enable vim mode in Google colaboratory.
 https://chrome.google.com/webstore/detail/autovim/licohjbphilmljmjonhiifkldfahnmja?authUser=0&hl=en-US
 https://github.com/thomcom/autovim
 
-【
+## 【
 【ja:関連記事:】
 【en:Related articles:】
 】
------
 
 【
 【ja:`sshでGoogle Colaboratoryを使う <ssh.ja.html>`_】

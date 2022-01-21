@@ -1,9 +1,9 @@
 const rstText = """
-【
+# 【
 【ja:このブログについて】
 【en:About this blog】
 】
-======
+
 【
 【ja:このブログは `Nim De Blog`_ を使って作成され、 `Netlify`_ からホスティングされています。
 このブログのソースコードはGithubの `このリポジトリ <https://github.com/demotomohiro/Internet-of-Tomohiro>`_ で管理されています。
@@ -16,16 +16,15 @@ I can write articles using Nim language and reStructuredText implemented in Nim 
 】
 】
 
-【
+## 【
 【ja:Netlifyの仕組み】
 【en:How Netlify works】
 】
-------
+
 【
 【ja:`Netlify`_ は静的サイトを生成しインターネット上に公開します。】
 【en:`Netlify`_ generate static site and deploy it.】
 】
-
 【
 【ja:
 1. Github, GitLab, Bitbucketのどれかに静的サイト生成に必要なファイルを含んだリポジトリを作る
@@ -33,6 +32,7 @@ I can write articles using Nim language and reStructuredText implemented in Nim 
 3. "New site from Git"をクリックし1で作ったリポジトリを指定してサイトを作る
 4. Netlifyのサーバーが自動的にリポジトリをgit cloneし、登録したコマンドの実行が行われる
 5. 登録したコマンドが静的サイトの生成に成功するとインターネット上に公開される
+
 以後、リポジトリにpushされるたびにNetlifyが4, 5を行う。
 】
 【en:
@@ -41,15 +41,15 @@ I can write articles using Nim language and reStructuredText implemented in Nim 
 3. Click "New site from Git" and specify the repository
 4. Netlify server automatically do git clone the repository and execute the command you registered
 5. if that command succeeded, generated static site become accessible from internet.
+
 After that, Netlify do 4 and 5 everytime you do git push to the repository.
 】
 】
 
-【
+## 【
 【ja:NetlifyでNimを使う】
 【en:Use Nim in Netlify】
 】
-------
 
 【
 【ja:NetlifyでNimを使うにはNetlify上でNimをビルドする必要があります。
@@ -60,11 +60,10 @@ I wrote scripts to do that and published on `netlify-nim-test`_.
 】
 】
 
-【
+## 【
 【ja:このブログのコメント機能について】
 【en:Comment widget in this blog】
 】
-------
 
 【
 【ja:静的サイトそのものではコメント機能を作ることはできません。

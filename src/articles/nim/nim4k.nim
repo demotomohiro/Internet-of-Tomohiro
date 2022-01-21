@@ -1,13 +1,8 @@
 const rstText = """
-【
-【ja:】
-【en:】
-】
-【
+# 【
 【ja:Nim言語で4k introを作る方法】
 【en:How to make 4k intro with Nim programming language】
 】
-======
 
 【
 【ja:`Nim`_ 言語で4k introを作るサンプルを作りました。】
@@ -16,11 +11,10 @@ const rstText = """
 
 https://github.com/demotomohiro/nim-4k-intro-sample
 
-【
+## 【
 【ja:4k introとは】
 【en:What is 4k intro?】
 】
------
 
 【
 【ja:
@@ -41,11 +35,10 @@ https://www.youtube.com/watch?v=iRkZcTg1JWU
 https://www.pouet.net/party.php?which=1550&when=2020
 
 
-【
+## 【
 【ja:MS Windowsでサイズが小さい実行ファイルを作る方法】
 【en:How to make a small size executable on MS Windows】
 】
------
 
 - 【
 【ja:大きなデータを使わない】
@@ -180,11 +173,10 @@ https://www.pouet.net/party.php?which=1550&when=2020
   】
   】
 
-【
+## 【
 【ja:Nim言語を使うメリット】
 【en:Why use Nim programming language】
 】
------
 
 - 【
 【ja:余計な';'や'{', '}'のような文字がソースコード上に現れないので読みやすい】

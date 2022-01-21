@@ -1,9 +1,8 @@
 const rstText = """
-【
+# 【
 【ja:Google ColaboratoryでNimを使う】
 【en:Use Nim on Google Colaboratory】
 】
-======
 
 【
 【ja:】
@@ -23,11 +22,10 @@ You can use `Nim`_ language on `Google Colaboratory`_ by using `Nim4Colab`_ exte
 】
 】
 
-【
+## 【
 【ja:使い方】
 【en:How to use】
 】
------
 
 【
 【ja:
@@ -58,11 +56,11 @@ Then, you can run Nim code by writing your code under ``%%nimc``.
   %%nimc
   echo NimVersion
 
-【
+## 【
 【ja:サンプルコード】
 【en:Sample Codes】
 】
------
+
 `【
 【ja:簡単なサンプル】
 【en:Basic】
@@ -79,11 +77,10 @@ Then, you can run Nim code by writing your code under ``%%nimc``.
 】 <https://colab.research.google.com/drive/1J0B0qVvovrJZJI1OU75jIMUjWnymi_6G>`_
 
 
-【
+## 【
 【ja:行番号を表示する】
 【en:Show line numbers】
 】
------
 
 【
 【ja:
@@ -98,11 +95,11 @@ In menu, click "Tools" -> "Preferences..." and check "Show line numbers".
 】
 】
 
-【
+## 【
 【ja:仕組み】
 【en:How it work】
 】
------
+
 【
 【ja:
 初めて `Nim4Colab`_ のコマンドを実行したときに自動的に `Nim nightlies`_ から最新版の `Nim`_ をダウンロードしインストールします。
@@ -114,11 +111,10 @@ User code is saved to ``~/code.nim`` file and ``nim`` command is called.
 】
 】
 
-【
+## 【
 【ja:関連記事】
 【en:Related articles】
 】
------
 
 【
 【ja:SSHやVNC経由でNimをGoogle Colaboratoryの仮想マシン上で使いたい人には参考になるかもしれません。】

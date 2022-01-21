@@ -58,8 +58,7 @@ Internet of Tomohiro
    </script>
 """
   let rstSrcHead = fmt"""
-Internet of Tomohiro
-======
+# Internet of Tomohiro
 
 | Twitter: @demotomohiro
 | Github: https://github.com/demotomohiro
@@ -67,11 +66,11 @@ Internet of Tomohiro
 
 {donate}
 
-【
+## 【
 【ja:記事一覧】
 【en:Article list】
 】
-------
+
 """
 
   let rstSrcFoot = ""

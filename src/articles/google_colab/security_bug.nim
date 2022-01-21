@@ -1,13 +1,8 @@
 const rstText = """
-【
-【ja:】
-【en:】
-】
-【
+# 【
 【ja:Google Colaboratoryで見つけたセキュリティ問題について】
 【en:Security problem found in Google Colaboratory】
 】
-======
 
 【
 【ja:

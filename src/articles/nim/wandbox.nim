@@ -1,9 +1,8 @@
 const rstText = """
-【
+# 【
 【ja:WandboxでNimを使う】
 【en:Use Nim on online compiler: Wandbox】
 】
-======
 
 【
 【ja:`Wandbox`_ というOnline compilerについて紹介します。
@@ -19,11 +18,10 @@ It is developed by `@melponn`_ and `@kikairoya`_.】
 【en:You can become a sponsor(Japanese)】
 】 <https://gist.github.com/melpon/8f5d7a8e991ed466d09cf887bd8d92ce>`_
 
-【
+## 【
 【ja:Wandboxでは最新のNimやnightly buildのNimが使える】
 【en:Latest Nim and nightly build Nim are available on the Wandbox】
 】
------
 
 【
 【ja:`Wandbox`_ では最新のNimだけでなく古いバージョンも使うことができます。
@@ -46,22 +44,20 @@ You can also use more than 30 programming languages. 】
 【en:Sample code that prints about Wandbox machine】
 】 <https://wandbox.org/permlink/B8F6l5uV6DMrCiyJ>`_
 
-【
+## 【
 【ja:コードを共有できる】
 【en:You can share your code】
 】
------
 
 【
 【ja:Runした後にShareボタンが表示されるので、それをクリックすると共有可能なURLが表示されます。】
 【en:Share button appears after clicking Run button. Then, permanent link will appears when you click the share button.】
 】
 
-【
+## 【
 【ja:プラグインを使うとVim/Emacs/xyzzyからWandboxが使える】
 【en:There are plugins to use Wandbox on Vim/Emacs/xyzzy.】
 】
------
 
 【
 【ja:`Vim`_ に `wandbox-vim`_ プラグインをインストールし、
@@ -72,11 +68,11 @@ Then, code in the curret buffer is executed on wandbox and the result is display
 Plugins for wandbox use wandbox `API`_ to send code and receive result.】
 】
 
-【
+## 【
 【ja:複数のファイルを作れる】
 【en:Multiple text files】
 】
------
+
 【
 【ja:Wandboxで＋ボタンを押すと新しいファイルを追加できます。
 そのファイルはmoduleとしてimportしたり、実行時/コンパイル時にテキストファイルとして読み込むことができます。】
@@ -98,11 +94,10 @@ You can import that file as module or read it as text file at compile time or ru
 【en:Sample code that call C function from Nim】
 】 <https://wandbox.org/permlink/mPtkFIPcolrTIT0e>`_
 
-【
+## 【
 【ja:Wandboxはオープンソース】
 【en:Wandbox is open source】
 】
------
 
 【
 【ja:https://github.com/melpon/wandbox にWandboxのリポジトリがあります。

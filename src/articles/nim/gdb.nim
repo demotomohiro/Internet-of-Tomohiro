@@ -1,9 +1,8 @@
 const rstText = """
-【
+# 【
 【ja:NimをGDBでデバッグする】
 【en:Debug Nim with GDB】
 】
-======
 
 .. contents::
 
@@ -23,11 +22,11 @@ If you want to learn more about GDB, check `GDB User Manual`_.
 【en:There is official Nim GDB Youtube Video.】
 】 <https://www.youtube.com/watch?v=DmYOPkI_LzU>`_
 
-【
+## 【
 【ja:GDBをインストールする】
 【en:Install GDB】
 】
------
+
 【
 【ja:GDBがインストールされているかどうかは以下のコマンドで確認できます。
 】
@@ -61,11 +60,10 @@ Or you can download it from `TDM-GCC`_.
 】
 】
 
-【
+## 【
 【ja:GDBでデバッグできるようにコンパイルする】
 【en:Compile your program so that you can debug it with GDB】
 】
------
 
 【
 【ja:GDBでデバッグするには以下のように ``--debugger:native`` オプションをつけてコンパイルします。
@@ -78,11 +76,10 @@ Or you can download it from `TDM-GCC`_.
 
    nim c --debugger:native test.nim
 
-【
+## 【
 【ja:GDBで簡単なプログラムをデバッグしてみる】
 【en:Debug simple program with GDB】
 】
------
 
 【
 【ja:以下のコードを ``test.nim`` に保存しGDBでデバッグしてみます。
@@ -406,6 +403,7 @@ You can see ``bar(3)`` procedure was called from ``main`` procedure at line 26, 
 】
 
 .. code::
+
   (gdb) info breakpoints
   Num     Type           Disp Enb Address            What
   1       breakpoint     keep y   0x0000555555564544 in foo_yBfYXi2FBVfUOybMAWEXjA_2 at /tmp/tmp/test.nim:10
@@ -479,8 +477,8 @@ You can see ``bar(3)`` procedure was called from ``main`` procedure at line 26, 
     filename = 0x555555565d5c "test.nim", len = 0,
     calldepth = 1}
 
-GDB Text User Interface
------
+## GDB Text User Interface
+
 【
 【ja:(Windowsでは使えないっぽい)
 
@@ -505,11 +503,10 @@ If the screen messed up, you can refresh it with ``Ctrl + L`` key.
 
 
 
-【
+## 【
 【ja:GDBで簡単なプログラムをデバッグしてみる2】
 【en:Debug other simple program with GDB】
 】
------
 
 【
 【ja:以下のコードを ``test2.nim`` に保存しGDBでデバッグしてみます。
@@ -652,11 +649,10 @@ If the screen messed up, you can refresh it with ``Ctrl + L`` key.
   (gdb) until
   17        echo sum
 
-【
+## 【
 【ja:NimコンパイラをGDBでデバッグ】
 【en:Debug Nim compiler with GDB】
 】
------
 
 【
 【ja:NimコンパイラはNim言語で書かれNimコンパイラでコンパイルされます。なのでnim-gdbでデバッグできます。
@@ -716,11 +712,11 @@ On windows:
 
   nim-gdb --args bin/nim_temp c ../test.nim
 
-【
+## 【
 【ja:他のGDBの便利な機能】
 【en:Other useful GDB commands】
 】
------
+
 * ``skip``
 
   【
