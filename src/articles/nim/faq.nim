@@ -51,6 +51,10 @@ If you have a question about Nim, please ask it in `Nim forum <https://forum.nim
 - https://github.com/nim-lang/Nim/wiki/Unofficial-FAQ#why-are-unsigned-types-discouraged
 - https://forum.nim-lang.org/t/8737
 
+### Why doesn't default import statement force fully qualify access to the imported symbols?
+
+- https://narimiran.github.io/2019/07/01/nim-import.html
+
 ## Coding
 
 ### How to make nested tables?
@@ -183,7 +187,7 @@ Output:
   echo foo.T
   echo Bar.T
 
-### What is the difference between procedure, function and method.
+### What is the difference between procedure, function and method?
 
 ### My code is slower than python
 
@@ -214,6 +218,10 @@ Workarounds:
 - Use `Object variants <https://nim-lang.org/docs/manual.html#types-object-variants>`_
 - https://github.com/alaviss/union
 
+### What is the difference between stack and heap memory?
+
+- http://zevv.nl/nim-memory/
+
 ## Tools
 
 ### IDE or editor support for Nim?
@@ -235,6 +243,11 @@ Workarounds:
 - https://github.com/jiro4989/setup-nim-action
 - https://github.com/iffy/install-nim
 - https://github.com/alaviss/setup-nim
+
+### Is there a way to use Nim interactively? REPL for Nim?
+
+- Run `nim secret` command
+- https://github.com/inim-repl/INim
 
 ## Libraries
 
@@ -283,10 +296,24 @@ Workarounds:
 
 ## Nim Compiler
 
-### How to make android app?
+See also: `Official Nim Compiler User Guide <https://nim-lang.org/docs/nimc.html>`_
 
-- https://forum.nim-lang.org/t/8491
-- https://github.com/iffy/wiish
+### Which compiler option generate fastest executable?
+
+`-d:danger`: Turns off all runtime checks and turns on the optimizer.
+
+### Which compiler option generate smallest executable?
+
+`--opt:size`: optimize code generation for small size.
+If you use gcc or clang backend compiler,
+`--opt:size --passC:-flto --passL:-flto` option enables gcc/clang's link time optimization
+and reduce code size.
+`strip <your executable file>` command further reduce size by removing symbols and sections from your executable file.
+
+### Can I use Nim on Android?
+
+You can use Nim compiler on android using `Termux <https://wiki.termux.com/>`_.
+You can install Nim on Termux with `pkg install nim` command.
 
 ### How Nim compiler process configuration files?
 
@@ -295,6 +322,11 @@ https://nim-lang.org/docs/nimc.html#compiler-usage-configuration-files
 
 `*.nims`:
 https://nim-lang.org/docs/nims.html
+
+### How to make Android app?
+
+- https://forum.nim-lang.org/t/8491
+- https://github.com/iffy/wiish
 
 ### How to compile Nim to asmjs or wasm?
 
@@ -320,6 +352,18 @@ https://nim-lang.org/docs/nims.html
 ### Where should I report security issue?
 
 - https://github.com/nim-lang/Nim/security/policy
+
+### Are bots in Nim Discord channel AI?
+
+They are AIs written with Nim by AI researchers.
+They learn about Nim and how to talk like human.
+After enough amount of learning, they can ask or answer Nim questions like human.
+
+It is joke. There is bridge between discord and other chat systems like IRC or matrix.
+When people in other chat system write message, discord shows it with user name and bot mark.
+But in the Internet, how can we know whether messages are really written by human without meeting face to face?
+What if someone or something answers your Nim question is extraterrestrial intelligence or genetically engineered highly intelligent dog?
+Is there any problems even if they talk about Nim politely?
 
 .. _Nim: https://nim-lang.org/
 
