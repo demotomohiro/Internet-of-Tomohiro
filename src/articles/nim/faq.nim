@@ -88,10 +88,6 @@ In Nim code, you can use `NimVersion` const string or `NimMajor`, `NimMinor` and
 - https://nim-lang.org/docs/manual.html#iterators-and-the-for-statement-firstminusclass-iterators
 - https://nim-lang.org/docs/manual.html#overload-resolution-iterable
 
-### Arguments are copied when it is passed to a procedure?
-
-- https://nim-lang.github.io/Nim/manual.html#procedures-var-parameters
-
 ### Can Nim create class method?
 
 .. code-block:: nim
@@ -189,12 +185,6 @@ Output:
 
 ### What is the difference between procedure, function and method?
 
-### My code is slower than python
-
-Pass `-d:release` or `-d:danger` option to Nim.
-Nim optimize code when they are specified.
-With `-d:release` runtime checks are enabled but `-d:danger` removes any runtime checks.
-
 ### Can i pass GC'd memory across DLL boundaries?
 
 - https://forum.nim-lang.org/t/8598
@@ -228,15 +218,6 @@ Workarounds:
 
 - https://github.com/nim-lang/Nim/wiki/Editor-Support
 - https://forum.nim-lang.org/t/8547
-
-### Profiler for Nim?
-
-- `AMD μProf <https://developer.amd.com/amd-uprof/>`_
-- `Intel vTune <https://www.intel.com/content/www/us/en/develop/documentation/get-started-with-vtune/top.html>`_
-- https://github.com/treeform/benchy
-- https://github.com/treeform/hottie
-- https://forum.nim-lang.org/t/7408
-- https://forum.nim-lang.org/t/8802
 
 ### How to setup github action for nim?
 
@@ -298,18 +279,6 @@ Workarounds:
 
 See also: `Official Nim Compiler User Guide <https://nim-lang.org/docs/nimc.html>`_
 
-### Which compiler option generate fastest executable?
-
-`-d:danger`: Turns off all runtime checks and turns on the optimizer.
-
-### Which compiler option generate smallest executable?
-
-`--opt:size`: optimize code generation for small size.
-If you use gcc or clang backend compiler,
-`--opt:size --passC:-flto --passL:-flto` option enables gcc/clang's link time optimization
-and reduce code size.
-`strip <your executable file>` command further reduce size by removing symbols and sections from your executable file.
-
 ### Can I use Nim on Android?
 
 You can use Nim compiler on android using `Termux <https://wiki.termux.com/>`_.
@@ -342,6 +311,39 @@ https://nim-lang.org/docs/nims.html
 - https://forum.nim-lang.org/t/7885
 - https://github.com/nim-lang/Nim/issues/17820
 - https://gist.github.com/haxscramper/3562fa8fee4726d7a30a013a37977df6
+
+## Optimization
+
+### Profiler for Nim?
+
+- `AMD μProf <https://developer.amd.com/amd-uprof/>`_
+- `Intel vTune <https://www.intel.com/content/www/us/en/develop/documentation/get-started-with-vtune/top.html>`_
+- https://github.com/treeform/benchy
+- https://github.com/treeform/hottie
+- https://forum.nim-lang.org/t/7408
+- https://forum.nim-lang.org/t/8802
+
+### Which compiler option generate fastest executable?
+
+`-d:danger`: Turns off all runtime checks and turns on the optimizer.
+
+### Which compiler option generate smallest executable?
+
+`--opt:size`: optimize code generation for small size.
+If you use gcc or clang backend compiler,
+`--opt:size --passC:-flto --passL:-flto` option enables gcc/clang's link time optimization
+and reduce code size.
+`strip <your executable file>` command further reduce size by removing symbols and sections from your executable file.
+
+### My code is slower than python
+
+Pass `-d:release` or `-d:danger` option to Nim.
+Nim optimize code when they are specified.
+With `-d:release` runtime checks are enabled but `-d:danger` removes any runtime checks.
+
+### Arguments are copied when it is passed to a procedure?
+
+- https://nim-lang.github.io/Nim/manual.html#procedures-var-parameters
 
 ## Community
 
