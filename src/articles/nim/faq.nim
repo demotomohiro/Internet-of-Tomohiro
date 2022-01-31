@@ -355,6 +355,19 @@ With `-d:release` runtime checks are enabled but `-d:danger` removes any runtime
 
 - https://github.com/nim-lang/Nim/security/policy
 
+### How to donate to Nim?
+
+- https://nim-lang.org/donate.html
+
+### Where is Nim Community Survey Results?
+
+- `2021 <https://nim-lang.org/blog/2022/01/14/community-survey-results-2021.html>`_
+- `2020 <https://nim-lang.org/blog/2021/01/20/community-survey-results-2020.html>`_
+- `2019 <https://nim-lang.org/blog/2020/02/18/community-survey-results-2019.html>`_
+- `2018 <https://nim-lang.org/blog/2018/10/27/community-survey-results-2018.html>`_
+- `2017 <https://nim-lang.org/blog/2017/10/01/community-survey-results-2017.html>`_
+- `2016 <https://nim-lang.org/blog/2016/09/03/community-survey-results-2016.html>`_
+
 ### Are bots in Nim Discord channel AI?
 
 They are AIs written with Nim by AI researchers.
