@@ -164,6 +164,44 @@ Output:
 
 - https://nim-lang.org/docs/manual.html#statements-and-expressions
 
+### How to define constructor?
+
+In Nim, everything is initialized as all bits zero.
+
+See:
+- https://nim-lang.org/docs/manual.html#statements-and-expressions-var-statement
+
+If you want to initialize objects with other value, people usually create `createFoo` or `initFoo` procedure.
+
+Example code:
+
+.. code-block:: nim
+
+  type
+    Foo = object
+      names: seq[string]
+
+  proc initFoo(x: var Foo, name: string) =
+    x.names.add name
+
+  var foo: Foo
+  foo.initFoo("abc")
+  echo foo
+
+  type
+    Bar = ref object
+      names: seq[string]
+
+  proc createBar(name: string): Bar =
+    Bar(names: @[name])
+
+  var bar = createBar("xyz")
+  echo bar[]
+
+See also:
+
+- https://forum.nim-lang.org/t/8311#53519
+
 ### How to use destructor?
 
 - https://nim-lang.org/docs/destructors.html
@@ -184,6 +222,69 @@ Output:
   echo Bar.T
 
 ### What is the difference between procedure, function and method?
+
+### Can I define operators for my type?
+
+You can define procedures that can be used like operators.
+
+For example:
+
+.. code-block:: nim
+
+  type
+    MyVector = object
+      data: array[3, float]
+
+  # You can call this proc like x + y
+  proc `+`(x, y: MyVector): MyVector =
+    for i in 0..2:
+      result.data[i] = x.data[i] + y.data[i]
+
+  let
+    x = MyVector(data: [1.0, 2, 3])
+    y = MyVector(data: [4.0, 2, 0])
+
+  echo x + y
+
+  proc `-`(x: MyVector): MyVector =
+    for i in 0..2:
+      result.data[i] = -x.data[i]
+
+  echo -x
+
+  # Customize how MyVector is stringified.
+  proc `$$`(x: MyVector): string =
+    result = "MyVector("
+    for i in 0..2:
+      result.add $$x.data[i]
+      if i < 2:
+        result.add ", "
+    result.add ")"
+
+  echo x
+
+  type
+    MyMatrix = object
+      data: array[4, float]
+
+  # You can read an element in a matrix like mat[i, j]
+  proc `[]`(x: MyMatrix; i, j: int): float =
+    x.data[i + j * 2]
+
+  # You can set an element in a matrix like mat[i, j] = x
+  proc `[]=`(x: var MyMatrix; i, j: int; v: float) =
+    x.data[i + j * 2] = v
+
+  var mat = MyMatrix(data: [0.0, 1, 2, 3])
+
+  echo mat[0, 1]
+  mat[1, 1] = -1
+  echo mat
+
+See also:
+
+- https://nim-lang.org/docs/manual.html#lexical-analysis-operators
+- Open Nim Manual and push F3 key and search "proc \`" to find example code that define operators
 
 ### Can i pass GC'd memory across DLL boundaries?
 
@@ -243,7 +344,12 @@ Workarounds:
 - https://forum.nim-lang.org/t/8765
 
 ### Plotting library?
+
 - https://forum.nim-lang.org/t/8569
+
+### Can I embed NimScript to my program?
+
+- https://github.com/beef331/nimscripter
 
 ### More Nim on more Microcontrollers!? (Arm CMSIS / Zephyr RTOS)
 
