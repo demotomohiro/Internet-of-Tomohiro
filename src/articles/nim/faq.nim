@@ -156,6 +156,8 @@ Output:
 
 ### Can I use tab instead of space?
 
+No.
+
 ### Can I use curly brace instead of indentation?
 
 - https://forum.nim-lang.org/t/8558
@@ -221,7 +223,122 @@ See also:
   echo foo.T
   echo Bar.T
 
+### How to run code at compile time?
+
+Expression in const statement is evaluated at compile time:
+
+.. code-block:: nim
+
+  proc collatz(n: int): int =
+    var x = n
+    while x != 1:
+      if x mod 2 == 0:
+        x = x div 2
+      else:
+        x = 3 * x + 1
+      inc result
+
+  # collatz(12) is executed at compile time.
+  const a = collatz(12)
+
+  # collatz(12) is executed at runtime time.
+  let b = collatz(12)
+  echo a
+  echo b
+
+- https://nim-lang.org/docs/manual.html#constants-and-constant-expressions
+
+Use static statement/expression:
+
+.. code-block:: nim
+
+  proc foo(x, y: int): int =
+    when nimvm: x else: y
+
+  # Executed at runtime
+  let v = foo(1, 2)
+  echo v
+
+  # foo(1, 2) is executed at compile time
+  let w = static foo(1, 2)
+  echo w
+
+  # Following statement is executed at compile time
+  static:
+    var x = foo(1, 2)
+    x = x * 7
+    echo "This message is displayed at compile time"
+    echo x
+
+- https://nim-lang.org/docs/manual.html#statements-and-expressions-static-statementslashexpression
+- https://nim-lang.org/docs/manual.html#statements-and-expressions-when-nimvm-statement
+
+Use `compileTime pragma <https://nim-lang.org/docs/manual.html#pragmas-compiletime-pragma>`_.
+
+Macro is always executed at compile time.
+
+### How to define recursive object type?
+
+You cannot define recursive object type in following way because object type is a value type and recursive object type needs infinite amount of memory:
+
+.. code-block:: nim
+
+  type
+    Foo = object
+      child: Foo
+
+    BarX = object
+      y: BarY
+
+    BarY = object
+      x: BarX
+
+You can use ref object type in following way:
+
+.. code-block:: nim
+
+  type
+    Foo = ref object
+      child: Foo
+
+    BarX = ref object
+      y: BarY
+
+    BarY = ref object
+      x: BarX
+
+  var foo = Foo(child: Foo())
+  echo foo[].repr
+
+  var bar = BarX(y: BarY(x: BarX()))
+  echo bar[].repr
+
+Use seq or other collection types that store values in heap:
+
+.. code-block:: nim
+
+  type
+    Foo = object
+      child: seq[Foo]
+
+  let foo = Foo(child: @[Foo(), Foo()])
+  echo foo
+
+  import std/tables
+
+  type
+    Bar = object
+      table: Table[string, Bar]
+
+  let bar = Bar(table: toTable {{"abc": Bar(), "xyz": Bar()}})
+  echo bar
+
 ### What is the difference between procedure, function and method?
+
+Function is a procedure with `noSideEffect` pragma.
+
+- https://nim-lang.org/docs/manual.html#effect-system-side-effects
+- https://nim-lang.org/docs/manual.html#methods
 
 ### Can I define operators for my type?
 
@@ -451,6 +568,10 @@ With `-d:release` runtime checks are enabled but `-d:danger` removes any runtime
 
 - https://nim-lang.github.io/Nim/manual.html#procedures-var-parameters
 
+### How procedure return value?
+
+- https://nim-lang.org/docs/manual.html#procedures-nrvo
+
 ## Community
 
 ### Where can I ask a question about Nim?
@@ -464,6 +585,16 @@ With `-d:release` runtime checks are enabled but `-d:danger` removes any runtime
 ### How to donate to Nim?
 
 - https://nim-lang.org/donate.html
+
+### Is there Organization using Nim?
+
+- https://github.com/nim-lang/Nim/wiki/Organizations-using-Nim
+
+### Is there Game created with Nim?
+
+- https://github.com/nim-lang/Nim/wiki/Organizations-using-Nim#gaming
+- `Goodboy Galaxy <https://www.goodboygalaxy.com>`_
+  - `Related Nim forum thread <https://forum.nim-lang.org/t/8375>`_
 
 ### Where is Nim Community Survey Results?
 
