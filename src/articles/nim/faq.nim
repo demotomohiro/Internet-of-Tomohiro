@@ -277,6 +277,14 @@ Use `compileTime pragma <https://nim-lang.org/docs/manual.html#pragmas-compileti
 
 Macro is always executed at compile time.
 
+### How to define a procedure that takes only constant expressions?
+
+- https://nim-lang.org/docs/manual.html#special-types-static-t
+
+### How to define a procedure that takes types?
+
+- https://nim-lang.org/docs/manual.html#special-types-typedesc-t
+
 ### How to define recursive object type?
 
 You cannot define recursive object type in following way because object type is a value type and recursive object type needs infinite amount of memory:
