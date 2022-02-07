@@ -145,11 +145,6 @@ Output:
   sizeof(str) = 8
   str.len = 3
 
-### When to use 'ref object' vs plain 'object'?
-
-- https://www.reddit.com/r/nim/comments/7dm3le/tutorial_for_types_having_a_hard_time
-- https://forum.nim-lang.org/t/1207
-
 ### How to pass a specific overload to a macro?
 
 - https://forum.nim-lang.org/t/8369
@@ -208,20 +203,6 @@ See also:
 
 - https://nim-lang.org/docs/destructors.html
 - https://forum.nim-lang.org/t/8838
-
-### How to get generic parameter from generic type?
-
-.. code-block:: nim
-
-  type
-    Foo[T] = object
-      x: T
-
-    Bar = Foo[char]
-
-  let foo = Foo[float](x: 12.3)
-  echo foo.T
-  echo Bar.T
 
 ### How to run code at compile time?
 
@@ -284,62 +265,6 @@ Macro is always executed at compile time.
 ### How to define a procedure that takes types?
 
 - https://nim-lang.org/docs/manual.html#special-types-typedesc-t
-
-### How to define recursive object type?
-
-You cannot define recursive object type in following way because object type is a value type and recursive object type needs infinite amount of memory:
-
-.. code-block:: nim
-
-  type
-    Foo = object
-      child: Foo
-
-    BarX = object
-      y: BarY
-
-    BarY = object
-      x: BarX
-
-You can use ref object type in following way:
-
-.. code-block:: nim
-
-  type
-    Foo = ref object
-      child: Foo
-
-    BarX = ref object
-      y: BarY
-
-    BarY = ref object
-      x: BarX
-
-  var foo = Foo(child: Foo())
-  echo foo[].repr
-
-  var bar = BarX(y: BarY(x: BarX()))
-  echo bar[].repr
-
-Use seq or other collection types that store values in heap:
-
-.. code-block:: nim
-
-  type
-    Foo = object
-      child: seq[Foo]
-
-  let foo = Foo(child: @[Foo(), Foo()])
-  echo foo
-
-  import std/tables
-
-  type
-    Bar = object
-      table: Table[string, Bar]
-
-  let bar = Bar(table: toTable {{"abc": Bar(), "xyz": Bar()}})
-  echo bar
 
 ### What is the difference between procedure, function and method?
 
@@ -438,6 +363,8 @@ Workarounds:
 
 - http://zevv.nl/nim-memory/
 
+## Type
+
 ### What is the difference between cint/cfloat and int/float?
 
 Types with 'c' prefix are corresponding to types in C language.
@@ -450,6 +377,81 @@ cint can be 32bits even on 64bit CPU (See `64-bit data models <https://en.wikipe
 Bitwidth of int in Nim is always the same as a pointer (https://nim-lang.org/docs/system.html#int).
 
 float in Nim is always 64bit (https://nim-lang.org/docs/manual.html#types-preminusdefined-floatingminuspoint-types).
+
+### How to define recursive object type?
+
+You cannot define recursive object type in following way because object type is a value type and recursive object type needs infinite amount of memory:
+
+.. code-block:: nim
+
+  type
+    Foo = object
+      child: Foo
+
+    BarX = object
+      y: BarY
+
+    BarY = object
+      x: BarX
+
+You can use ref object type in following way:
+
+.. code-block:: nim
+
+  type
+    Foo = ref object
+      child: Foo
+
+    BarX = ref object
+      y: BarY
+
+    BarY = ref object
+      x: BarX
+
+  var foo = Foo(child: Foo())
+  echo foo[].repr
+
+  var bar = BarX(y: BarY(x: BarX()))
+  echo bar[].repr
+
+Use seq or other collection types that store values in heap:
+
+.. code-block:: nim
+
+  type
+    Foo = object
+      child: seq[Foo]
+
+  let foo = Foo(child: @[Foo(), Foo()])
+  echo foo
+
+  import std/tables
+
+  type
+    Bar = object
+      table: Table[string, Bar]
+
+  let bar = Bar(table: toTable {{"abc": Bar(), "xyz": Bar()}})
+  echo bar
+
+### How to get generic parameter from generic type?
+
+.. code-block:: nim
+
+  type
+    Foo[T] = object
+      x: T
+
+    Bar = Foo[char]
+
+  let foo = Foo[float](x: 12.3)
+  echo foo.T
+  echo Bar.T
+
+### When to use 'ref object' vs plain 'object'?
+
+- https://www.reddit.com/r/nim/comments/7dm3le/tutorial_for_types_having_a_hard_time
+- https://forum.nim-lang.org/t/1207
 
 ## Tools
 
