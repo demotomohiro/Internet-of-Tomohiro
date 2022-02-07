@@ -438,6 +438,19 @@ Workarounds:
 
 - http://zevv.nl/nim-memory/
 
+### What is the difference between cint/cfloat and int/float?
+
+Types with 'c' prefix are corresponding to types in C language.
+cint is same to int in C and cfloat is same to float in C.
+They are used when you use C functions.
+sizeof(cint/cfloat) can be different from sizeof(int/float).
+Size of C types vary depending on the OS, CPU or backend C compiler.
+cint can be 32bits even on 64bit CPU (See `64-bit data models <https://en.wikipedia.org/wiki/64-bit_computing#64-bit_data_models>`_).
+
+Bitwidth of int in Nim is always the same as a pointer (https://nim-lang.org/docs/system.html#int).
+
+float in Nim is always 64bit (https://nim-lang.org/docs/manual.html#types-preminusdefined-floatingminuspoint-types).
+
 ## Tools
 
 ### IDE or editor support for Nim?
@@ -487,6 +500,7 @@ Workarounds:
 - https://github.com/n0bra1n3r/cinterop
 - https://github.com/nim-lang/c2nim
 - https://github.com/PMunch/futhark
+- https://github.com/treeform/genny
 - https://forum.nim-lang.org/t/8451
 - https://forum.nim-lang.org/t/8448
 - https://nim-lang.org/docs/manual.html#foreign-function-interface
@@ -496,6 +510,7 @@ Workarounds:
 
 - https://github.com/yglukhov/nimpy
 - https://github.com/Pebaz/nimporter
+- https://github.com/treeform/genny
 
 ### How to call Rust code from Nim?
 
@@ -557,6 +572,29 @@ https://nim-lang.org/docs/nims.html
 ### Which compiler option generate fastest executable?
 
 `-d:danger`: Turns off all runtime checks and turns on the optimizer.
+
+### How to write faster code?
+
+- At first, write simple code
+  - Let Nim and backend C compiler try to optimize your code
+  - Complicated code is hard to debug, change and add new features
+- Write a test so that you can test optimized code easily
+- Find out the bottleneck
+- When you change your code, always measure performance correctly
+  - New code you think runs faster might actually runs slower
+- Use better algorithm
+- If your program is IO bound (many network or disk access) and can do multiple IO operation at same time, use asynchronous module
+  - `asyncdispatch <https://nim-lang.org/docs/asyncdispatch.html>`_
+  - `asyncfile <https://nim-lang.org/docs/asyncfile.html>`_
+  - `asyncnet <https://nim-lang.org/docs/asyncnet.html>`_
+  - `asynchttpserver <https://nim-lang.org/docs/asynchttpserver.html>`_
+- If your program frequently allocates and frees heap memory, use `--mm:arc` or `--mm:orc`
+- If your program is memory bound, access memory continuously and use smaller size types if possible
+- If your program is computation bound, use multithreadings or SIMD instruction if possible
+- Write code under procedures
+  - Accessing variables outside of procedures are not much optimized
+- Learn about better algorithms or details of lower layer softwares/hardware from good books or papers
+- https://nim-lang.org/docs/nimc.html#optimizing-for-nim
 
 ### Which compiler option generate smallest executable?
 
