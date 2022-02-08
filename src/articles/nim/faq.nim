@@ -566,19 +566,6 @@ https://nim-lang.org/docs/nims.html
 
 ## Optimization
 
-### Profiler for Nim?
-
-- `AMD μProf <https://developer.amd.com/amd-uprof/>`_
-- `Intel vTune <https://www.intel.com/content/www/us/en/develop/documentation/get-started-with-vtune/top.html>`_
-- https://github.com/treeform/benchy
-- https://github.com/treeform/hottie
-- https://forum.nim-lang.org/t/7408
-- https://forum.nim-lang.org/t/8802
-
-### Which compiler option generate fastest executable?
-
-`-d:danger`: Turns off all runtime checks and turns on the optimizer.
-
 ### How to write faster code?
 
 - At first, write simple code
@@ -601,6 +588,19 @@ https://nim-lang.org/docs/nims.html
   - Accessing variables outside of procedures are not much optimized
 - Learn about better algorithms or details of lower layer softwares/hardware from good books or papers
 - https://nim-lang.org/docs/nimc.html#optimizing-for-nim
+
+### Profiler for Nim?
+
+- `AMD μProf <https://developer.amd.com/amd-uprof/>`_
+- `Intel vTune <https://www.intel.com/content/www/us/en/develop/documentation/get-started-with-vtune/top.html>`_
+- https://github.com/treeform/benchy
+- https://github.com/treeform/hottie
+- https://forum.nim-lang.org/t/7408
+- https://forum.nim-lang.org/t/8802
+
+### Which compiler option generate fastest executable?
+
+`-d:danger`: Turns off all runtime checks and turns on the optimizer.
 
 ### Which compiler option generate smallest executable?
 
