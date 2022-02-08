@@ -204,64 +204,6 @@ See also:
 - https://nim-lang.org/docs/destructors.html
 - https://forum.nim-lang.org/t/8838
 
-### How to run code at compile time?
-
-Expression in const statement is evaluated at compile time:
-
-.. code-block:: nim
-
-  proc collatz(n: int): int =
-    var x = n
-    while x != 1:
-      if x mod 2 == 0:
-        x = x div 2
-      else:
-        x = 3 * x + 1
-      inc result
-
-  # collatz(12) is executed at compile time.
-  const a = collatz(12)
-
-  # collatz(12) is executed at runtime time.
-  let b = collatz(12)
-  echo a
-  echo b
-
-- https://nim-lang.org/docs/manual.html#constants-and-constant-expressions
-
-Use static statement/expression:
-
-.. code-block:: nim
-
-  proc foo(x, y: int): int =
-    when nimvm: x else: y
-
-  # Executed at runtime
-  let v = foo(1, 2)
-  echo v
-
-  # foo(1, 2) is executed at compile time
-  let w = static foo(1, 2)
-  echo w
-
-  # Following statement is executed at compile time
-  static:
-    var x = foo(1, 2)
-    x = x * 7
-    echo "This message is displayed at compile time"
-    echo x
-
-- https://nim-lang.org/docs/manual.html#statements-and-expressions-static-statementslashexpression
-- https://nim-lang.org/docs/manual.html#statements-and-expressions-when-nimvm-statement
-
-Use `compileTime pragma <https://nim-lang.org/docs/manual.html#pragmas-compiletime-pragma>`_.
-
-Macro is always executed at compile time.
-
-### How to define a procedure that takes only constant expressions?
-
-- https://nim-lang.org/docs/manual.html#special-types-static-t
-
 ### How to define a procedure that takes types?
 
 - https://nim-lang.org/docs/manual.html#special-types-typedesc-t
@@ -452,6 +394,68 @@ Use seq or other collection types that store values in heap:
 
 - https://www.reddit.com/r/nim/comments/7dm3le/tutorial_for_types_having_a_hard_time
 - https://forum.nim-lang.org/t/1207
+
+## Compile Time
+
+Run your code after you run `nim c myprogram.nim` that completes before Nim output executable file or print error.
+
+### How to run code at compile time?
+
+Expression in const statement is evaluated at compile time:
+
+.. code-block:: nim
+
+  proc collatz(n: int): int =
+    var x = n
+    while x != 1:
+      if x mod 2 == 0:
+        x = x div 2
+      else:
+        x = 3 * x + 1
+      inc result
+
+  # collatz(12) is executed at compile time.
+  const a = collatz(12)
+
+  # collatz(12) is executed at runtime time.
+  let b = collatz(12)
+  echo a
+  echo b
+
+- https://nim-lang.org/docs/manual.html#constants-and-constant-expressions
+
+Use static statement/expression:
+
+.. code-block:: nim
+
+  proc foo(x, y: int): int =
+    when nimvm: x else: y
+
+  # Executed at runtime
+  let v = foo(1, 2)
+  echo v
+
+  # foo(1, 2) is executed at compile time
+  let w = static foo(1, 2)
+  echo w
+
+  # Following statement is executed at compile time
+  static:
+    var x = foo(1, 2)
+    x = x * 7
+    echo "This message is displayed at compile time"
+    echo x
+
+- https://nim-lang.org/docs/manual.html#statements-and-expressions-static-statementslashexpression
+- https://nim-lang.org/docs/manual.html#statements-and-expressions-when-nimvm-statement
+
+Use `compileTime pragma <https://nim-lang.org/docs/manual.html#pragmas-compiletime-pragma>`_.
+
+Macro is always executed at compile time.
+
+### How to define a procedure that takes only constant expressions?
+
+- https://nim-lang.org/docs/manual.html#special-types-static-t
 
 ## Tools
 
