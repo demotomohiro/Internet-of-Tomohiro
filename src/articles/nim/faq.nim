@@ -449,13 +449,27 @@ Use static statement/expression:
 - https://nim-lang.org/docs/manual.html#statements-and-expressions-static-statementslashexpression
 - https://nim-lang.org/docs/manual.html#statements-and-expressions-when-nimvm-statement
 
-Use `compileTime pragma <https://nim-lang.org/docs/manual.html#pragmas-compiletime-pragma>`_.
+- Use `compileTime pragma <https://nim-lang.org/docs/manual.html#pragmas-compiletime-pragma>`_
+- Macro is always executed at compile time
+- Nim can also run code in `.nims` configuration files
+  - https://nim-lang.org/docs/nims.html
 
-Macro is always executed at compile time.
+### Is there restrictions on Compile-Time Execution?
+
+Yes, there is `restrictions <https://nim-lang.org/docs/manual.html#restrictions-on-compileminustime-execution>`_
 
 ### How to define a procedure that takes only constant expressions?
 
 - https://nim-lang.org/docs/manual.html#special-types-static-t
+
+### Can I read a file at compile time?
+
+- `staticRead <https://nim-lang.org/docs/system.html#staticRead,string>`_
+
+### Can I execute an external command?
+
+- `staticExec <https://nim-lang.org/docs/system.html#staticExec,string,string,string>`_
+- `gorgeEx <https://nim-lang.org/docs/system.html#gorgeEx%2Cstring%2Cstring%2Cstring>`_
 
 ## Tools
 
@@ -623,6 +637,32 @@ With `-d:release` runtime checks are enabled but `-d:danger` removes any runtime
 ### How procedure return value?
 
 - https://nim-lang.org/docs/manual.html#procedures-nrvo
+
+### Nim cannot be as fast as C or Rust because Nim uses garbage collector?
+
+Nim can be as fast as C or Rust without turn off memory management.
+Using GC doesn't mean every objects are placed on heap.
+You can choose to place arrays or objects in stack and they are not managed by GC.
+You can control memory layout of data structure like C.
+
+.. code-block:: nim
+
+  type
+    Vec3 = object
+      x, y, z: float32
+
+    Triangle = object
+      v: array[3, Vec3]
+
+  # float32 are placed on memory continuously
+  doAssert sizeof(array[16, Triangle]) == sizeof(float32) * 3 * 3 * 16
+
+RefC (Default Garbage collector), ORC and ARC don't start garbage collection at random timing.
+If you don't allocate new heap in inner loop, garbage collection doesn't start in the loop.
+
+These memory managements add a counter to each heap memory.
+Most of case, memory usage increase due to a counter is tiny because objects allocated in the heap is larger than a counter.
+As they don't use atomic instruction, cost of incrementing/decrementing counter is tiny unless you just copy reference types and don't do other thing. The Nim compiler also aggressively optimizes away RC ops and exploits `move semantics <https://nim-lang.org/docs/destructors.html#move-semantics>`_.
 
 ## Community
 
