@@ -401,7 +401,7 @@ Use seq or other collection types that store values in heap:
 
 ## Compile Time
 
-Run your code after you run `nim c myprogram.nim` that completes before Nim output executable file or print error.
+Run your code in `nim c myprogram.nim` that completes before Nim output executable file or print error.
 
 ### How to run code at compile time?
 
@@ -470,7 +470,7 @@ Yes, there is `restrictions <https://nim-lang.org/docs/manual.html#restrictions-
 
 - `staticRead <https://nim-lang.org/docs/system.html#staticRead,string>`_
 
-### Can I execute an external command?
+### Can I execute an external command at compile time?
 
 - `staticExec <https://nim-lang.org/docs/system.html#staticExec,string,string,string>`_
 - `gorgeEx <https://nim-lang.org/docs/system.html#gorgeEx%2Cstring%2Cstring%2Cstring>`_
