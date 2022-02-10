@@ -305,6 +305,10 @@ Workarounds:
 
 - http://zevv.nl/nim-memory/
 
+### How to use hot code reloading?
+
+- https://nim-lang.org/docs/hcr.html
+
 ## Type
 
 ### What is the difference between cint/cfloat and int/float?
@@ -663,6 +667,205 @@ If you don't allocate new heap in inner loop, garbage collection doesn't start i
 These memory managements add a counter to each heap memory.
 Most of case, memory usage increase due to a counter is tiny because objects allocated in the heap is larger than a counter.
 As they don't use atomic instruction, cost of incrementing/decrementing counter is tiny unless you just copy reference types and don't do other thing. The Nim compiler also aggressively optimizes away RC ops and exploits `move semantics <https://nim-lang.org/docs/destructors.html#move-semantics>`_.
+
+## Macro
+
+### What is macro?
+
+Like templates work as if it inserts Nim code where it is called, macros work as if it inserts some code where it is called. Unlike template, you construct a data structure called "abstract syntax tree" (AST) in macro.
+
+An AST is a tree data consists of nodes that is easy to handle for compiler and macro.
+When Nim compiles your code, it constructs AST from your source code.
+Some nodes have variable number of other nodes as children, and other nodes are leaf nodes don't have child.
+Reaf nodes correspond to number/string literals or name of variable, procedure, iterator, etc.
+Nodes also have kind field.
+
+For example, expression `x + 123` (`x` is int variable) becomes a node with `Infix` kind that has 3 children, `Ident` (identifier) kind node with name "+", `Ident` kind node with name "x" and `IntLit` (int literal) kind node with number "123".
+
+Following code prints AST of `x + 123` using `dumpTree <https://nim-lang.org/docs/macros.html#dumpTree.m%2Cuntyped>`_ in `macros module <https://nim-lang.org/docs/macros.html#dumpTree.m,untyped>`_ at compile time:
+
+.. code-block:: nim
+
+  import macros
+
+  let x = 1
+  dumpTree(x + 123)
+
+Output:
+
+.. code-block:: console
+
+  Infix
+    Ident "+"
+    Ident "x"
+    IntLit 123
+
+You can use `dumpTree` to prints AST of any Nim code:
+
+.. code-block:: nim
+
+  import macros
+
+  dumpTree:
+    let x = 1
+    echo x + 123
+
+Output:
+
+.. code-block:: console
+
+  StmtList
+    LetSection
+      IdentDefs
+        Ident "x"
+        Empty
+        IntLit 1
+    Command
+      Ident "echo"
+      Infix
+        Ident "+"
+        Ident "x"
+        IntLit 123
+
+`NimNode <https://nim-lang.org/docs/macros.html#the-ast-in-nim>`_ type repesents a node in AST and `NimNodeKind <https://nim-lang.org/docs/macros.html#NimNodeKind>`_ enum repesents a kind of node.
+
+Macros can take expressions or statements and they become `NimNode` AST in macro.
+So you can access any child nodes inside given nodes.
+You can analyze given expressions or statements in macro.
+You can transform them to construct new AST or just put them inside newly created AST and return it.
+AST you constructed and returned in your macro is inserted in where your macro is called.
+
+Writing a Nim macro is like a writing a program that program a program.
+
+### Is there any tutorial or documents to learn about macro?
+
+- `Nim Tutorial <https://nim-lang.org/docs/tut3.html>`_
+- https://dev.to/beef331/demystification-of-macros-in-nim-13n8
+- https://nim-lang.org/docs/macros.html
+- https://nim-lang.org/docs/manual.html#macros
+
+### How to pass a int or string type as is?
+
+A macro with `int` type parameters takes any expression with `int` and it become `NimNode` in the macro:
+
+.. code-block:: nim
+
+  import macros
+
+  macro foo(x: int): untyped =
+    echo typeof(x)
+    echo x.treeRepr
+
+  var
+    x = 1
+    y = 2
+  foo(x + y)
+
+Output:
+
+.. code-block:: console
+
+  NimNode
+  Infix
+    Sym "+"
+    Sym "x"
+    Sym "y"
+
+If you want to write a macro that takes `int` value as is, use `static[int]`:
+
+.. code-block:: nim
+
+  import macros
+
+  macro foo(x: static[int]): untyped =
+    echo typeof(x)
+    echo x
+
+  foo(123)
+
+Output:
+
+.. code-block:: console
+
+  int
+  123
+
+### How to write a code that can be shared by multiple macros?
+
+Macro can call procedures as long as it can be executed at compile time.
+You can implement procedures that can transform AST like you do in macros using `NimNode` parameters and return type.
+
+.. code-block:: nim
+
+  import macros
+
+  proc addEcho(x: NimNode): NimNode =
+    newCall(bindSym"echo", x)
+
+  macro fooEcho(x: string): untyped =
+    x.addEcho
+
+  macro fooEcho(x: int): untyped =
+    x.addEcho
+
+  fooEcho("test")
+  fooEcho(100 + 23)
+
+### Can I see what Nim code a macro generate?
+
+- Use `expandMacros <https://nim-lang.org/docs/macros.html#expandMacros.m,typed>`_
+
+### How to echo NimNode?
+
+- `treeRepr <https://nim-lang.org/docs/macros.html#treeRepr,NimNode>`_
+- `lispRepr <https://nim-lang.org/docs/macros.html#lispRepr,NimNode>`_
+- `astGenRepr <https://nim-lang.org/docs/macros.html#astGenRepr%2CNimNode>`_
+- `repr <https://nim-lang.org/docs/system.html#repr,T>`_
+
+.. code-block:: nim
+
+  import macros
+
+  macro foo(x: float): untyped =
+    echo "treeRepr:"
+    echo x.treeRepr
+    echo ""
+    echo "lispRepr:"
+    echo x.lispRepr
+    echo ""
+    echo "astGenRepr:"
+    echo x.astGenRepr
+    echo ""
+    echo "repr:"
+    echo x.repr
+
+  let
+    x = 1.0
+    y = 10.0
+  foo(x + y)
+
+Output:
+
+.. code-block:: console
+
+  treeRepr:
+  Infix
+    Sym "+"
+    Sym "x"
+    Sym "y"
+
+  lispRepr:
+  (Infix (Sym "+") (Sym "x") (Sym "y"))
+
+  astGenRepr:
+  nnkInfix.newTree(
+    newSymNode("+"),
+    newSymNode("x"),
+    newSymNode("y")
+  )
+
+  repr:
+  x + y
 
 ## Community
 
