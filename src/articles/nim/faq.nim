@@ -23,16 +23,20 @@ If you have a question about Nim, please ask it in `Nim forum <https://forum.nim
 - https://nim-lang.org/blog/2021/11/15/zen-of-nim.html
 - https://forum.nim-lang.org/t/8630
 
-### Why Nim use style insensivity?
+### Why is Nim style insensitive?
 
 - https://github.com/nim-lang/Nim/wiki/Unofficial-FAQ#why-is-it-caseunderscore-insensitive
 - https://forum.nim-lang.org/t/8497
+
+People don't use Nim says case insensitivity cause confusion but I have never heard Nim's style insensitivity cause any problems from people use Nim.
 
 ### Why Nim use space for indent instead of tab?
 
 - https://github.com/nim-lang/Nim/wiki/Unofficial-FAQ#why-are-tabs-forbidden
 
 ### Why Nim use garbage collecter?
+
+It makes managing heap memory easy.
 
 ### Why Nim transepile to C?
 
