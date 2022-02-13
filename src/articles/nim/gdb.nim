@@ -678,14 +678,7 @@ On windows:
 
 .. code::
 
-  git clone --depth 1 https://github.com/nim-lang/csources.git
-  cd csources
-  build64.bat
-  cd ..
-
-  bin\nim c koch
-  koch boot -d:release
-  koch tools # Compile Nimble and other tools
+  build_all.bat
 
 【
 【ja:Nimコンパイラをデバッグ用にコンパイルします。
