@@ -46,6 +46,8 @@ It makes managing heap memory easy.
 
 ### Is Nim a Transpiler?
 
+No. If you say Nim is a transpiler, is GCC a transpiler from C to assembler?
+
 - https://peterme.net/is-nim-a-transpiler.html
 - https://forum.nim-lang.org/t/8520
 
@@ -60,6 +62,14 @@ It makes managing heap memory easy.
 - https://narimiran.github.io/2019/07/01/nim-import.html
 
 ## Coding
+
+### Can I write expressions like `x == a or x == b` shorter?
+
+You can write it as `x in [a, b]`.
+
+### Can I write expressions like `a <= x and x <= b` shorter?
+
+You can write it as `x in a..b`.
 
 ### How to make nested tables?
 
@@ -93,6 +103,9 @@ In Nim code, you can use `NimVersion` const string or `NimMajor`, `NimMinor` and
 - https://nim-lang.org/docs/manual.html#overload-resolution-iterable
 
 ### Can Nim create class method?
+
+Nim language doesn't have class method.
+But you can define a procedure similar to class method.
 
 .. code-block:: nim
 
