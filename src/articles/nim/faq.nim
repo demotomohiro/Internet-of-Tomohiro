@@ -492,6 +492,165 @@ Yes, there is `restrictions <https://nim-lang.org/docs/manual.html#restrictions-
 - `staticExec <https://nim-lang.org/docs/system.html#staticExec,string,string,string>`_
 - `gorgeEx <https://nim-lang.org/docs/system.html#gorgeEx%2Cstring%2Cstring%2Cstring>`_
 
+## Template
+
+### What is a template?
+
+Templates in Nim can be called like procedures and it works as if it inserts code in the call site.
+
+It is similar to macros in C language but safer and nicer.
+
+For example:
+
+.. code-block:: nim
+
+  template foo(x: string): untyped =
+    echo "From template foo"
+    echo x
+
+  echo "Calling template foo"
+  foo("test")
+
+Output:
+
+.. code-block:: console
+
+  Calling template foo
+  From template foo
+  test
+
+A difference between templates and procedures is templates can take a name and create a new variable/procedure with it in current scope or take code block.
+It can also takes inline iterators using `iterable <https://nim-lang.org/docs/manual.html#overload-resolution-iterable>`_ type class.
+
+For example:
+
+.. code-block:: nim
+
+  template defineProc(procName: untyped): untyped =
+    proc procName() =
+      echo "Procedure defined in template"
+
+  defineProc(myProcedure)
+  myProcedure()
+
+  template declareVar(varName: untyped): untyped =
+    var varName {{.inject.}} = "Variable declared in template"
+
+  declareVar(myVariable)
+  echo myVariable
+
+Output:
+
+.. code-block:: console
+
+  Procedure defined in template
+  Variable declared in template
+
+Example code that takes code block:
+
+.. code-block:: nim
+
+  import std/[times, os]
+
+  template measureTime(body: untyped): untyped =
+    block:
+      let begin = epochTime()
+      body
+      let delta = epochTime() - begin
+      echo "Time: ", delta
+
+  measureTime:
+    os.sleep(500)
+    os.sleep(600)
+
+Output :
+
+.. code-block:: console
+
+  Time: 1.100237131118774
+
+Example code that takes inline iterator:
+
+.. code-block:: nim
+
+  iterator myIter(n: openArray[int]): int =
+    for i in n:
+      yield i * i
+
+  template myTemplate(iter: iterable[int]): int =
+    var sum = 0
+    for i in iter:
+      sum += i
+    sum
+
+  echo myTemplate(myIter(@[-1, 0, 1]))
+  echo myTemplate(1..3)
+
+Output :
+
+.. code-block:: console
+
+  2
+  6
+
+See also:
+
+- https://nim-lang.org/docs/manual.html#templates
+
+### Calling a template with method call syntax cause compile error
+
+You cannot use method call syntax when first parameter of a template/macro is `untyped`.
+
+See also:
+
+- https://nim-lang.org/docs/manual.html#templates-limitations-of-the-method-call-syntax
+
+### I cannot use variables/types declared in template
+
+If you want to use variables or types declared in template outside of it, you need to use `inject` pragma. You can use procedures, iterators, converters, templates or macros defined in template outside of it without `inject` pragma.
+
+For example:
+
+.. code-block:: nim
+
+  template declVarAndType(body: untyped): untyped =
+    type
+      Foo {{.inject.}} = object
+        x: int
+
+    var myVar {{.inject.}} = "Variable in template"
+    body
+
+  declVarAndType:
+    let f = Foo()
+    echo myVar
+
+  let g = Foo(x: 123)
+  echo myVar
+
+See also:
+
+- https://nim-lang.org/docs/manual.html#templates-hygiene-in-templates
+
+### How to pass multiple code blocks to a template?
+
+You can pass multiple code blocks to a template or macro using do notation.
+
+For example:
+
+.. code-block:: nim
+
+  template foo(x: bool; bodyA, bodyB: untyped): untyped =
+    if x:
+      bodyA
+    else:
+      bodyB
+
+  foo(false) do:
+    echo "bodyA"
+  do:
+    echo "bodyB"
+
 ## Tools
 
 ### IDE or editor support for Nim?
@@ -883,6 +1042,25 @@ Output:
 
   repr:
   x + y
+
+### How to pass multiple code blocks to a macro?
+
+You can pass multiple code blocks to a template or macro using do notation.
+
+For example:
+
+.. code-block:: nim
+
+  import macros
+
+  macro foo(bodyA, bodyB: untyped): untyped =
+    echo bodyA.treeRepr
+    echo bodyB.treeRepr
+
+  foo() do:
+    echo "bodyA"
+  do:
+    echo "bodyB"
 
 ## Community
 
