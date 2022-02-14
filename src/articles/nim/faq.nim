@@ -1085,6 +1085,7 @@ For example:
 - https://github.com/nim-lang/Nim/wiki/Organizations-using-Nim#gaming
 - `Goodboy Galaxy <https://www.goodboygalaxy.com>`_
   - `Related Nim forum thread <https://forum.nim-lang.org/t/8375>`_
+- `Games made with Nico <https://itch.io/c/1064082/games-made-with-nico>`_
 
 ### Where is Nim Community Survey Results?
 
