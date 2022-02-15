@@ -597,6 +597,24 @@ See also:
 
 - https://nim-lang.org/docs/manual.html#templates
 
+### What is an `untyped` parameter type?
+
+You can pass undeclared identifiers to `untyped` parameters to declare new variables or procedures. Or you can pass expressions/statements/code blocks that contain undeclared identifiers and use variables or procedures inside the template.
+
+See also:
+
+- https://nim-lang.org/docs/manual.html#templates-typed-vs-untyped-parameters
+
+### What is a `typed` parameter type?
+
+You can pass any expressions or statements to `typed` parameter as long as they are valid Nim code and don't use undeclared identifiers.
+
+If your template take expressions or statements that use variables declared in the template, you need to use `untyped` parameter, not `typed`.
+
+See also:
+
+- https://nim-lang.org/docs/manual.html#templates-typed-vs-untyped-parameters
+
 ### Calling a template with method call syntax cause compile error
 
 You cannot use method call syntax when first parameter of a template/macro is `untyped`.
