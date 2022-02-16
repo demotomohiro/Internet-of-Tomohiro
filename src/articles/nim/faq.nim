@@ -711,6 +711,10 @@ For example:
 
 - https://forum.nim-lang.org/t/7731
 
+### Is there a list of programming language libraries for Nim or implementations written by Nim?
+
+- https://gist.github.com/haxscramper/3562fa8fee4726d7a30a013a37977df6
+
 ## Use Nim with other language
 
 ### How to use C/C++ libraries in Nim?
@@ -771,10 +775,20 @@ https://nim-lang.org/docs/nims.html
 
 ### Is Nim/nimble virus or malware?
 
+Nim and tools distributed with Nim are neither virus nor malwares. They are safe to use.
+
+Many people reported Nim was detected by antivirus softwares but they are false positive.
+
 - https://forum.nim-lang.org/t/7830
 - https://forum.nim-lang.org/t/7885
 - https://github.com/nim-lang/Nim/issues/17820
-- https://gist.github.com/haxscramper/3562fa8fee4726d7a30a013a37977df6
+
+It seems Nim was used to write malware and it might related to false detections by many Antivirus softwares:
+https://thehackernews.com/2021/03/researchers-spotted-malware-written-in.html
+
+And it seems antivirus softwares don't analyze the program carefully, but just alarm when they spot a bit pattern that has been seem in other malware.
+
+Please do not write malware in Nim.
 
 ## Optimization
 
