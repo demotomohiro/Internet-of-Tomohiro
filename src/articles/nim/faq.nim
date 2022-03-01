@@ -97,6 +97,29 @@ In Nim code, you can use `NimVersion` const string or `NimMajor`, `NimMinor` and
 
 - https://forum.nim-lang.org/t/8591
 
+### How to echo (or stringify)  ptr or ref types?
+
+Use `repr <https://nim-lang.org/docs/system.html#repr,T>`_.
+
+Example code:
+
+.. code-block:: nim
+
+  type
+    Foo = ref object
+      x: int
+
+  var a = Foo(x: 123)
+  echo a.repr
+
+Example output:
+
+.. code-block:: console
+
+  ref 0x7fc4caea7050 --> [x = 123]
+
+You can also dereference it if it is not nil and referencing valid memory location.
+
 ### How to pass iterator to procedure?
 
 - https://nim-lang.org/docs/manual.html#iterators-and-the-for-statement-firstminusclass-iterators
@@ -294,6 +317,22 @@ See also:
 
 - https://nim-lang.org/docs/manual.html#lexical-analysis-operators
 - Open Nim Manual and push F3 key and search "proc \`" to find example code that define operators
+
+### Can I define custom pragmas?
+
+There are 3 ways to create user defined pragmas:
+
+- pragma pragma
+  - You can define a new pragma by combining existing pragmas
+  - https://nim-lang.org/docs/manual.html#userminusdefined-pragmas-pragma-pragma
+
+- Custom annotations
+  - You can create custom annotations that can be read by macros
+  - https://nim-lang.org/docs/manual.html#userminusdefined-pragmas-custom-annotations
+
+- Macro pragmas
+  - You can use macros and templates as pragma
+  - https://nim-lang.org/docs/manual.html#userminusdefined-pragmas-macro-pragmas
 
 ### Can i pass GC'd memory across DLL boundaries?
 
@@ -875,6 +914,10 @@ If you don't allocate new heap in inner loop, garbage collection doesn't start i
 These memory managements add a counter to each heap memory.
 Most of case, memory usage increase due to a counter is tiny because objects allocated in the heap is larger than a counter.
 As they don't use atomic instruction, cost of incrementing/decrementing counter is tiny unless you just copy reference types and don't do other thing. The Nim compiler also aggressively optimizes away RC ops and exploits `move semantics <https://nim-lang.org/docs/destructors.html#move-semantics>`_.
+
+### If there are unused procedures, they makes executable file bigger?
+
+Nim do dead code elimination.
 
 ## Macro
 
