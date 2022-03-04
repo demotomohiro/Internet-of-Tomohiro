@@ -120,28 +120,6 @@ Example output:
 
 You can also dereference it if it is not nil and referencing valid memory location.
 
-### How to pass iterator to procedure?
-
-- https://nim-lang.org/docs/manual.html#iterators-and-the-for-statement-firstminusclass-iterators
-- https://nim-lang.org/docs/manual.html#overload-resolution-iterable
-
-### Can Nim create class method?
-
-Nim language doesn't have class method.
-But you can define a procedure similar to class method.
-
-.. code-block:: nim
-
-  type
-    Foo = object
-      x: int
-
-  proc myClassMethod(f: typedesc[Foo]; param: int): Foo =
-    Foo(x: param)
-
-  let foo = myClassMethod(Foo, 123)
-  echo foo
-
 ### sizeof(ref object/seq/string) returns incorrect size
 
 `ref object`, `seq` and `string` are actually pointer to the heap memory that contains the content.
@@ -185,10 +163,6 @@ Output:
   sizeof(str) = 8
   str.len = 3
 
-### How to pass a specific overload to a macro?
-
-- https://forum.nim-lang.org/t/8369
-
 ### Can I use tab instead of space?
 
 No.
@@ -200,87 +174,6 @@ No.
 ### What is the difference between statement and expression?
 
 - https://nim-lang.org/docs/manual.html#statements-and-expressions
-
-### How to define constructor?
-
-In Nim, everything is initialized as all bits zero.
-
-See:
-- https://nim-lang.org/docs/manual.html#statements-and-expressions-var-statement
-
-If you want to initialize objects with other value, people usually create `createFoo` or `initFoo` procedure.
-
-Example code:
-
-.. code-block:: nim
-
-  type
-    Foo = object
-      names: seq[string]
-
-  proc initFoo(x: var Foo, name: string) =
-    x.names.add name
-
-  var foo: Foo
-  foo.initFoo("abc")
-  echo foo
-
-  type
-    Bar = ref object
-      names: seq[string]
-
-  proc createBar(name: string): Bar =
-    Bar(names: @[name])
-
-  var bar = createBar("xyz")
-  echo bar[]
-
-See also:
-
-- https://forum.nim-lang.org/t/8311#53519
-
-### How to use destructor?
-
-- https://nim-lang.org/docs/destructors.html
-- https://forum.nim-lang.org/t/8838
-
-### How to define a procedure that takes types?
-
-- https://nim-lang.org/docs/manual.html#special-types-typedesc-t
-
-### How to pass `seq` or `array` to `varargs` parameter?
-
-Pass them as is:
-
-.. code-block:: nim
-
-  proc foo(args: varargs[string]) =
-    for s in args:
-      echo s
-
-  let myarray = ["foo", "bar"]
-  foo(myarray)
-
-  let myseq = @["one", "two"]
-  foo(myseq)
-
-Output:
-
-.. code-block:: console
-
-  foo
-  bar
-  one
-  two
-
-- https://nim-lang.org/docs/manual.html#types-varargs
-
-### What is the difference between procedure, function and method?
-
-Function is a procedure with `noSideEffect` pragma.
-
-- https://nim-lang.org/docs/manual.html#effect-system-side-effects
-- https://nim-lang.org/docs/manual.html#methods
 
 ### Can I define operators for my type?
 
@@ -364,15 +257,6 @@ There are 3 ways to create user defined pragmas:
 ### Can i pass GC'd memory across DLL boundaries?
 
 - https://forum.nim-lang.org/t/8598
-
-### How to vary a return type of procedure at runtime?
-
-You cannot change return type because Nim is a statically typed programming language.
-
-Workarounds:
-
-- Use `Object variants <https://nim-lang.org/docs/manual.html#types-object-variants>`_
-- https://github.com/alaviss/union
 
 ### How to store different types in seq?
 
@@ -556,6 +440,124 @@ It doesn't works when an object inherits from `RootObj`.
   test(fromPureRoot)
 
 - https://nim-lang.org/docs/manual.html#pragmas-pure-pragma
+
+## Procedures
+
+### How to pass iterator to procedure?
+
+- https://nim-lang.org/docs/manual.html#iterators-and-the-for-statement-firstminusclass-iterators
+- https://nim-lang.org/docs/manual.html#overload-resolution-iterable
+
+### Can Nim create class method?
+
+Nim language doesn't have class method.
+But you can define a procedure similar to class method.
+
+.. code-block:: nim
+
+  type
+    Foo = object
+      x: int
+
+  proc myClassMethod(f: typedesc[Foo]; param: int): Foo =
+    Foo(x: param)
+
+  let foo = myClassMethod(Foo, 123)
+  echo foo
+
+### How to pass a specific overload to a macro?
+
+- https://forum.nim-lang.org/t/8369
+
+### How to define constructor?
+
+In Nim, everything is initialized as all bits zero.
+
+See:
+- https://nim-lang.org/docs/manual.html#statements-and-expressions-var-statement
+
+If you want to initialize objects with other value, people usually create `createFoo` or `initFoo` procedure.
+
+Example code:
+
+.. code-block:: nim
+
+  type
+    Foo = object
+      names: seq[string]
+
+  proc initFoo(x: var Foo, name: string) =
+    x.names.add name
+
+  var foo: Foo
+  foo.initFoo("abc")
+  echo foo
+
+  type
+    Bar = ref object
+      names: seq[string]
+
+  proc createBar(name: string): Bar =
+    Bar(names: @[name])
+
+  var bar = createBar("xyz")
+  echo bar[]
+
+See also:
+
+- https://forum.nim-lang.org/t/8311#53519
+
+### How to use destructor?
+
+- https://nim-lang.org/docs/destructors.html
+- https://forum.nim-lang.org/t/8838
+
+### How to define a procedure that takes types?
+
+- https://nim-lang.org/docs/manual.html#special-types-typedesc-t
+
+### How to pass `seq` or `array` to `varargs` parameter?
+
+Pass them as is:
+
+.. code-block:: nim
+
+  proc foo(args: varargs[string]) =
+    for s in args:
+      echo s
+
+  let myarray = ["foo", "bar"]
+  foo(myarray)
+
+  let myseq = @["one", "two"]
+  foo(myseq)
+
+Output:
+
+.. code-block:: console
+
+  foo
+  bar
+  one
+  two
+
+- https://nim-lang.org/docs/manual.html#types-varargs
+
+### What is the difference between procedure, function and method?
+
+Function is a procedure with `noSideEffect` pragma.
+
+- https://nim-lang.org/docs/manual.html#effect-system-side-effects
+- https://nim-lang.org/docs/manual.html#methods
+
+### How to vary a return type of procedure at runtime?
+
+You cannot change return type because Nim is a statically typed programming language.
+
+Workarounds:
+
+- Use `Object variants <https://nim-lang.org/docs/manual.html#types-object-variants>`_
+- https://github.com/alaviss/union
 
 ## Compile Time
 
