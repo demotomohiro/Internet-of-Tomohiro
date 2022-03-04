@@ -248,6 +248,33 @@ See also:
 
 - https://nim-lang.org/docs/manual.html#special-types-typedesc-t
 
+### How to pass `seq` or `array` to `varargs` parameter?
+
+Pass them as is:
+
+.. code-block:: nim
+
+  proc foo(args: varargs[string]) =
+    for s in args:
+      echo s
+
+  let myarray = ["foo", "bar"]
+  foo(myarray)
+
+  let myseq = @["one", "two"]
+  foo(myseq)
+
+Output:
+
+.. code-block:: console
+
+  foo
+  bar
+  one
+  two
+
+- https://nim-lang.org/docs/manual.html#types-varargs
+
 ### What is the difference between procedure, function and method?
 
 Function is a procedure with `noSideEffect` pragma.
@@ -700,7 +727,7 @@ Example code that takes inline iterator:
   echo myTemplate(myIter(@[-1, 0, 1]))
   echo myTemplate(1..3)
 
-Output :
+Output:
 
 .. code-block:: console
 
