@@ -455,6 +455,81 @@ Use seq or other collection types that store values in heap:
 - https://www.reddit.com/r/nim/comments/7dm3le/tutorial_for_types_having_a_hard_time
 - https://forum.nim-lang.org/t/1207
 
+### How pure pragma `{{.pure.}}` work to object type?
+
+Object types can inherit from existing object if it is `RootObj`, inherits from `RootObj` or has `inheritable` pragma.
+Objects with inheritance enabled has hidden runtime type information so that you can use `of` operator to determine the object's type.
+In other words, objects without inheritance don't have runtime type information.
+
+- https://nim-lang.org/docs/manual.html#types-tuples-and-object-types
+- https://nim-lang.org/docs/manual.html#pragmas-final-pragma
+
+pure pragma remove the runtime type information even if an object can be inherit from.
+Then you cannot use `of` operator to such an object.
+
+.. code-block:: nim
+
+  type
+    PureBase {{.pure, inheritable.}} = object
+      x: int64
+
+    NonPureBase = object of RootObj
+      x: int64
+
+    FromPure = object of PureBase
+      y: int64
+
+    FromNonPure = object of NonPureBase
+      y: int64
+
+    NotInheriable = object
+      x: int64
+      y: int64
+
+  proc test(a: PureBase) =
+    # Error: no 'of' operator available for pure objects
+    if a of FromPure:
+      echo "FromPure"
+
+  proc test(a: NonPureBase) =
+    if a of FromNonPure:
+      echo "FromNonPure"
+
+  var
+    pureObj = FromPure()
+    nonPureObj = FromNonPure()
+
+  echo sizeof(NotInheriable)  # 16
+  echo sizeof(pureObj)        # 16
+  echo sizeof(nonPureObj)     # 24
+
+  test(pureObj)
+  test(nonPureObj)
+
+pure pragma should be used with `inheritable` pragma.
+It doesn't works when an object inherits from `RootObj`.
+
+.. code-block:: nim
+
+  type
+    PureRoot {{.pure.}} = object of RootObj
+      x: int64
+
+    FromPureRoot = object of PureRoot
+      y: int64
+
+  proc test(a: PureRoot) =
+    # You can use of operator
+    if a of FromPureRoot:
+      echo "FromPureRoot"
+
+  var fromPureRoot = FromPureRoot()
+
+  echo sizeof(fromPureRoot) # 24
+  test(fromPureRoot)
+
+- https://nim-lang.org/docs/manual.html#pragmas-pure-pragma
+
 ## Compile Time
 
 Run your code in `nim c myprogram.nim` that completes before Nim output executable file or print error.
