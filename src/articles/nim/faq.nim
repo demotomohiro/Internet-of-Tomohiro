@@ -375,6 +375,9 @@ In other words, objects without inheritance don't have runtime type information.
 - https://nim-lang.org/docs/manual.html#types-tuples-and-object-types
 - https://nim-lang.org/docs/manual.html#pragmas-final-pragma
 
+pure pragma works to enum type differently:
+https://nim-lang.org/docs/manual.html#types-enumeration-types
+
 pure pragma remove the runtime type information even if an object can be inherit from.
 Then you cannot use `of` operator to such an object.
 
