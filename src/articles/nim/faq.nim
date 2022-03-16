@@ -562,6 +562,14 @@ Workarounds:
 - Use `Object variants <https://nim-lang.org/docs/manual.html#types-object-variants>`_
 - https://github.com/alaviss/union
 
+### What 'GC safe' means?
+
+We call a procedure `p` GC safe when it doesn't access any global variable that contains GC'ed memory (string, seq, ref or a closure) either directly or indirectly through a call to a GC unsafe proc.
+
+- https://nim-lang.org/docs/manual.html#effect-system-gc-safety-effect
+
+It is related to `Nim's memory model for threads <https://nim-lang.org/docs/manual.html#threads>`_.
+
 ## Compile Time
 
 Run your code in `nim c myprogram.nim` that completes before Nim output executable file or print error.
@@ -918,6 +926,30 @@ https://nim-lang.org/docs/nims.html
 ### Can I get precompiled latest devel Nim?
 
 - https://github.com/nim-lang/nightlies/releases/tag/latest-devel
+
+### How to stop showing console window when my program starts?
+
+Compile your code with `--app:gui` option like:
+
+.. code-block:: console
+
+  nim c --app:gui myprog.nim
+
+For example:
+
+.. code-block:: nim
+
+  import winim
+
+  doAssert MessageBoxA(0, "Hello world", "Nim", MB_OK)
+
+When you start your program on windows explorer, new console window will open if you compiled it without `--app:gui` option.
+
+.. code-block:: console
+
+  nim c test myprog.nim
+
+If you compile it with `--app:gui`, your program runs without opening console window.
 
 ### Is Nim/nimble virus or malware?
 
