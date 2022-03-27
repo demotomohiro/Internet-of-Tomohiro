@@ -401,11 +401,9 @@ When compiling simple one line Nim code `echo "Hello"`, Nim calls GCC for each g
   .........................................................
   CC: stdlib_digitsutils.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/hello/stdlib_digitsutils.nim.c.o /tmp/nimcache/d/hello/stdlib_digitsutils.nim.c
   CC: stdlib_dollars.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/hello/stdlib_dollars.nim.c.o /tmp/nimcache/d/hello/stdlib_dollars.nim.c
-  CC: stdlib_io.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/hello/stdlib_io.nim.c.
-  o /tmp/nimcache/d/hello/stdlib_io.nim.c
+  CC: stdlib_io.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/hello/stdlib_io.nim.c.o /tmp/nimcache/d/hello/stdlib_io.nim.c
   CC: stdlib_system.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/hello/stdlib_system.nim.c.o /tmp/nimcache/d/hello/stdlib_system.nim.c
-  CC: hello.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/hello/@mhello.nim.c.o /tmp
-  /nimcache/d/hello/@mhello.nim.c
+  CC: hello.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/hello/@mhello.nim.c.o /tmp/nimcache/d/hello/@mhello.nim.c
   Hint: x86_64-pc-linux-gnu-gcc   -o /tmp/tmp/testc/hello  /tmp/nimcache/d/hello/stdlib_digitsutils.nim.c.o /tmp/nimcache/d/hello/stdlib_dollars.nim.c.o /tmp/nimcache/d/hello/stdlib_io.nim.c.o /tmp/nimcache/d/hello/stdlib_system.nim.c.o /tmp/nimcache/d/hello/@mhello.nim.c.o    -ldl [Link]
   Hint: gc: refc; opt: none (DEBUG BUILD, `-d:release` generates faster code)
   26628 lines; 0.781s; 31.645MiB peakmem; proj: /tmp/tmp/testc/hello.nim; out: /tmp/tmp/testc/hello [SuccessX]
@@ -430,9 +428,8 @@ Then I changed `echo "Hello"` to `echo "Hello Nim!"`:
   Hint: used config file '/etc/nim/nim.cfg' [Conf]
   Hint: used config file '/etc/nim/config.nims' [Conf]
   .........................................................
-  CC: hello.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/hello/@mhello.nim.c.o /tmp
-  /nimcache/d/hello/@mhello.nim.c
-  Hint: x86_64-pc-linux-gnu-gcc   -o /tmp/tmp/testc/hello  /tmp/nimcache/d/hello/stdlib_digitsutils.nim.c.o /tmp/nimcache/d/hello/stdlib_dollars.nim.c.o /tmp/nimcache/d/hello/stdlib_io.nim.c.o /tmp/nimcache/d/hello/stdlib_system.nim.c.o /tmp/nimcache/d/hello/@mhello.nim.c.o    -ldl [Link]
+  CC: hello.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3 -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/hello/@mhello.nim.c.o /tmp/nimcache/d/hello/@mhello.nim.c
+  Hint: x86_64-pc-linux-gnu-gcc -o /tmp/tmp/testc/hello /tmp/nimcache/d/hello/stdlib_digitsutils.nim.c.o /tmp/nimcache/d/hello/stdlib_dollars.nim.c.o /tmp/nimcache/d/hello/stdlib_io.nim.c.o /tmp/nimcache/d/hello/stdlib_system.nim.c.o /tmp/nimcache/d/hello/@mhello.nim.c.o -ldl [Link]
   Hint: gc: refc; opt: none (DEBUG BUILD, `-d:release` generates faster code)
   26628 lines; 0.374s; 31.598MiB peakmem; proj: /tmp/tmp/testc/hello.nim; out: /tmp/tmp/testc/hello [SuccessX]
   Hint: /tmp/tmp/testc/hello  [Exec]
