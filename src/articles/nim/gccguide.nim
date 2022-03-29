@@ -16,6 +16,8 @@ How GCC works is related to how Nim uses C libraries because Nim generates C cod
 
 If you want to learn more about GCC, please read `GCC online documentation <https://gcc.gnu.org/onlinedocs/>`_.
 
+If you want to learn more about ld (the linker used by GCC in most environment) in binutils, please read Linker (ld) in `Documentation for binutils <https://www.gnu.org/software/binutils/>`_
+
 ## Hello world
 
 This is hello world code in C:
@@ -41,7 +43,9 @@ Unlike Nim or Python, code that are executed at runtime must be written inside f
 `printf` is a function in C standard library and output text in standard output.
 
 Save above code to file `hello.c`.
-Following command compiles it with GCC and produces an executable file `a.out`.
+Following command compiles it with GCC and produces an executable file `a.out` on Linux, `a.exe` on Windows.
+
+On Linux:
 
 .. code-block:: console
 
@@ -49,13 +53,35 @@ Following command compiles it with GCC and produces an executable file `a.out`.
   $$ ./a.out
   Hello world
 
-The executable file name is `a.out` in default. You can specify executable file name with `-o <filename>` option:
+On Windows:
+
+.. code-block:: console
+
+  >gcc hello.c
+
+  >a.exe
+  Hello world
+
+The executable file name is `a.out`/`a.exe` in default. You can specify executable file name with `-o <filename>` option:
+
+On Linux:
 
 .. code-block:: console
 
   $$ gcc -o hello hello.c
   $$ ./hello
   Hello world
+
+On Windows:
+
+.. code-block:: console
+
+  >gcc -o hello hello.c
+
+  >hello.exe
+  Hello world
+
+On Windows, gcc automatically add .exe extension to the output executable file name if you specified `-o` without the extension.
 
 ## Define a function
 
