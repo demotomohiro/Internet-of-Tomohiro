@@ -163,6 +163,63 @@ Output:
   sizeof(str) = 8
   str.len = 3
 
+### I got compile error after adding or removing a space
+
+Nim is a white-space-sensitive language.
+
+For example:
+
+.. code-block:: nim
+
+  # `+` operator is used as a binary operator
+  echo 1 + 1
+
+  # Removed the space between '+' and '1'.
+  # Then `+` operator is used as an unary operator.
+  # And this is compile error
+  echo 1 +1
+
+.. code-block:: nim
+
+  proc foo(x, y: int) = echo x, ", ", y
+
+  # Call foo with 2 ints.
+  foo(1, 2)
+
+  # If you put a space between 'foo' and '(1, 2),
+  # it become calling foo with a tuple (1, 2) in command invocation syntax
+  # It results in compile error as there is no `foo` that takes a tuple.
+  foo (1, 2)
+
+If you want to see how Nim parses your code, use `dumpTree` macro in `macros` module:
+
+.. code-block:: nim
+
+  import std/macros
+
+  dumpTree:
+    echo 1 + 1
+    echo 1 +1
+
+Output:
+
+.. code-block:: console
+
+  StmtList
+    Command
+      Ident "echo"
+      Infix
+        Ident "+"
+        IntLit 1
+        IntLit 1
+    Command
+      Ident "echo"
+      Command
+        IntLit 1
+        Prefix
+          Ident "+"
+          IntLit 1
+
 ### Can I use tab instead of space?
 
 No.
@@ -174,6 +231,30 @@ No.
 ### What is the difference between statement and expression?
 
 - https://nim-lang.org/docs/manual.html#statements-and-expressions
+
+### How to get each unicode characters from a string?
+
+You can use `runes iterator <https://nim-lang.org/docs/unicode.html#runes.i%2Cstring>`_ in `unicode <https://nim-lang.org/docs/unicode.html>`_ module.
+unicode module provides support to handle the Unicode UTF-8 encoding.
+
+.. code-block:: nim
+
+  import std/unicode
+
+  for c in "○△□◇".runes:
+    echo c
+
+Output:
+
+.. code-block:: console
+
+  ○
+  △
+  □
+  ◇
+
+If the output didn't displayed correctly, save source code as UTF-8 encode.
+Configure your console to use UTF-8 encode and use a font that support UTF-8 characters.
 
 ### Can I define operators for my type?
 
@@ -275,6 +356,25 @@ Workarounds:
 ### How to use hot code reloading?
 
 - https://nim-lang.org/docs/hcr.html
+
+### Can Nim do pointer arithmetic?
+
+- Use `UncheckedArray[T] <https://nim-lang.org/docs/manual.html#types-unchecked-arrays>`_
+
+For example:
+
+.. code-block:: nim
+
+  var testArray = [11.cint, 22, 33]
+  proc cfunc(): ptr cint = testArray[0].addr
+
+  var p = cast[ptr UncheckedArray[cint]](cfunc())
+  doAssert p[0] == 11
+  doAssert p[1] == 22
+  p[2] += 11
+  doAssert p[2] == 44
+
+- https://github.com/kaushalmodi/ptr_math
 
 ## Type
 
@@ -896,6 +996,26 @@ For example:
 
 - https://forum.nim-lang.org/t/7265
 - https://khchen.github.io/winim/clr.html
+
+### How to wrap `const char*` type in C?
+
+.. code-block:: nim
+
+  type
+    cstringConstImpl {{.importc:"const char*".}} = cstring
+    constChar* = distinct cstringConstImpl
+
+  {{.emit: "const char* foo() {{return \"hello\";}}".}}
+  proc foo(): constChar {{.importc.}} # change to importcpp for C++ backend
+  echo foo().cstring
+
+- https://dev.to/xflywind/wrap-const-char-in-the-nim-language-53no
+- https://github.com/nim-lang/Nim/issues/19588
+
+### Nim bindings for the C++ STL?
+
+- https://github.com/Clonkk/nim-cppstl
+- https://forum.nim-lang.org/t/9007
 
 ## Nim Compiler
 
