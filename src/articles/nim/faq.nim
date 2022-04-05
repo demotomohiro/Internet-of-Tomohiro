@@ -109,16 +109,65 @@ Example code:
     Foo = ref object
       x: int
 
-  var a = Foo(x: 123)
+  let a = Foo(x: 123)
   echo a.repr
+
+  let ary = [Foo(x: 111), Foo(x: 222)]
+  echo ary.repr
+
+  var x = [0, 100, 300]
+  let ptrTox = x[1].addr
+  echo ptrTox.repr
 
 Example output:
 
 .. code-block:: console
 
-  ref 0x7fc4caea7050 --> [x = 123]
+  ref 0x7f09112ea050 --> [x = 123]
+  [ref 0x7f09112ea070 --> [x = 111], ref 0x7f09112ea090 --> [x = 222]]
+  ptr 0x55eda6b61108 --> 100
 
 You can also dereference it if it is not nil and referencing valid memory location.
+
+.. code-block:: nim
+
+  type
+    Foo = ref object
+      x: int
+
+  var a = Foo(x: 123)
+  echo a[]
+
+  var x = [0, 100, 300]
+  let ptrTox = x[1].addr
+  echo ptrTox[]
+
+Example output:
+
+.. code-block:: console
+
+  (x: 123)
+  100
+
+Define `$$` proc for ref type. `$$` proc converts given argument to string. `$$` is implicitly called when each arguments of `echo` are stringified.
+
+.. code-block:: nim
+
+  type
+    Foo = ref object
+      x: int
+
+  proc `$$`(foo: Foo): string =
+    "Foo: " & $$foo.x
+
+  let a = Foo(x: 123)
+  echo a
+
+Example output:
+
+.. code-block:: console
+
+  Foo: 123
 
 ### sizeof(ref object/seq/string) returns incorrect size
 
@@ -1132,7 +1181,13 @@ Please do not write malware in Nim.
 If you use gcc or clang backend compiler,
 `--opt:size --passC:-flto --passL:-flto` option enables gcc/clang's link time optimization
 and reduce code size.
-`strip <your executable file>` command further reduce size by removing symbols and sections from your executable file.
+`--passL:"-s"` option or `strip <your executable file>` command further reduce size by removing symbols and sections from your executable file.
+
+Example command:
+
+.. code-block:: console
+
+  $$ nim c -d:danger --passC:-flto --passL:"-s -flto" --opt:size test.nim
 
 ### My code is slower than python
 
