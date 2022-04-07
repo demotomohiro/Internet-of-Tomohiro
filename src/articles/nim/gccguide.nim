@@ -463,7 +463,94 @@ Then I changed `echo "Hello"` to `echo "Hello Nim!"`:
 
 This time, c files corresponding to system module and stdlib are not compiled by GCC again, only `@mhello.nim.c` was compiled.
 
+## Opaque type
 
+If you want to hide all members of a struct type from other c files, you can use an opaque struct type.
+Then only specific c file can access members of the struct type and changing members of the struct type doesn't require changing and recompiling user code.
+Opaque types are often used in C libraries.
+
+vector3.h:
+
+.. code-block:: c
+
+  #ifndef VECTOR3_H
+  #define VECTOR3_H
+
+  // Forward declaration of Vector3
+  typedef struct Vector3 Vector3;
+
+  // createVector3 and freeVector3 functions are added 
+  // because other c files cannot declare Vector3 variable.
+  Vector3* createVector3(float x, float y, float z);
+  void freeVector3(Vector3* v);
+
+  float vector3Dot(const Vector3* v0, const Vector3* v1);
+
+  #endif
+
+vector3.c:
+
+.. code-block:: c
+
+  #include <stdlib.h>
+  #include "vector3.h"
+
+  // Members of Vector3 are defined only in this c file.
+  struct Vector3{
+    float x, y, z;
+  };
+
+  Vector3* createVector3(float x, float y, float z) {
+    Vector3* ret = malloc(sizeof(Vector3));
+    ret->x = x;
+    ret->y = y;
+    ret->z = z;
+
+    return ret;
+  }
+
+  void freeVector3(Vector3* v) {
+    free(v);
+  }
+
+  float vector3Dot(const Vector3* v0, const Vector3* v1) {
+    return v0->x * v1->x + v0->y * v1->y + v0->z * v1->z;
+  }
+
+testvec3.c:
+
+.. code-block:: c
+
+  #include <stdio.h>
+  #include "vector3.h"
+
+  int main() {
+    // You cannot declare Vector3 variable but can declare pointer to Vector3.
+    Vector3* v0 = createVector3(-1.0f, 0.0f, 1.0f);
+    Vector3* v1 = createVector3(0.0f, 1.0f, 2.0f);
+
+    printf("%f\n", vector3Dot(v0, v1));
+
+    freeVector3(v1);
+    freeVector3(v0);
+
+    return 0;
+  }
+
+Compile them:
+
+.. code-block:: console
+
+  $$ gcc -c -o testvec3.o testvec3.c
+  $$ gcc -c -o vector3.o vector3.c
+  $$ gcc -o testvec3 testvec3.o vector3.o
+  $$ ./testvec3
+  2.000000
+
+In `vector3.h`, `Vector3` type is forward declared and `Vector3` is defined only in `vector3.c`.
+So `testvec3.c` can neither access members of `Vector3` nor declare `Vector3` type variable because it doesn't know about members of it.
+`testvec3.c` can only declare pointer to `Vector3` and use functions that take or return pointer to `Vector3`.
+`vector3.c` need to provide any functions so that `Vector3` type can be used without accessing its members.
 
 .. _GCC: https://gcc.gnu.org
 .. _Nim: https://nim-lang.org/
