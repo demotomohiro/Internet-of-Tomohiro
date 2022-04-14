@@ -561,7 +561,7 @@ let articles = newTable([
   (Lang("ja"),
   ArticleSrcLocal(
     title:"Nim使用者向けのGCCとC言語入門",
-    description:"Nimに関するよくある質問と答え",
+    description:"NimがどのようにC言語のライブラリを使うかの理解を助けるようにGCCとC言語について解説します。",
     category:"Nim")),
   (Lang("en"),
   ArticleSrcLocal(
