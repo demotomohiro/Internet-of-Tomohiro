@@ -1090,6 +1090,7 @@ https://nim-lang.org/docs/nims.html
 
 ### How to compile Nim to asmjs or wasm?
 
+- https://github.com/treeform/nim_emscripten_tutorial
 - https://forum.nim-lang.org/t/8827
 
 ### Can I get precompiled latest devel Nim?
@@ -1177,17 +1178,26 @@ Please do not write malware in Nim.
 
 ### Which compiler option generate smallest executable?
 
-`--opt:size`: optimize code generation for small size.
+- `--opt:size`
+  code generation for small size.
+- `--mm:arc`
+  Set Memory Management Strategies to ARC that produce less code compared to other memory managements.
+  But it might leak memory if there is a circular reference.
+  See `Nim's Memory Management <https://nim-lang.org/docs/mm.html>`_ for more details.
 If you use gcc or clang backend compiler,
-`--opt:size --passC:-flto --passL:-flto` option enables gcc/clang's link time optimization
-and reduce code size.
-`--passL:"-s"` option or `strip <your executable file>` command further reduce size by removing symbols and sections from your executable file.
+- `--passC:-flto --passL:-flto`
+  Enables gcc/clang's link time optimization and reduce code size.
+- `--passL:-s`
+  Further reduce size by removing symbols and sections from your executable file.
+  `strip <your executable file>` command do same thing.
 
 Example command:
 
 .. code-block:: console
 
-  $$ nim c -d:danger --passC:-flto --passL:"-s -flto" --opt:size test.nim
+  $$ nim c -d:danger --mm:arc --passC:-flto --passL:"-s -flto" --opt:size test.nim
+
+See `Nim Compiler User Guide<https://nim-lang.org/docs/nimc.html>`_ for more details.
 
 ### My code is slower than python
 
