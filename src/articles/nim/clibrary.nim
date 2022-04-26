@@ -72,6 +72,305 @@ Advantages of Shared libraries:
 - Save memory
   Machine code of functions in shared library loaded in memory can be shared by mutiple processes.
 
+## Example Header only library
+
+Following code shows example header only library `vector3.h` and c file `usevec3.c` that is using it.
+`vector3.h` defines `Vector3` type and `vector3Dot` function.
+
+vector3.h:
+
+.. code-block:: c
+
+  #ifndef VECTOR3_H
+  #define VECTOR3_H
+
+  typedef struct {
+    float x, y, z;
+  } Vector3;
+
+  static float vector3Dot(Vector3 v0, Vector3 v1) {
+    return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z;
+  }
+
+  #endif
+
+usevec3.c:
+
+.. code-block:: c
+
+  #include <stdio.h>
+  #include "vector3.h"
+
+  int main() {
+    Vector3 v0 = {-1.0f, 0.0f, 1.0f};
+    Vector3 v1 = {0.0f, 1.0f, 2.0f};
+
+    printf("%f\n", vector3Dot(v0, v1));
+
+    return 0;
+  }
+
+Compile and run:
+
+.. code-block:: console
+
+  $$ gcc -o usevec3 usevec3.c
+  $$ ./usevec3
+  2.000000
+
+When functions are defined in a header file, it needs to be defined with `static`.
+Otherwise, it cause multiple definition errors when the header file is included by multiple `*.c` files.
+
+A function defined with `static` can be used only from the c file where that function is defined and cannot be used from other c files.
+So multiple c files can have same name static functions.
+
+For example:
+
+vector3.h:
+
+.. code-block:: c
+
+  #ifndef VECTOR3_H
+  #define VECTOR3_H
+
+  typedef struct {
+    float x, y, z;
+  } Vector3;
+
+  float vector3Dot(Vector3 v0, Vector3 v1) {
+    return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z;
+  }
+
+  #endif
+
+foo.h:
+
+.. code-block:: c
+
+  #ifndef FOO_H
+  #define FOO_H
+  float foo();
+  #endif
+
+foo.c:
+
+.. code-block:: c
+
+  #include "foo.h"
+  #include "vector3.h"
+
+  float foo(){
+    Vector3 v0 = {-1.0f, 1.0f, -2.0f};
+    Vector3 v1 = {-1.0f, 1.0f, 2.0f};
+
+    return vector3Dot(v0, v1);
+  }
+
+usevec3.c:
+
+.. code-block:: c
+
+  #include <stdio.h>
+  #include "vector3.h"
+  #include "foo.h"
+
+  int main() {
+    Vector3 v0 = {-1.0f, 0.0f, 1.0f};
+    Vector3 v1 = {0.0f, 1.0f, 2.0f};
+
+    printf("%f\n", vector3Dot(v0, v1));
+    printf("%f\n", foo());
+
+    return 0;
+  }
+
+Compile and run:
+
+.. code-block:: console
+
+  $$ gcc -c -o foo.o foo.c
+  $$ gcc -c -o usevec3.o usevec3.c
+  $$ gcc -o usevec3 usevec3.o foo.o
+  ld: foo.o: in function `vector3Dot':
+  foo.c:(.text+0x0): multiple definition of `vector3Dot'; usevec3.o:usevec3.c:(.text+0x0): first defined here
+
+If header files in header only library is in a directory different from `*.c` files, or not in default include directory that compiler searches for include files, you need to add `-I` option to specify the directory contains these header files.
+
+## Use header only library from Nim
+
+You can use C header only library from Nim using `header pragma <https://nim-lang.org/docs/manual.html#implementation-specific-pragmas-header-pragma>`_.
+It adds `#include "headerfile.h"` in Nim generated C code.
+
+vector3.h:
+
+.. code-block:: c
+
+  #ifndef VECTOR3_H
+  #define VECTOR3_H
+
+  typedef struct {
+    float x, y, z;
+  } Vector3;
+
+  static float vector3Dot(Vector3 v0, Vector3 v1) {
+    return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z;
+  }
+
+  #endif
+
+usevec3.nim:
+
+.. code-block:: nim
+
+  type
+    Vector3 {.header: "vector3.h".} = object
+      x, y, z: cfloat
+
+  proc vector3Dot(v0, v1: Vector3): cfloat {.header:"vector3.h".}
+
+  let
+    v0 = Vector3(x: 1.0, y: 0.0, z: -2.0)
+    v1 = Vector3(x: 1.0, y: 0.0, z: 2.0)
+
+  echo vector3Dot(v0, v1)
+
+Compile and run:
+
+.. code-block:: console
+
+  $$ nim c -r usevec3.nim
+  Hint: used config file '/etc/nim/nim.cfg' [Conf]
+  Hint: used config file '/etc/nim/config.nims' [Conf]
+  .........................................................
+  CC: stdlib_digitsutils.nim
+  CC: stdlib_formatfloat.nim
+  CC: stdlib_dollars.nim
+  CC: stdlib_io.nim
+  CC: stdlib_system.nim
+  CC: usevec3.nim
+  Hint:  [Link]
+  Hint: gc: refc; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+  26638 lines; 1.529s; 31.629MiB peakmem; proj: /tmp/tmp/testnim/usevec3.nim; out: /tmp/tmp/testnim/usevec3 [SuccessX]
+  Hint: /tmp/tmp/testnim/usevec3  [Exec]
+  -3.0
+
+If the header file included with header pragma is not in the same directory to nim file and you got file not found compile error,
+specify the path to the directory that contains the header file with `--cincludes` Nim compiler option like `nim c -r --cincludes:/path/to/include/dir usevec3.nim`.
+
+## Example static library
+
+Following example creates static library `libvector3.a` from `vector3.c` and `vector3len.c`.
+
+vector3.h:
+
+.. code-block:: c
+
+  #ifndef VECTOR3_H
+  #define VECTOR3_H
+
+  // Forward declaration of Vector3
+  typedef struct Vector3 Vector3;
+
+  Vector3* createVector3(float x, float y, float z);
+  void freeVector3(Vector3* v);
+
+  float vector3Dot(const Vector3* v0, const Vector3* v1);
+  float vector3Len(const Vector3* v);
+
+  #endif
+
+vector3.c:
+
+.. code-block:: c
+
+  #include <stdlib.h>
+  #include "vector3.h"
+
+  // Members of Vector3 are defined only in this c file.
+  struct Vector3 {
+    float x, y, z;
+  };
+
+  Vector3* createVector3(float x, float y, float z) {
+    Vector3* ret = malloc(sizeof(Vector3));
+    ret->x = x;
+    ret->y = y;
+    ret->z = z;
+
+    return ret;
+  }
+
+  void freeVector3(Vector3* v) {
+    free(v);
+  }
+
+  float vector3Dot(const Vector3* v0, const Vector3* v1) {
+    return v0->x * v1->x + v0->y * v1->y + v0->z * v1->z;
+  }
+
+vector3len.c:
+
+.. code-block:: c
+
+  #include <math.h>
+  #include "vector3.h"
+
+  float vector3Len(const Vector3* v) {
+    return sqrtf(vector3Dot(v, v));
+  }
+
+Following commands compiles `vector3.c` and `vector3len.c` and creates static library `libvector3.a` by linking them:
+
+.. code-block:: console
+
+  $$ gcc -c -o vector3.o vector3.c
+  $$ gcc -c -o vector3len.o vector3len.c
+  $$ ar rcs libvector3.a vector3.o vector3len.o
+
+`ar` is a program included in `GNU binary utilities (GNU Binutils)<https://www.gnu.org/software/binutils/>`_. Static libraries are archives of object files and `ar` can create an archive from object files.
+
+`usevec3.c` uses functions in `libvector3.a`:
+
+usevec3.c:
+
+.. code-block:: c
+
+  #include <stdio.h>
+  #include "vector3.h"
+
+  int main() {
+    Vector3* v0 = createVector3(-1.0f, 0.0f, 1.0f);
+    Vector3* v1 = createVector3(0.0f, 1.0f, 2.0f);
+
+    printf("%f\n", vector3Dot(v0, v1));
+    printf("%f\n", vector3Len(v0));
+
+    freeVector3(v1);
+    freeVector3(v0);
+
+    return 0;
+  }
+
+Following commands compiles `usevec3.c` and creates the executable file by linking `libvector3.a`:
+
+.. code-block:: console
+
+  $$ gcc -c -o usevec3.o usevec3.c
+  $$ gcc -o usevec3 usevec3.o -L. -lvector3 -lm
+  $$ ./usevec3
+  2.000000
+  1.414214
+
+`-l` option links specified library. For example, `-lvector3` searchs directories for `libvector3.a` file.
+`-lm` option links the library that provides functions in math.h.
+In systems which support shared libraries, ld may also search for files other than `lib*.a`.
+On linux, ld searchs for shared library called `lib*.so` before `lib*.a`.
+If you have both shared library `libvector3.so` and static library `libvector3.a` but want to link static one, you need to add `-static` option when linking.
+
+`-L` option adds the specified directory to the list of directories that gcc (actually the linker gcc calls that usually ld) will search for libraries. In this case, current directory is added as `libvector3.a` was created in current directory.
+
+See `Options for Linking section in GCC Manual <https://gcc.gnu.org/onlinedocs/>`_ or `ld manual in documentation for binutils <https://www.gnu.org/software/binutils/>`_ for more details.
+
 Work in progress...
 
 .. _GCC: https://gcc.gnu.org
