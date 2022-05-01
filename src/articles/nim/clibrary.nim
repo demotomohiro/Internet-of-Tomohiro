@@ -200,6 +200,9 @@ If header files in header only library is in a directory different from `*.c` fi
 
 You can use C header only library from Nim using `header pragma <https://nim-lang.org/docs/manual.html#implementation-specific-pragmas-header-pragma>`_.
 It adds `#include "headerfile.h"` in Nim generated C code.
+Nim compiler generates C code from input nim code and pass it to backend C compiler. But Nim compiler doesn't read and understand C code.
+So Nim needs a code that tells details about struct types and functions in C code so that Nim can generate C code that uses C types and functions correctly and also show error when you call C functions incorrectly.
+`c2nim <https://github.com/nim-lang/c2nim>`_, `Futhark <https://github.com/PMunch/futhark>`_ or `Nimterop <https://github.com/nimterop/nimterop>`_ can read a C code and generates nim code that imports C types or functions in the C code.
 
 vector3.h:
 
@@ -367,9 +370,167 @@ In systems which support shared libraries, ld may also search for files other th
 On linux, ld searchs for shared library called `lib*.so` before `lib*.a`.
 If you have both shared library `libvector3.so` and static library `libvector3.a` but want to link static one, you need to add `-static` option when linking.
 
-`-L` option adds the specified directory to the list of directories that gcc (actually the linker gcc calls that usually ld) will search for libraries. In this case, current directory is added as `libvector3.a` was created in current directory.
+`-L` option adds the specified directory to the list of directories that gcc (actually the linker gcc calls that usually ld) will search for libraries. In above example command line, current directory is added as `libvector3.a` was created in current directory.
+
+You can also pass a path to the library without `-l` option (but the list of directories for finding libraries is not used):
+
+.. code-block:: console
+
+  $$ gcc -o usevec3 usevec3.o libvector3.a -lm
+  $$ ./usevec3
+  2.000000
+  1.414214
 
 See `Options for Linking section in GCC Manual <https://gcc.gnu.org/onlinedocs/>`_ or `ld manual in documentation for binutils <https://www.gnu.org/software/binutils/>`_ for more details.
+In most of systems, ld is called by GCC in a linking stage to combines object files and libraries to generate an executable or shared library.
+
+An order of object files or libraries can be important.
+ld reads object files and libraries in the order they are specified.
+If an object file specified after an library contains functions that object file calls, that can cause errors.
+Follwing command line just moved `usevec3.o` to the last argument generates link error:
+
+.. code-block:: console
+
+  $$ gcc -o usevec3 -L. libvector3.a -lm usevec3.o
+  ld: usevec3.o: in function `main':
+  usevec3.c:(.text+0x1f): undefined reference to `createVector3'
+  ld: usevec3.c:(.text+0x42): undefined reference to `createVector3'
+  ld: usevec3.c:(.text+0x59): undefined reference to `vector3Dot'
+  ld: usevec3.c:(.text+0x8b): undefined reference to `vector3Len'
+  ld: usevec3.c:(.text+0xbd): undefined reference to `freeVector3'
+  ld: usevec3.c:(.text+0xc9): undefined reference to `freeVector3'
+  collect2: error: ld returned 1 exit status
+
+When multiple libraries are linked, an order of libraries in argument can also be important.
+Following example creates 2 static libraries `libfoo.a` from `foo.c` and `libbar.a` from `bar.c` and `bar.c` calls a function in `foo.c`.
+Then `test.c` calls a function in `bar.c`.
+
+foo.h:
+
+.. code-block:: c
+
+  #ifndef FOO_H
+  #define FOO_H
+
+  int foo();
+
+  #endif
+
+foo.c:
+
+.. code-block:: c
+
+  #include "foo.h"
+
+  int foo() {
+    return 12345;
+  }
+
+bar.h:
+
+.. code-block:: c
+
+  #ifndef BAR_H
+  #define BAR_H
+
+  int bar();
+
+  #endif
+
+bar.c:
+
+.. code-block:: c
+
+  #include "bar.h"
+  #include "foo.h"
+
+  int bar() {
+    return foo() * 10 + 6;
+  }
+
+test.c:
+
+.. code-block:: c
+
+  #include <stdio.h>
+  #include "bar.h"
+
+  int main() {
+    printf("%d\n", bar());
+  }
+
+Compile to `libfoo.a` and `libbar.a` and `test`:
+
+.. code-block:: console
+
+  $$ gcc -c -o foo.o foo.c
+  $$ ar rcs libfoo.a foo.o
+  $$ gcc -c -o bar.o bar.c
+  $$ ar rcs libbar.a bar.o
+  $$ gcc -c -o test.o test.c
+  $$ gcc -o test test.o -L. -lbar -lfoo
+  $$ ./test
+  123456
+
+But if these libraries were specified in different order, got undefined reference error:
+
+.. code-block:: console
+
+  $$ gcc -o test test.o -L. -lfoo -lbar
+  ld: ./libbar.a(bar.o): in function `bar':
+  bar.c:(.text+0xa): undefined reference to `foo'
+
+In this case, `-lbar` option need to be placed before `-lfoo` as `libbar.a` calls function in `libfoo.a`.
+
+## Use C static library from Nim
+
+This example nim code calls functions in `vector3.c` and `vector3len.c` in above example by linking `libvector3.a`.
+
+usevec3.nim:
+
+.. code-block:: nim
+
+  type
+    Vector3 {.header: "vector3.h".} = object
+
+  proc createVector3(x, y, z: cfloat): ptr Vector3 {.header: "vector3.h".}
+  proc freeVector3(v: ptr Vector3) {.header: "vector3.h".}
+
+  proc vector3Dot(v0, v1: ptr Vector3): cfloat {.header: "vector3.h".}
+  proc vector3Len(v: ptr Vector3): cfloat {.header: "vector3.h".}
+
+  var
+    v0 = createVector3(-1, 0, 1)
+    v1 = createVector3(0, 1, 2)
+
+  echo vector3Dot(v0, v1)
+  echo vector3Len(v0)
+
+  freeVector3(v0)
+  freeVector3(v1)
+
+Compile and run it (Assume `libvector3.a` in same directory to usevec3.nim).
+
+.. code-block:: console
+
+  $$ nim c -r --passL:"-L. -lvector3 -lm" usevec3.nim
+  Hint: used config file '/etc/nim/nim.cfg' [Conf]
+  Hint: used config file '/etc/nim/config.nims' [Conf]
+  .........................................................
+  CC: stdlib_digitsutils.nim
+  CC: stdlib_formatfloat.nim
+  CC: stdlib_dollars.nim
+  CC: stdlib_io.nim
+  CC: stdlib_system.nim
+  CC: usevec3.nim
+  Hint:  [Link]
+  Hint: gc: refc; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+  26645 lines; 1.535s; 31.613MiB peakmem; proj: /tmp/tmp/testc/usevec3.nim; out: /tmp/tmp/testc/usevec3 [SuccessX]
+  Hint: /tmp/tmp/testc/usevec3  [Exec]
+  2.0
+  1.414213538169861
+
+.. code-block:: c
 
 Work in progress...
 
