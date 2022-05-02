@@ -7,6 +7,8 @@ const rstText = """
 I explained about `GCC`_ and a part of C programming language in `previous article<gccguide.en.html>`_.
 I explains about C libraries in this article.
 
+.. contents::
+
 Before you use C library, you need to read the readme or manual of the library and learn how to build and use C libraries.
 There are many kind of build tools used for C library.
 Some C libraries requires other C libraries and you also need to install them before using it.
@@ -334,6 +336,8 @@ Following commands compiles `vector3.c` and `vector3len.c` and creates static li
 
 `usevec3.c` uses functions in `libvector3.a`:
 
+.. _usevec3.c:
+
 usevec3.c:
 
 .. code-block:: c
@@ -509,30 +513,85 @@ usevec3.nim:
   freeVector3(v0)
   freeVector3(v1)
 
-Compile and run it (Assume `libvector3.a` in same directory to usevec3.nim).
+Compile and run it (Assume `libvector3.a` in same directory to usevec3.nim):
 
 .. code-block:: console
 
-  $$ nim c -r --passL:"-L. -lvector3 -lm" usevec3.nim
+  $$ nim c -r --passL:"-L. -lvector3 -lm" --listcmd usevec3.nim
   Hint: used config file '/etc/nim/nim.cfg' [Conf]
   Hint: used config file '/etc/nim/config.nims' [Conf]
   .........................................................
-  CC: stdlib_digitsutils.nim
-  CC: stdlib_formatfloat.nim
-  CC: stdlib_dollars.nim
-  CC: stdlib_io.nim
-  CC: stdlib_system.nim
-  CC: usevec3.nim
-  Hint:  [Link]
+  CC: stdlib_digitsutils.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/usevec3/stdlib_digitsutils.nim.c.o /tmp/nimcache/d/usevec3/stdlib_digitsutils.nim.c
+  CC: stdlib_formatfloat.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/usevec3/stdlib_formatfloat.nim.c.o /tmp/nimcache/d/usevec3/stdlib_formatfloat.nim.c
+  CC: stdlib_dollars.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/usevec3/stdlib_dollars.nim.c.o /tmp/nimcache/d/usevec3/stdlib_dollars.nim.c
+  CC: stdlib_io.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/usevec3/stdlib_io.nim.c.o /tmp/nimcache/d/usevec3/stdlib_io.nim.c
+  CC: stdlib_system.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/usevec3/stdlib_system.nim.c.o /tmp/nimcache/d/usevec3/stdlib_system.nim.c
+  CC: usevec3.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/usevec3/@musevec3.nim.c.o /tmp/nimcache/d/usevec3/@musevec3.nim.c
+  Hint: x86_64-pc-linux-gnu-gcc   -o /tmp/tmp/testc/usevec3  /tmp/nimcache/d/usevec3/stdlib_digitsutils.nim.c.o /tmp/nimcache/d/usevec3/stdlib_formatfloat.nim.c.o /tmp/nimcache/d/usevec3/stdlib_dollars.nim.c.o /tmp/nimcache/d/usevec3/stdlib_io.nim.c.o /tmp/nimcache/d/usevec3/stdlib_system.nim.c.o /tmp/nimcache/d/usevec3/@musevec3.nim.c.o   -L. -lvector3 -lm  -ldl [Link]
   Hint: gc: refc; opt: none (DEBUG BUILD, `-d:release` generates faster code)
-  26645 lines; 1.535s; 31.613MiB peakmem; proj: /tmp/tmp/testc/usevec3.nim; out: /tmp/tmp/testc/usevec3 [SuccessX]
+  26645 lines; 1.548s; 31.602MiB peakmem; proj: /tmp/tmp/testc/usevec3.nim; out: /tmp/tmp/testc/usevec3 [SuccessX]
   Hint: /tmp/tmp/testc/usevec3  [Exec]
   2.0
   1.414213538169861
 
-.. code-block:: c
+`--listcmd` option is used just for showing how Nim calls GCC.
 
-Work in progress...
+## Create static library from Nim code and use from C code
+
+Following Nim code implements same functions implemented in `vector3.c` and `vector3len.c`.
+They are exported using `exportc pragma<https://nim-lang.org/docs/manual.html#foreign-function-interface-exportc-pragma>`_.
+
+vector3.nim:
+
+.. code-block:: nim
+
+  import math
+
+  type
+    Vector3 = object
+      x, y, z: cfloat
+
+  proc createVector3*(x, y, z: cfloat): ptr Vector3 {.exportc.} =
+    result = create(Vector3)
+    result[] = Vector3(x: x, y: y, z: z)
+
+  proc freeVector3*(v: ptr Vector3) {.exportc.} =
+    dealloc(v)
+
+  proc vector3Dot*(v0, v1: ptr Vector3): cfloat {.exportc.} =
+    v0.x * v1.x + v0.y * v1.y + v0.z * v1.z
+
+  proc vector3Len*(v: ptr Vector3): cfloat {.exportc.} =
+    vector3Dot(v, v).sqrt
+
+Following command creates static library `libvector3.a` from above Nim code:
+
+.. code-block:: console
+
+  $$ nim c --app:staticlib --noMain:on --listcmd vector3.nim
+  Hint: used config file '/etc/nim/nim.cfg' [Conf]
+  Hint: used config file '/etc/nim/config.nims' [Conf]
+  ..............................................................
+  CC: stdlib_digitsutils.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/vector3/stdlib_digitsutils.nim.c.o /tmp/nimcache/d/vector3/stdlib_digitsutils.nim.c
+  CC: stdlib_dollars.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/vector3/stdlib_dollars.nim.c.o /tmp/nimcache/d/vector3/stdlib_dollars.nim.c
+  CC: stdlib_system.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/vector3/stdlib_system.nim.c.o /tmp/nimcache/d/vector3/stdlib_system.nim.c
+  CC: vector3.nim: x86_64-pc-linux-gnu-gcc -c  -w -fmax-errors=3   -I/usr/lib/nim -I/tmp/tmp/testc -o /tmp/nimcache/d/vector3/@mvector3.nim.c.o /tmp/nimcache/d/vector3/@mvector3.nim.c
+  Hint: ar rcs /tmp/tmp/testc/libvector3.a  /tmp/nimcache/d/vector3/stdlib_digitsutils.nim.c.o /tmp/nimcache/d/vector3/stdlib_dollars.nim.c.o /tmp/nimcache/d/vector3/stdlib_system.nim.c.o /tmp/nimcache/d/vector3/@mvector3.nim.c.o [Link]
+  Hint: gc: refc; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+  30761 lines; 1.547s; 31.637MiB peakmem; proj: /tmp/tmp/testc/vector3.nim; out: /tmp/tmp/testc/libvector3.a [SuccessX]
+
+Without `--noMain:on` option, Nim generates `main` function in C code.
+If it is linked with C code containing `main` function, linker generates "multiple definition of main" error.
+
+Link `libvector3.a` created in above command to `usevec3.c`_ in `Example static library`_.
+
+.. code-block:: console
+
+  $$ gcc -c -o usevec3.o usevec3.c
+  $$ gcc -o usevec3 usevec3.o -L. -lvector3 -lm
+  $$ ./usevec3
+  2.000000
+  1.414214
 
 .. _GCC: https://gcc.gnu.org
 .. _Nim: https://nim-lang.org/
