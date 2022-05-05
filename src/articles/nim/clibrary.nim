@@ -114,10 +114,21 @@ usevec3.c:
 
 Compile and run:
 
+On Linux:
+
 .. code-block:: console
 
   $$ gcc -o usevec3 usevec3.c
   $$ ./usevec3
+  2.000000
+
+On Windows:
+
+.. code-block:: console
+
+  >gcc -o usevec3 usevec3.c
+
+  >usevec3
   2.000000
 
 When functions are defined in a header file, it needs to be defined with `static`.
@@ -326,11 +337,23 @@ vector3len.c:
 
 Following commands compiles `vector3.c` and `vector3len.c` and creates static library `libvector3.a` by linking them:
 
+On Linux:
+
 .. code-block:: console
 
   $$ gcc -c -o vector3.o vector3.c
   $$ gcc -c -o vector3len.o vector3len.c
   $$ ar rcs libvector3.a vector3.o vector3len.o
+
+On Windows:
+
+.. code-block:: console
+
+  >gcc -c -o vector3.o vector3.c
+
+  >gcc -c -o vector3len.o vector3len.c
+
+  >ar rcs vector3.lib vector3.o vector3len.o
 
 `ar` is a program included in `GNU binary utilities (GNU Binutils)<https://www.gnu.org/software/binutils/>`_. Static libraries are archives of object files and `ar` can create an archive from object files.
 
@@ -360,11 +383,25 @@ usevec3.c:
 
 Following commands compiles `usevec3.c` and creates the executable file by linking `libvector3.a`:
 
+On Linux:
+
 .. code-block:: console
 
   $$ gcc -c -o usevec3.o usevec3.c
   $$ gcc -o usevec3 usevec3.o -L. -lvector3 -lm
   $$ ./usevec3
+  2.000000
+  1.414214
+
+On Windows:
+
+.. code-block:: console
+
+  >gcc -c -o usevec3.o usevec3.c
+
+  >gcc -o usevec3 usevec3.o -L. -lvector3 -lm
+
+  >usevec3
   2.000000
   1.414214
 
