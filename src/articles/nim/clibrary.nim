@@ -70,9 +70,9 @@ Advantages of Shared libraries:
   - You can update library version and fix bugs quickly
   - Related article: `The modern packager’s security nightmare <https://blogs.gentoo.org/mgorny/2021/02/19/the-modern-packagers-security-nightmare/>`_
 - Save disk space
-  If a large static library or header only library is used by many executables, all of them contains same code and uses much disk space.
+  - If a large static library or header only library is used by many executables, all of them contains same code and uses much disk space.
 - Save memory
-  Machine code of functions in shared library loaded in memory can be shared by mutiple processes.
+  - Machine code of functions in shared library loaded in memory can be shared by mutiple processes.
 
 ## Example Header only library
 
@@ -213,7 +213,7 @@ If header files in header only library is in a directory different from `*.c` fi
 
 You can use C header only library from Nim using `header pragma <https://nim-lang.org/docs/manual.html#implementation-specific-pragmas-header-pragma>`_.
 It adds `#include "headerfile.h"` in Nim generated C code.
-Nim compiler generates C code from input nim code and pass it to backend C compiler. But Nim compiler doesn't read and understand C code.
+Nim compiler generates C code from input nim code and passes it to backend C compiler. But Nim compiler doesn't read and understand C code.
 So Nim needs a code that tells details about struct types and functions in C code so that Nim can generate C code that uses C types and functions correctly and also show error when you call C functions incorrectly.
 `c2nim <https://github.com/nim-lang/c2nim>`_, `Futhark <https://github.com/PMunch/futhark>`_ or `Nimterop <https://github.com/nimterop/nimterop>`_ can read a C code and generates nim code that imports C types or functions in the C code.
 
@@ -275,7 +275,7 @@ specify the path to the directory that contains the header file with `--cinclude
 
 ## Example static library
 
-Following example creates static library `libvector3.a` from `vector3.c` and `vector3len.c`.
+Following example creates static library `libvector3.a` (`vector3.lib` on Windows) from `vector3.c` and `vector3len.c`.
 
 vector3.h:
 
@@ -355,7 +355,7 @@ On Windows:
 
   >ar rcs vector3.lib vector3.o vector3len.o
 
-`ar` is a program included in `GNU binary utilities (GNU Binutils)<https://www.gnu.org/software/binutils/>`_. Static libraries are archives of object files and `ar` can create an archive from object files.
+`ar` is a program included in GNU binary utilities (`Binutils`_). Static libraries are archives of object files and `ar` can create an archive from object files.
 
 `usevec3.c` uses functions in `libvector3.a`:
 
@@ -405,15 +405,36 @@ On Windows:
   2.000000
   1.414214
 
-`-l` option links specified library. For example, `-lvector3` searchs directories for `libvector3.a` file.
+`-l` option links specified library. For example, `-lvector3` searchs directories for `libvector3.a` (`vector3.lib` on Windows).
 `-lm` option links the library that provides functions in math.h.
+
+The `-l` option is passed directly to the linker by `GCC`_.
+In most of systems, ld in GNU `Binutils`_ is called by `GCC`_ in a linking stage to combines object files and libraries to generate an executable or shared library.
+
 In systems which support shared libraries, ld may also search for files other than `lib*.a`.
 On linux, ld searchs for shared library called `lib*.so` before `lib*.a`.
 If you have both shared library `libvector3.so` and static library `libvector3.a` but want to link static one, you need to add `-static` option when linking.
 
-`-L` option adds the specified directory to the list of directories that gcc (actually the linker gcc calls that usually ld) will search for libraries. In above example command line, current directory is added as `libvector3.a` was created in current directory.
+On Windows, `-lxxx` argument will attempt to find a following library file name in search directories:
+
+| `libxxx.dll.a`
+| `xxx.dll.a`
+| `libxxx.a`
+| `xxx.lib`
+| `libxxx.lib`
+| `cygxxx.dll`
+| `libxxx.dll`
+| `xxx.dll`
+
+So you can also use `lib*.a` style file name to static library on windows.
+
+See "direct linking to a dll" in "ld and WIN32 (cygwin/mingw)" in "Machine Dependent Features" section in ld manual in GNU `Binutils`_ for more details.
+
+`-L` option adds the specified directory to the list of directories that ld will search for libraries. In above example command line, current directory is added as `libvector3.a` was created in current directory.
 
 You can also pass a path to the library without `-l` option (but the list of directories for finding libraries is not used):
+
+On Linux:
 
 .. code-block:: console
 
@@ -422,8 +443,17 @@ You can also pass a path to the library without `-l` option (but the list of dir
   2.000000
   1.414214
 
-See `Options for Linking section in GCC Manual <https://gcc.gnu.org/onlinedocs/>`_ or `ld manual in documentation for binutils <https://www.gnu.org/software/binutils/>`_ for more details.
-In most of systems, ld is called by GCC in a linking stage to combines object files and libraries to generate an executable or shared library.
+On Windows:
+
+.. code-block:: console
+
+  >gcc -o usevec3 usevec3.o vector3.lib -lm
+
+  >usevec3
+  2.000000
+  1.414214
+
+See `Options for Linking section in GCC Manual <https://gcc.gnu.org/onlinedocs/>`_ or ld manual in documentation for `Binutils`_ for more details.
 
 An order of object files or libraries can be important.
 ld reads object files and libraries in the order they are specified.
@@ -500,7 +530,7 @@ test.c:
     printf("%d\n", bar());
   }
 
-Compile to `libfoo.a` and `libbar.a` and `test`:
+Compile them to `libfoo.a`, `libbar.a` and `test`:
 
 .. code-block:: console
 
@@ -552,6 +582,8 @@ usevec3.nim:
 
 Compile and run it (Assume `libvector3.a` in same directory to usevec3.nim):
 
+On Linux:
+
 .. code-block:: console
 
   $$ nim c -r --passL:"-L. -lvector3 -lm" --listcmd usevec3.nim
@@ -568,6 +600,27 @@ Compile and run it (Assume `libvector3.a` in same directory to usevec3.nim):
   Hint: gc: refc; opt: none (DEBUG BUILD, `-d:release` generates faster code)
   26645 lines; 1.548s; 31.602MiB peakmem; proj: /tmp/tmp/testc/usevec3.nim; out: /tmp/tmp/testc/usevec3 [SuccessX]
   Hint: /tmp/tmp/testc/usevec3  [Exec]
+  2.0
+  1.414213538169861
+
+On Windows:
+
+.. code-block:: console
+
+  f:\temp\testc>nim c -r --passL:"-L. -lvector3" --listcmd usevec3.nim
+  Hint: used config file 'C:\nim\config\nim.cfg' [Conf]
+  Hint: used config file 'C:\nim\config\config.nims' [Conf]
+  .........................................................
+  CC: stdlib_digitsutils.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\usevec3\debug\stdlib_digitsutils.nim.c.o f:\temp\nimcache\usevec3\debug\stdlib_digitsutils.nim.c
+  CC: stdlib_formatfloat.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\usevec3\debug\stdlib_formatfloat.nim.c.o f:\temp\nimcache\usevec3\debug\stdlib_formatfloat.nim.c
+  CC: stdlib_dollars.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\usevec3\debug\stdlib_dollars.nim.c.o f:\temp\nimcache\usevec3\debug\stdlib_dollars.nim.c
+  CC: stdlib_io.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\usevec3\debug\stdlib_io.nim.c.o f:\temp\nimcache\usevec3\debug\stdlib_io.nim.c
+  CC: stdlib_system.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\usevec3\debug\stdlib_system.nim.c.o f:\temp\nimcache\usevec3\debug\stdlib_system.nim.c
+  CC: usevec3.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\usevec3\debug\@musevec3.nim.c.o f:\temp\nimcache\usevec3\debug\@musevec3.nim.c
+  Hint: gcc.exe   -o f:\temp\testc\usevec3.exe  f:\temp\nimcache\usevec3\debug\stdlib_digitsutils.nim.c.o f:\temp\nimcache\usevec3\debug\stdlib_formatfloat.nim.c.o f:\temp\nimcache\usevec3\debug\stdlib_dollars.nim.c.o f:\temp\nimcache\usevec3\debug\stdlib_io.nim.c.o f:\temp\nimcache\usevec3\debug\stdlib_system.nim.c.o f:\temp\nimcache\usevec3\debug\@musevec3.nim.c.o   -L. -lvector3   [Link]
+  Hint: gc: refc; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+  26691 lines; 4.416s; 31.559MiB peakmem; proj: f:\temp\testc\usevec3.nim; out: f:\temp\testc\usevec3.exe [SuccessX]
+  Hint: f:\temp\testc\usevec3.exe  [Exec]
   2.0
   1.414213538169861
 
@@ -601,7 +654,9 @@ vector3.nim:
   proc vector3Len*(v: ptr Vector3): cfloat {.exportc.} =
     vector3Dot(v, v).sqrt
 
-Following command creates static library `libvector3.a` from above Nim code:
+Following command creates static library `libvector3.a` (`vector3.lib` on Windows) from above Nim code:
+
+On Linux:
 
 .. code-block:: console
 
@@ -616,6 +671,23 @@ Following command creates static library `libvector3.a` from above Nim code:
   Hint: ar rcs /tmp/tmp/testc/libvector3.a  /tmp/nimcache/d/vector3/stdlib_digitsutils.nim.c.o /tmp/nimcache/d/vector3/stdlib_dollars.nim.c.o /tmp/nimcache/d/vector3/stdlib_system.nim.c.o /tmp/nimcache/d/vector3/@mvector3.nim.c.o [Link]
   Hint: gc: refc; opt: none (DEBUG BUILD, `-d:release` generates faster code)
   30761 lines; 1.547s; 31.637MiB peakmem; proj: /tmp/tmp/testc/vector3.nim; out: /tmp/tmp/testc/libvector3.a [SuccessX]
+
+On Windows:
+
+.. code-block:: console
+
+  f:\temp\testc>nim c --app:staticlib --noMain:on --listcmd vector3.nim
+  Hint: used config file 'C:\nim\config\nim.cfg' [Conf]
+  Hint: used config file 'C:\nim\config\config.nims' [Conf]
+  ..............................................................
+  CC: stdlib_digitsutils.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\vector3\debug\stdlib_digitsutils.nim.c.o f:\temp\nimcache\vector3\debug\stdlib_digitsutils.nim.c
+  CC: stdlib_dollars.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\vector3\debug\stdlib_dollars.nim.c.o f:\temp\nimcache\vector3\debug\stdlib_dollars.nim.c
+  CC: stdlib_io.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\vector3\debug\stdlib_io.nim.c.o f:\temp\nimcache\vector3\debug\stdlib_io.nim.c
+  CC: stdlib_system.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\vector3\debug\stdlib_system.nim.c.o f:\temp\nimcache\vector3\debug\stdlib_system.nim.c
+  CC: vector3.nim: gcc.exe -c  -w -fmax-errors=3 -mno-ms-bitfields   -IC:\nim\lib -If:\temp\testc -o f:\temp\nimcache\vector3\debug\@mvector3.nim.c.o f:\temp\nimcache\vector3\debug\@mvector3.nim.c
+  Hint: ar rcs f:\temp\testc\vector3.lib  f:\temp\nimcache\vector3\debug\stdlib_digitsutils.nim.c.o f:\temp\nimcache\vector3\debug\stdlib_dollars.nim.c.o f:\temp\nimcache\vector3\debug\stdlib_io.nim.c.o f:\temp\nimcache\vector3\debug\stdlib_system.nim.c.o f:\temp\nimcache\vector3\debug\@mvector3.nim.c.o [Link]
+  Hint: gc: refc; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+  30807 lines; 2.771s; 31.672MiB peakmem; proj: f:\temp\testc\vector3.nim; out: f:\temp\testc\vector3.lib [SuccessX]
 
 Without `--noMain:on` option, Nim generates `main` function in C code.
 If it is linked with C code containing `main` function, linker generates "multiple definition of main" error.
@@ -632,6 +704,7 @@ Link `libvector3.a` created in above command to `usevec3.c`_ in `Example static 
 
 .. _GCC: https://gcc.gnu.org
 .. _Nim: https://nim-lang.org/
+.. _Binutils: https://www.gnu.org/software/binutils/
 
 """
 
