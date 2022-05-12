@@ -38,11 +38,11 @@ People don't use Nim says case insensitivity cause confusion but I have never he
 
 It makes managing heap memory easy.
 
-### Why Nim transepile to C?
+### Why Nim generate C/C++ code?
 
-- C language is supported in many platform
-- A lot of effort has been spent for long time to generate optimized executable file. Nim can use that optimizer to generate fast code
-- There are a lot of mature C libraries. Nim can easily use it
+- C language is supported in many platforms
+- A lot of effort has been spent to C compilers for long time to generate optimized executable file. Nim can use that optimizer to generate fast code.
+- There are a lot of mature C/C++ libraries. Nim can easily use them.
 
 ### Is Nim a Transpiler?
 
@@ -211,6 +211,8 @@ Output:
   sizeof("foo") = 8
   sizeof(str) = 8
   str.len = 3
+
+It is just an example output. Actual size of these types can be different when ARC/ORC is used or on 32bit CPU.
 
 ### I got compile error after adding or removing a space
 
