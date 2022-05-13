@@ -307,6 +307,41 @@ Output:
 If the output didn't displayed correctly, save source code as UTF-8 encode.
 Configure your console to use UTF-8 encode and use a font that support UTF-8 characters.
 
+### How to leave nested for/while loops?
+
+You can do it by using named `block`.
+
+For example:
+
+.. code-block:: nim
+
+  block myblock:
+    for i in 0..3:
+      for j in 0..3:
+        if i + j == 4:
+          break myblock
+        else:
+          echo i, ", ", j
+
+Templates or macros like this can be used for simpler code:
+https://github.com/demotomohiro/littlesugar
+
+.. code-block:: nim
+
+  template namedWhile(name, cond, body: untyped): untyped =
+    block name:
+      while cond:
+        body
+
+  var x = 5
+  namedWhile(myblock, x > 0):
+    for i in 0..2:
+      if x == 4 and i == 1:
+        break myblock
+      echo x, ", ", i
+
+    dec x
+
 ### Can I define operators for my type?
 
 You can define procedures that can be used like operators.
@@ -1468,6 +1503,16 @@ For example:
 ### Where can I ask a question about Nim?
 
 - https://forum.nim-lang.org/
+- https://reddit.com/r/nim
+- https://stackoverflow.com/questions/tagged/nim-lang
+
+Chat:
+
+- irc://irc.libera.chat/nim
+- https://discord.gg/nim
+- https://gitter.im/nim-lang/Nim
+- https://matrix.to/#/#nim:envs.net
+- https://t.me/nim_lang
 
 ### Where should I report security issue?
 
@@ -1496,6 +1541,24 @@ For example:
 - `2018 <https://nim-lang.org/blog/2018/10/27/community-survey-results-2018.html>`_
 - `2017 <https://nim-lang.org/blog/2017/10/01/community-survey-results-2017.html>`_
 - `2016 <https://nim-lang.org/blog/2016/09/03/community-survey-results-2016.html>`_
+
+### How to post Nim code with syntax highlight on Discord?
+
+Enclose your code with `\`\`\`nim` and `\`\`\`` like:
+
+.. code-block:: nim
+
+  ```nim
+  var
+    x = 1
+    y = 2
+
+  echo x + y
+  ```
+
+### How to use NimBot on Nim IRC/Discord?
+
+You can run one line Nim code with `!eval echo "Hello"`.
 
 ### Are bots in Nim Discord channel AI?
 
