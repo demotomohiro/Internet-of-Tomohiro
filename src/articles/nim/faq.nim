@@ -12,7 +12,8 @@ const rstText = &"""
 This is a FAQ about `Nim`_ programming language.
 If you have a question about Nim, please ask it in `Nim forum <https://forum.nim-lang.org>`_.
 
-`Another FAQ <https://github.com/nim-lang/Nim/wiki/Unofficial-FAQ>`_
+- `Official FAQ <https://nim-lang.org/faq.html>`_
+- `Another FAQ <https://github.com/nim-lang/Nim/wiki/Unofficial-FAQ>`_
 
 .. contents::
 
@@ -66,6 +67,22 @@ No. If you say Nim is a transpiler, is GCC a transpiler from C to assembler?
 ### Can I write expressions like `x == a or x == b` shorter?
 
 You can write it as `x in [a, b]`.
+
+If type of x is int8, int16, uint8, uint16, char or enum, you can write it using set type:
+
+For example:
+
+.. code-block:: console
+
+  let x = 'a'
+  doAssert x in {{'a'..'z', '0'..'9'}}
+
+  type
+    Direction = enum
+      north, east, south, west
+
+  let d = Direction.east
+  doAssert d in {{east, west}}
 
 ### Can I write expressions like `a <= x and x <= b` shorter?
 
@@ -551,6 +568,54 @@ Use seq or other collection types that store values in heap:
 
 - https://www.reddit.com/r/nim/comments/7dm3le/tutorial_for_types_having_a_hard_time
 - https://forum.nim-lang.org/t/1207
+
+.. code-block:: nim
+
+  type
+    MyObj = object
+      x: int
+      y: float
+
+    MyRefObj = ref MyObj
+
+  # Variables declared outside of procedures are on static storage.
+
+  let
+    myObj = MyObj() # Exists on static storage
+    myRefObj = MyRefObj() # myRefObj exists on static storage and MyObj created on heap and be referenced by myRefObj
+
+  proc myProc() =
+    var
+      myObjInProc = MyObj() # Exists on stack
+      myRefObjInProc = MyRefObj() # myRefObjInProc exists on stack and MyObj created on heap and be referenced by myRefObjInProc
+
+    let
+      myObjInProc2 = myObjInProc  # myObjInProc2 exists on stack and myObjInProc is copied to myObjInProc2
+      myRefObjInProc2 = myRefObjInProc # myRefObjInProc2 exists on stack and myRefObjInProc and myRefObjInProc2 refers same MyObj
+
+    myObjInProc.x = 123
+
+    doAssert myObjInProc.x == 123
+    doAssert myObjInProc2.x == 0
+
+    myRefObjInProc.x = 321
+
+    doAssert myRefObjInProc.x == 321
+    doAssert myRefObjInProc2.x == 321
+
+    var
+      myObjInSeq = newSeq[MyObj](4) # 4 MyObj exist on heap continuously
+      myRefObjInSeq = newSeq[MyRefObj](4) # 4 MyRefObj exist on heap continuously and they are nil
+
+    myObjInSeq[0] = myObjInProc # myObjInProc is copied to myObjInSeq[0]
+
+    myRefObjInSeq[0] = myRefObjInProc
+    myRefObjInSeq[1] = myRefObjInProc2
+    # myRefObjInSeq[0], myRefObjInSeq[1], myRefObjInProc and myRefObjInProc2 refers same MyObj
+
+    myRefObjInSeq[2] = MyRefObj() # New MyObj is created on heap and myRefObjInSeq[2] refers it
+
+  myProc()
 
 ### How pure pragma `{{.pure.}}` work to object type?
 
