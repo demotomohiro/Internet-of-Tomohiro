@@ -719,6 +719,103 @@ Reference types are actually pointers and Nim manage referenced objects so that 
 
   testInheritance()
 
+### Can I use object types for seq even if copying is disabled?
+
+You can use uncopyable object types with seq but there are restrictions.
+
+.. code-block:: nim
+
+  type
+    DontCopyMe = object
+      x: int
+
+  # Make copying DontCopyMe compile error
+  proc `=copy`(dest: var DontCopyMe; src: DontCopyMe) {{.error.}}
+  proc `=sink`(dest: var DontCopyMe; src: DontCopyMe) =
+    echo "Sink! ", src.x
+    dest.x = src.x
+
+  var s: seq[DontCopyMe]
+  s.add(DontCopyMe(x: 1))
+  s.add(
+    block:
+      var a = DontCopyMe(x: 2);
+      a)
+  echo s
+
+  s.setLen(64)
+  echo s[^1]
+  s.insert(DontCopyMe(x: 3), 60)
+  echo s
+
+  block:
+    var
+      sa = @[DontCopyMe(x: 4), DontCopyMe(x: 5)]
+      sb = @[DontCopyMe(x: 6), DontCopyMe(x: 7)]
+
+    # echo sa & sb # Error: '=copy' is not available for type <seq[DontCopyMe]>
+
+  block:
+    var a = DontCopyMe(x: 3)
+    # s.add(a) # Compile error: '=copy' is not available for type <DontCopyMe>; requires a copy because it's not the last read of 'a'; routine: testobj
+    # Variables in outside of procedures cannot be moved?
+
+  proc test =
+    block:
+      var
+        sl: seq[DontCopyMe]
+        a = DontCopyMe(x: 11)
+
+      sl.add(a)
+
+      echo sl
+      # echo a  # Reading `a` makes `sl.add(a)` in above line to compile error
+
+    block:
+      var
+        sl = @[DontCopyMe(x: 21)]
+        a = sl[0]
+
+      echo a
+      # echo sl # Reading `sl` makes `a = sl[0]` in above line to compile error
+      # sl.add DontCopyMe(x: 22)  # Adding new element also makes `a = sl[0]` to compile error
+
+      sl = @[DontCopyMe(x: 23), DontCopyMe(x: 24)]
+
+      var
+        b = sl[0]
+        c = sl[1]
+      echo b, c
+
+      sl = @[DontCopyMe(x: 25), DontCopyMe(x: 26)]
+
+      var
+        idx = (cast[int](addr sl[0]) shr 5) and 1 # Get a runtime value that compiler cannot see
+        d = sl[idx]
+        #e = sl[idx xor 1] # Error: '=copy' is not available for type <DontCopyMe>
+
+      echo d
+
+    block:
+      var
+        sl = @[DontCopyMe(x: 31), DontCopyMe(x: 32)]
+        a = sl.pop
+
+      doAssert sl.len == 1
+      doAssert a == DontCopyMe(x: 32)
+      echo sl
+      echo a
+
+    block:
+      var
+        sa = @[DontCopyMe(x: 44), DontCopyMe(x: 45)]
+        sb = @[DontCopyMe(x: 46), DontCopyMe(x: 47)]
+        sab = sa & sb
+      echo sab
+      # echo sa # Reading `sa` makes `sab = sa & sb` in above line to compile error
+
+  test()
+
 ### How pure pragma `{{.pure.}}` work to object type?
 
 Object types can inherit from existing object if it is `RootObj`, inherits from `RootObj` or has `inheritable` pragma.
