@@ -569,29 +569,60 @@ Use seq or other collection types that store values in heap:
 - https://www.reddit.com/r/nim/comments/7dm3le/tutorial_for_types_having_a_hard_time
 - https://forum.nim-lang.org/t/1207
 
+Reference types (`ref object`) refer an object on heap. Mutiple references can refer an object.
+Reference types are actually pointers and Nim manage referenced objects so that you can use them safely.
+
+- Many-to-one relationships
+  - Many reference type variables can refer one object
+  - `object` type cannot do that directly
+    - Can be implemented indirectly using seq/array and index
+- `a = b`
+  - If `a` and `b` were `ref object` type, `a` refers same object `b` refers
+  - If they were `object` type, content of `b` is copied to `a`
+    - It doesn't mean an object passed to or returned from a procedure is always copied. Nim can optimize unnecessary copies.
+- Where it is stored
+  - Objects referenced by reference types are always stored on heap
+  - `object` type variables are stored on memory in the same way as `int` or `float` type variables
+    - Object type variables declared inside procedures are stored on stack
+    - They are stored on heap when they are contained in `seq` or `ref object`
+- Object-oriented programming (OOP)
+  - Parent reference type can refer inherit type
+  - `Methods <https://nim-lang.github.io/Nim/manual.html#methods>`_ works only with reference type
+- Speed
+  - Copying big size object can be slow and reference types can avoid copying easily
+  - Reading/writing reference type needs deferencing (Require reading pointer before accessing referenced data)
+  - Objects are stored on seq/array contiguously
+    - Continguous memory access is faster than random memory access
+    - But inserting/deleting an element in middle of seq/array can slower
+
 .. code-block:: nim
 
   type
     MyObj = object
       x: int
-      y: float
 
     MyRefObj = ref MyObj
 
   # Variables declared outside of procedures are on static storage.
+  # Static storage lives while the program is running and its size is fixed.
+  # Variables on static storage can be accessed by any procedures in same module.
+  # And if they have export mark, can be accessed by any procedures in other modules importing it.
 
   let
     myObj = MyObj() # Exists on static storage
-    myRefObj = MyRefObj() # myRefObj exists on static storage and MyObj created on heap and be referenced by myRefObj
+    myRefObj = MyRefObj() # myRefObj exists on static storage and points to MyObj type object created on heap
 
   proc myProc() =
+    # Variables declared inside of procedures are on stack.
+    # Stacks are created when a procedure is called and freed when returning from it.
+
     var
       myObjInProc = MyObj() # Exists on stack
-      myRefObjInProc = MyRefObj() # myRefObjInProc exists on stack and MyObj created on heap and be referenced by myRefObjInProc
+      myRefObjInProc = MyRefObj() # myRefObjInProc exists on stack and points to MyObj type object created on heap
 
     let
       myObjInProc2 = myObjInProc  # myObjInProc2 exists on stack and myObjInProc is copied to myObjInProc2
-      myRefObjInProc2 = myRefObjInProc # myRefObjInProc2 exists on stack and myRefObjInProc and myRefObjInProc2 refers same MyObj
+      myRefObjInProc2 = myRefObjInProc # myRefObjInProc2 exists on stack and myRefObjInProc and myRefObjInProc2 points to same object
 
     myObjInProc.x = 123
 
@@ -603,9 +634,17 @@ Use seq or other collection types that store values in heap:
     doAssert myRefObjInProc.x == 321
     doAssert myRefObjInProc2.x == 321
 
+    myRefObjInProc2[] = myObjInProc # `[]` operator dereference a reference type
+                                    # myObjInProc is copied to the object myRefObjInProc2 points
+
+    doAssert myRefObjInProc.x == 123
+    doAssert myRefObjInProc2.x == 123
+
     var
-      myObjInSeq = newSeq[MyObj](4) # 4 MyObj exist on heap continuously
-      myRefObjInSeq = newSeq[MyRefObj](4) # 4 MyRefObj exist on heap continuously and they are nil
+      myObjInSeq = newSeq[MyObj](4) # 4 MyObj exist on heap contiguously
+      myRefObjInSeq = newSeq[MyRefObj](4) # 4 MyRefObj exist on heap contiguously and they are nil
+      myRefObjInSeq2 = @[MyRefObj(x: 1), MyRefObj(x: 2), MyRefObj(x: 3), MyRefObj(x: 4)]  # each 4 MyRefObj points to 4 MyObj on heap respectively.
+                                                                                          # These 4 MyObj might not placed on heap contiguously.
 
     myObjInSeq[0] = myObjInProc # myObjInProc is copied to myObjInSeq[0]
 
@@ -615,7 +654,70 @@ Use seq or other collection types that store values in heap:
 
     myRefObjInSeq[2] = MyRefObj() # New MyObj is created on heap and myRefObjInSeq[2] refers it
 
+    # The stack allocated for all variables in this proc is freed
+
   myProc()
+
+  type
+    SomeObj = object
+      x: int
+      o1: MyObj
+      o2: MyObj   # x, o1, o2, o3 are placed on the memory contiguously
+      o3: MyRefObj
+
+    SomeRefObj = ref SomeObj
+
+  proc myNextProc =
+    var
+      s = SomeObj(o3: MyRefObj()) # s.o3 refers MyObj on heap
+      s2 = SomeRefObj(o3: s.o3) # SomeObj is created on heap. That means all fields of s2 (x, o1, o2, o3) are on heap.
+
+  myNextProc()
+
+  type
+    DontCopyMe = object
+      x: int
+
+  # This proc makes copying `DontCopyMe` compile error.
+  proc `=copy`(dest: var DontCopyMe; src: DontCopyMe) {{.error.}}
+
+  var
+    x, y: DontCopyMe
+
+  # This code generates compile error
+  # y = x
+
+  echo x, y
+
+  type
+    BaseObj = object of RootObj
+      x: int
+
+    BaseRefObj = ref BaseObj
+
+    InheritObj = object of BaseObj
+      y: int
+    InheritObj2 = object of BaseObj
+
+    InheritRefObj = ref InheritObj
+    InheritRefObj2 = ref InheritObj2
+
+  proc testInheritance =
+    var
+      a = InheritObj(x: 7)
+      b: BaseObj = a    # Copies only BaseObj part of InheritObj to b
+    echo b
+    # echo InheritObj(b)  # Invalid object conversion
+
+    var
+      inheritRef = InheritRefObj(y: 1234)
+      baseRef: BaseRefObj = inheritRef  # baseRef points to InheritObj
+
+    doAssert baseRef of InheritRefObj
+    doAssert not (baseRef of InheritRefObj2)
+    doAssert InheritRefObj(baseRef).y == 1234
+
+  testInheritance()
 
 ### How pure pragma `{{.pure.}}` work to object type?
 
