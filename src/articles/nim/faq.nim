@@ -582,6 +582,7 @@ Reference types are actually pointers and Nim manage referenced objects so that 
     - It doesn't mean an object passed to or returned from a procedure is always copied. Nim can optimize unnecessary copies.
 - Where it is stored
   - Objects referenced by reference types are always stored on heap
+    - Referenced object is freed only when last reference go out its scope
   - `object` type variables are stored on memory in the same way as `int` or `float` type variables
     - Object type variables declared inside procedures are stored on stack
     - They are stored on heap when they are contained in `seq` or `ref object`
@@ -654,7 +655,8 @@ Reference types are actually pointers and Nim manage referenced objects so that 
 
     myRefObjInSeq[2] = MyRefObj() # New MyObj is created on heap and myRefObjInSeq[2] refers it
 
-    # The stack allocated for all variables in this proc is freed
+    # The stack allocated for all variables in this proc is freed.
+    # So all objects referenced by ref types in this scope are freed because there is no reference refers them.
 
   myProc()
 
