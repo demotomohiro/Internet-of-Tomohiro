@@ -587,7 +587,7 @@ Reference types are actually pointers and Nim manage referenced objects so that 
     - Object type variables declared inside procedures are stored on stack
     - They are stored on heap when they are contained in `seq` or `ref object`
 - Object-oriented programming (OOP)
-  - Parent reference type can refer inherit type
+  - A variable of a type `A` can contain an object of another type as long as it inherits from `A` if `A` is a ref type
   - `Methods <https://nim-lang.github.io/Nim/manual.html#methods>`_ works only with reference type
 - Speed
   - Copying big size object can be slow and reference types can avoid copying easily
