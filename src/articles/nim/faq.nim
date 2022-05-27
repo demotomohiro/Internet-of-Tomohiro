@@ -721,6 +721,117 @@ Reference types are actually pointers and Nim manage referenced objects so that 
 
   testInheritance()
 
+### Can I pass/return object types to/from procedures if copying is disabled?
+
+Procedures can take or return uncopyable objects but there are restrictions.
+There are cases you need to add `sink` to parameters or `lent` to return type.
+
+.. code-block:: nim
+
+  type
+    DontCopyMe = object
+      x: int
+
+  # Make copying `DontCopyMe` compile error
+  proc `=copy`(dest: var DontCopyMe; src: DontCopyMe) {{.error.}}
+
+  # See when move happen to `DontCopyMe`
+  proc `=sink`(dest: var DontCopyMe; src: DontCopyMe) =
+    echo "Sink! ", src.x
+    dest.x = src.x
+
+  func getX(x: DontCopyMe): int = x.x
+
+  proc init(T: typedesc[DontCopyMe]; x: int): DontCopyMe =
+    DontCopyMe(x: x)
+
+  # func retAsIs(x: DontCopyMe): DontCopyMe = x
+  # Error: '=copy' is not available for type <DontCopyMe>
+
+  # proc takeVarAndRet(x: var DontCopyMe): DontCopyMe = x
+  # Error: '=copy' is not available for type <DontCopyMe>
+
+  proc takeVarAndRetVar(x: var DontCopyMe): var DontCopyMe = x
+
+  proc sinkAndRet(x: sink DontCopyMe): DontCopyMe = x
+
+  proc retLent(x: DontCopyMe): lent DontCopyMe = x
+
+  proc test =
+    let a = DontCopyMe(x: 1)
+    echo getX(a)
+
+    var b = DontCopyMe.init(10)
+    echo b
+
+    # echo retAsIs(a)
+
+    var c = DontCopyMe(x: 2)
+    # echo takeVarAndRet(c)
+    echo takeVarAndRetVar(c)
+    let d = sinkAndRet(c)
+    echo d
+
+    var e = retLent(DontCopyMe(x: 3))
+    echo e
+    # let f = retLent(e)  # Error: '=copy' is not available for type <DontCopyMe>;
+
+  test()
+
+  type
+    HaveDontCopyMe = object
+      dont: DontCopyMe
+
+  #[
+  proc init(T: typedesc[HaveDontCopyMe]; d: DontCopyMe): HaveDontCopyMe =
+    HaveDontCopyMe(dont: d)
+  ]#
+  # Error: '=copy' is not available for type <DontCopyMe>
+
+  proc init(T: typedesc[HaveDontCopyMe]; d: sink DontCopyMe): HaveDontCopyMe =
+    HaveDontCopyMe(dont: d)
+
+  # func getDontCopyMe(x: HaveDontCopyMe): DontCopyMe = x.dont
+  # Error: '=copy' is not available for type <DontCopyMe>;
+
+  func getDontCopyMeLent(x: HaveDontCopyMe): lent DontCopyMe = x.dont
+  func getDontCopyMeVar(x: var HaveDontCopyMe): var DontCopyMe = x.dont
+
+  # proc setDontCopyMe(x: var HaveDontCopyMe; y: DontCopyMe) = x.dont = y
+  # Error: '=copy' is not available for type <DontCopyMe>;
+
+  func setDontCopyMeSink(x: var HaveDontCopyMe; y: sink DontCopyMe) = x.dont = y
+
+  proc test2 =
+    let a = HaveDontCopyMe.init(DontCopyMe(x: 100))
+    echo a
+
+    # let b = a.getDontCopyMe()
+    # echo a.getDontCopyMe()
+    # let c = a.getDontCopyMeLent()
+    # echo c
+
+    echo a.getDontCopyMeLent()
+
+    var d = HaveDontCopyMe.init(DontCopyMe(x: 110))
+    d.getDontCopyMeVar().x = 111
+    echo d
+
+    # var e = HaveDontCopyMe.init(DontCopyMe(x: 120))
+    # e.setDontCopyMe(DontCopyMe(x: 121))
+    # echo e
+
+    var f = HaveDontCopyMe.init(DontCopyMe(x: 130))
+    f.setDontCopyMeSink(DontCopyMe(x: 131))
+    echo f
+
+    var ff = DontCopyMe(x: 142)
+    f.setDontCopyMeSink(ff)
+    echo f
+    # echo ff # Reading `ff` cause compile error to `f.setDontCopyMeSink(ff)` in above line
+
+  test2()
+
 ### Can I use object types for seq even if copying is disabled?
 
 You can use uncopyable object types with seq but there are restrictions.
