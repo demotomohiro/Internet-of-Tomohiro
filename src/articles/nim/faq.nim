@@ -568,6 +568,7 @@ Use seq or other collection types that store values in heap:
 
 - https://www.reddit.com/r/nim/comments/7dm3le/tutorial_for_types_having_a_hard_time
 - https://forum.nim-lang.org/t/1207
+- https://forum.nim-lang.org/t/8426#54529
 
 Reference types (`ref object`) refer an object on heap. Mutiple references can refer an object.
 Reference types are actually pointers and Nim manage referenced objects so that you can use them safely.
