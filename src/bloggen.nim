@@ -88,6 +88,6 @@ Internet of Tomohiro
                                】""",
           preIndex        = rstSrcHead,
           postIndex       = rstSrcFoot,
-          cssPath         = "../public/style.css")
+          cssPath         = "../public/nimdoc.css")
 when isMainModule:
   main()
