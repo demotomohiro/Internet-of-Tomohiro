@@ -72,7 +72,7 @@ If type of x is int8, int16, uint8, uint16, char or enum, you can write it using
 
 For example:
 
-.. code-block:: console
+.. code-block:: nim
 
   let x = 'a'
   doAssert x in {{'a'..'z', '0'..'9'}}
@@ -1518,7 +1518,7 @@ Compile your code with `--app:gui` option like:
 
 .. code-block:: console
 
-  nim c --app:gui myprog.nim
+  $$ nim c --app:gui myprog.nim
 
 For example:
 
@@ -1532,7 +1532,7 @@ When you start your program on windows explorer, new console window will open if
 
 .. code-block:: console
 
-  nim c test myprog.nim
+  $$ nim c test myprog.nim
 
 If you compile it with `--app:gui`, your program runs without opening console window.
 
