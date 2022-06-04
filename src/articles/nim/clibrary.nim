@@ -66,13 +66,20 @@ On posix, it is called "Shared library" and has `lib` prefix and `so` extension 
 On mac, it has `dynlib` extension.
 
 Advantages of Shared libraries:
+- Multiple executables can share code and data without copying them
+  - Save disk space
+    - If a large static library or header only library is used by multiple executables, all of them contains own copy and uses much disk space.
+  - Save memory
+    - Machine code of functions in shared library loaded in memory can be shared by mutiple processes.
 - You can replace them without recompiling
   - You can update library version and fix bugs quickly
   - Related article: `The modern packager’s security nightmare <https://blogs.gentoo.org/mgorny/2021/02/19/the-modern-packagers-security-nightmare/>`_
-- Save disk space
-  - If a large static library or header only library is used by many executables, all of them contains same code and uses much disk space.
-- Save memory
-  - Machine code of functions in shared library loaded in memory can be shared by mutiple processes.
+- You can decide whether to load the library at runtime
+  - Your program can choose which library to use at runtime
+  - This can be used to implement plugin systems
+
+Disadvantages:
+- `DLL hell <https://en.wikipedia.org/wiki/DLL_Hell>`_ / `Dependency hell <https://en.wikipedia.org/wiki/Dependency_hell>`_
 
 ## Example Header only library
 
