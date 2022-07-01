@@ -451,6 +451,27 @@ Workarounds:
 
 - Use `Object variants <https://nim-lang.org/docs/manual.html#types-object-variants>`_
 - https://github.com/alaviss/union
+- Use inheritance:
+
+.. code-block:: nim
+
+  # Thank you Elegantbeef!
+
+  type
+    BoxBase = ref object of RootObj
+    Boxed[T] = ref object of BoxBase
+      data: T
+
+  proc boxed[T](a: T): Boxed[T] = Boxed[T](data: a)
+
+  var a = @[BoxBase boxed"hello", boxed(10), boxed(30'd)]
+  for x in a:
+    if x of Boxed[int]:
+      echo "int ", Boxed[int](x).data
+    elif x of Boxed[float]:
+      echo "float ", Boxed[float](x).data
+    elif x of Boxed[string]:
+      echo "string ", Boxed[string](x).data
 
 ### What is the difference between stack and heap memory?
 
