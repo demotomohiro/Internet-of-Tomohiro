@@ -1565,6 +1565,7 @@ Many people reported Nim was detected by antivirus softwares but they are false 
 
 - https://forum.nim-lang.org/t/7830
 - https://forum.nim-lang.org/t/7885
+- https://forum.nim-lang.org/t/9388
 - https://github.com/nim-lang/Nim/issues/17820
 
 It seems Nim was used to write malware and it might related to false detections by many Antivirus softwares:
@@ -1573,6 +1574,9 @@ https://thehackernews.com/2021/03/researchers-spotted-malware-written-in.html
 And it seems antivirus softwares don't analyze the program carefully, but just alarm when they spot a bit pattern that has been seem in other malware.
 
 Please do not write malware in Nim.
+
+- `The Nim team's latest efforts in mitigating the false postives on the Nim binaries <https://forum.nim-lang.org/t/9358>`_
+- https://github.com/nim-lang/virus_checker
 
 ## Optimization
 
