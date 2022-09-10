@@ -1533,6 +1533,29 @@ https://nim-lang.org/docs/nims.html
 
 - https://github.com/nim-lang/nightlies/releases/tag/latest-devel
 
+### How to produce assembler code?
+
+There are 2 ways to produce assembler code:
+
+- Run Nim with `--asm` option
+  - It produces assembler code in nimcache directory with `.asm` extension
+
+- Pass options to the backend C compiler or the linker to produce assembler code
+  - When GCC or Clang is used as backend C compiler: `nim c --passC:-S mycode.nim`
+    - Produces assembler code in nimcache directory with `.o` extension
+    - It get error at link time because it generates assembler code instead of object file
+  - When LTO is enabled:
+    - GCC:
+      - `nim c -d:lto --passL:"-Wa,-acdl=/path/to/mycode.asm" mycode.nim` or
+      - `nim c -d:lto --passL:"-save-temps -dumpbase asmout/mycode" mycode.nim`
+        - Create asmout directory before run this
+        - Produces assembler code in asmout directory with `.s` extension
+    - Clang:
+      - `nim c -d:lto --passL:"-Wl,--lto-emit-asm" mycode.nim` or
+      - `nim c -d:lto --passL:"-Wl,-plugin-opt=emit-asm" mycode.nim`
+      - Produced assembler code has same name as executable file
+  - If you want intel syntax assembler code, add `--passC:-masm=intel` option
+
 ### How to stop showing console window when my program starts?
 
 Compile your code with `--app:gui` option like:
