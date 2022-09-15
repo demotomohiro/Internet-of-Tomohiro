@@ -1544,9 +1544,13 @@ There are 2 ways to produce assembler code:
   - When GCC or Clang is used as backend C compiler: `nim c --passC:-S mycode.nim`
     - Produces assembler code in nimcache directory with `.o` extension
     - It get error at link time because it generates assembler code instead of object file
+    - It doesn't work when LTO (link-time optimizer) runs because `-S` option generates assembler code at the compile time not the link time
   - When LTO is enabled:
     - GCC:
-      - `nim c -d:lto --passL:"-Wa,-acdl=/path/to/mycode.asm" mycode.nim` or
+      - `nim c -d:lto --passL:"-Wa,-acdl=/path/to/mycode.asm" mycode.nim`
+        - `-Wa` option passes `-acdl` option to the assembler GCC calls
+        - If your GCC uses an assembler other than GNU assembler `as` in Binutils, it can fail
+      Or
       - `nim c -d:lto --passL:"-save-temps -dumpbase asmout/mycode" mycode.nim`
         - Create asmout directory before run this
         - Produces assembler code in asmout directory with `.s` extension
