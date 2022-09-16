@@ -4,6 +4,11 @@ const rstText = """
 【en:How to run OpenGL desktop programs on Google Colaboratory】
 】
 
+2022/9/15: `【
+【ja:Google ColaboratoryでリモートデスクトップまたはSSH を使うことは許可されなくなりました】
+【en:Using a remote desktop or SSH is now disallowed from Colab runtimes】
+】 <https://research.google.com/colaboratory/faq.html>`_
+
 .. figure:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_unigine_valley_cap.png
    :width: 100%
 

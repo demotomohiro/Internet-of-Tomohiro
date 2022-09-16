@@ -4,6 +4,11 @@ const rstText = """
 【en:How to access Google Colaboratory using ssh】
 】
 
+2022/9/15: `【
+【ja:Google ColaboratoryでリモートデスクトップまたはSSH を使うことは許可されなくなりました】
+【en:Using a remote desktop or SSH is now disallowed from Colab runtimes】
+】 <https://research.google.com/colaboratory/faq.html>`_
+
 【
 【ja:`VNCを使ってGoogle Colaboratory上のデスクトップ環境を使うこともできます。 <vnc.ja.html>`_】
 【en:`You can also use desktop environment on Google Colaboratory using VNC. <vnc.en.html>`_】
