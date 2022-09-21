@@ -4,6 +4,8 @@ const rstText = """
 【en: Yogurt made of kinako】
 】
 
+.. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/74dcb3267bee0a4e6a1e42a62c43f9fc84da2b53/kinakoyogurt.jpg
+
 きな粉に水を加えて乳酸菌で発酵することによって作られるヨーグルトのような食品について紹介します。
 味は牛乳で作ったヨーグルトに似ています。
 きな粉ヨーグルトで検索するとヨーグルトにきな粉を加えたものに関する情報ばかりでてくるので
@@ -69,6 +71,8 @@ const rstText = """
 1. 容器にきな粉と水と乳酸菌を含んだ食品を入れて全体が均一になるまで混ぜます。
    豆乳ヨーグルトはきな粉1kgあたりスプーン大さじ5杯ぐらい入れます。
    一度に水を全部いれるより半分つづ入れたほうが混ぜやすいです。
+
+   .. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/74dcb3267bee0a4e6a1e42a62c43f9fc84da2b53/inbag.jpg
 
 1. 発酵させます。
    約40度に温めて乳酸菌を増やします。
