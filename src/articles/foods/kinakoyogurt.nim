@@ -86,6 +86,71 @@ const rstText = """
 
 完成したら砂糖、はちみつ、果物などを入れて食べましょう。
 
+## 水以外の飲み物からきな粉のヨーグルトを作れるか
+
+上で紹介したきな粉のヨーグルトはきな粉に水を混ぜてから発酵させますが、水の代わりに別の飲み物を混ぜるとどうなるのでしょうか。
+以下の飲み物を使ってきな粉のヨーグルトを作ってみました。
+
+- 牛乳
+
+  一般的なヨーグルトは牛乳を発酵させて作ります。
+  きな粉と牛乳を混ぜて発酵することができれば濃厚な牛乳ときな粉のヨーグルトができるかもしれません。
+
+  .. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/183126300d97d27ea783a8badbe3003fa9b141e9/kinakoAndMilk.JPG
+
+  200gのきな粉に400gの牛乳とmarusanの豆乳グルトおおさじ1杯を加えて混ぜました。
+
+  .. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/183126300d97d27ea783a8badbe3003fa9b141e9/kinakoAndMilkMixed.JPG
+
+- 野菜ジュース
+
+  野菜ジュースは健康によさそうなのできな粉と野菜ジュースを混ぜて発酵させれば健康によさそうなヨーグルトができるかもしれません。
+
+  .. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/183126300d97d27ea783a8badbe3003fa9b141e9/kinakoAndVegi.JPG
+
+  200gのきな粉に190gの野菜ジュース2本とmarusanの豆乳グルトおおさじ1杯を加えて混ぜました。
+
+  .. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/183126300d97d27ea783a8badbe3003fa9b141e9/kinakoAndVegiMixed.JPG
+
+- コーラ
+
+  世界には飲料水よりコーラが安い地域があるとかないとか。
+  もし飲料水がないけどコーラときな粉があるときにきな粉のヨーグルトを作ることはできるのでしょうか。
+
+  .. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/183126300d97d27ea783a8badbe3003fa9b141e9/kinakoAndCola.JPG
+
+  200gのきな粉に400gのコーラとmarusanの豆乳グルトおおさじ1杯を加えて混ぜました。
+
+  .. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/183126300d97d27ea783a8badbe3003fa9b141e9/kinakoAndColaMixed.JPG
+
+それぞれの材料を混ぜた直後を比較した画像です。
+
+.. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/183126300d97d27ea783a8badbe3003fa9b141e9/beforeHakkou3.JPG
+
+材料を混ぜたものを入れた袋を約45℃のお湯に数時間入れた後に二日間ほど常温で放置しました。
+その後冷蔵庫に二日間入れて冷やしました。
+袋の上から触った感じでは3つとも発酵前より固くなっており、特に牛乳を入れたものが一番固くなっていました。
+
+.. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/183126300d97d27ea783a8badbe3003fa9b141e9/afterHakkou3.JPG
+
+左から順場に水、牛乳、野菜ジュース、コーラ。
+
+.. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/183126300d97d27ea783a8badbe3003fa9b141e9/kinakoH2OMilkVegiCola.JPG
+
+水で作ったものは独特の匂いがして味は酸っぱいです。きな粉の味はほぼ残っていません。
+
+牛乳で作ったものはヨーグルトよりチーズに近い味がします。
+
+野菜で作ったものは少し甘みと酸味があります。野菜ジュースの味が少し残っています。
+
+コーラで作ったものは甘くて少しコーラっぽい香りがします。あまり発酵していないのか酸味がわずかできな粉の味が残っている感じがします。
+コーラだけで作らずに水をある程度混ぜたほうがよかったかもしれません。
+
+この中では水で作ったものが一番酸っぱいです。
+原因が他の3つとは別に作っていて常温で4〜5日ほど発酵させていたせいなのか、水以外の飲み物では水分が足りないせいなのかはわかりませんが。
+いちおうきな粉と牛乳または野菜ジュースでヨーグルトを作ることができるとわかりました。
+コーラでも多少固まってますが成功したと言えるか微妙です。
+
 ## きな粉のヨーグルトを作る方法を見つけたきっかけ
 
 業務用スーパーできな粉1kgが約300円と安く売られていたのでこれを使って何かおいしいものを作れないかと考えていました。
