@@ -1588,11 +1588,13 @@ If you compile it with `--app:gui`, your program runs without opening console wi
 
 Nim and tools distributed with Nim are neither virus nor malwares. They are safe to use.
 
-Many people reported Nim was detected by antivirus softwares but they are false positive.
+Many people reported Nim and executables compiled with Nim were detected by antivirus softwares but they are false positive.
 
 - https://forum.nim-lang.org/t/7830
 - https://forum.nim-lang.org/t/7885
 - https://forum.nim-lang.org/t/9388
+- https://forum.nim-lang.org/t/9850
+- `Nim and Go programs identified by Carbon Black as malware on Windows <https://news.ycombinator.com/item?id=34594743>`_
 - https://github.com/nim-lang/Nim/issues/17820
 
 It seems Nim was used to write malware and it might related to false detections by many Antivirus softwares:
