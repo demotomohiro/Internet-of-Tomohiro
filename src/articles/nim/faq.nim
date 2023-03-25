@@ -460,6 +460,7 @@ Workarounds:
 
 - Use `Object variants <https://nim-lang.org/docs/manual.html#types-object-variants>`_
 - https://github.com/alaviss/union
+- https://github.com/beef331/fungus
 - Use inheritance:
 
 .. code-block:: nim
