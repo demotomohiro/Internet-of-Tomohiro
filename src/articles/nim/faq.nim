@@ -58,6 +58,15 @@ No. If you say Nim is a transpiler, is GCC a transpiler from C to assembler?
 - https://github.com/nim-lang/Nim/wiki/Unofficial-FAQ#why-are-unsigned-types-discouraged
 - https://forum.nim-lang.org/t/8737
 
+Unsigned int types are used for algorithms that randomize bit patterns.
+For example:
+- Pseudorandom number generator (see `random module in Nim's standard library <https://github.com/nim-lang/Nim/blob/devel/lib/pure/random.nim>`_)
+- Hash (see `hashes module in Nim's standard library <https://github.com/nim-lang/Nim/blob/devel/lib/pure/hashes.nim>`_)
+- Cryptography
+
+Also used for protocols, formats or C libraries that requires unsigned int.
+For example, many image file formats or pixel buffer format uses 8 bit unsigned ints for RGB color value.
+
 ### Why doesn't default import statement force fully qualify access to the imported symbols?
 
 - https://narimiran.github.io/2019/07/01/nim-import.html
