@@ -500,6 +500,77 @@ For example:
 
 - https://github.com/kaushalmodi/ptr_math
 
+### How to safely convert int to enum?
+
+https://forum.nim-lang.org/t/8188
+
+For non-holey enum types:
+
+.. code-block:: nim
+
+  # Thank you PMunch!
+
+  type MyEnum = enum
+    A
+    B
+    C
+
+  proc toEnum*[T](x: int): T =
+    if x in T.low.int..T.high.int:
+      T(x)
+    else:
+      raise newException(ValueError, "Value not convertible to enum")
+
+  var a = 2
+  echo toEnum[MyEnum](a)
+
+  var b = 100
+  # Error: unhandled exception: Value not convertible to enum [ValueError]
+  echo toEnum[MyEnum](b)
+
+For enum types that can be non-holey or holey:
+
+.. code-block:: nim
+
+  # Thank you Elegantbeef!
+
+  import std/macros
+
+  type
+    MyEnum = enum
+      A
+      B
+      C
+
+    HoleyEnum = enum
+      AVal = 3
+      BVal = 5
+      CVal = 9
+
+  macro enumElementsAsSet(enm: typed): untyped =
+    newNimNode(nnkCurly).add(enm.getType[1][1..^1])
+
+  proc toEnum*(val: SomeInteger, E: typedesc[enum]): E =
+    const enmRange = E.low.ord .. E.high.ord
+    when E is Ordinal:
+      if val in enmRange:
+        E(val)
+      else:
+        raise (ref ValueError)(msg: $$val & " cannot be converted to the enum: " & $$E)
+    else:
+      if val in enmRange and val.E in E.enumElementsAsSet:
+        E(val)
+      else:
+        raise (ref ValueError)(msg: $$val & " cannot be converted to the enum: " & $$E)
+
+  var a = 5
+
+  # Error: unhandled exception: 5 cannot be converted to the enum: MyEnum [ValueError]
+  let b = a.toEnum(MyEnum)
+
+  # Error: unhandled exception: 4 cannot be converted to the enum: HoleyEnum [ValueError]
+  let c = 4.toEnum(HoleyEnum)
+
 ## Type
 
 ### What is the difference between cint/cfloat and int/float?
