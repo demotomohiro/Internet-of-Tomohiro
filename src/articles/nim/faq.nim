@@ -368,6 +368,10 @@ https://github.com/demotomohiro/littlesugar
 
     dec x
 
+### How to Iterate over every field of object or tuple types?
+
+https://nim-lang.org/docs/iterators.html
+
 ### Can I define operators for my type?
 
 You can define procedures that can be used like operators.
