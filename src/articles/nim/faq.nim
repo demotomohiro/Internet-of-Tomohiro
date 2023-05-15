@@ -1138,6 +1138,67 @@ But you can define a procedure similar to class method.
   let foo = myClassMethod(Foo, 123)
   echo foo
 
+### How to get a pointer to a overloaded procedure?
+
+Type conversion can be used to disambiguate overloaded routines.
+
+.. code-block:: nim
+
+  proc foo(x: int) = echo x
+  proc foo(x: string) = echo x
+
+  # Compile error
+  #let pfoo = foo
+
+  let pfoo1: proc (x: int) = foo
+  pfoo1(1)
+
+  let pfoo2 = (proc (x: int))foo
+  pfoo2(2)
+
+- https://nim-lang.org/docs/manual.html#statements-and-expressions-type-conversions
+
+### How to get a pointer to a generic procedure or a procedure with type class parameters?
+
+Specify all generic parameters or use type conversion.
+
+.. code-block:: nim
+
+  proc foo[T](x: T) = echo x
+
+  # Compile error
+  #let pfoo = foo
+
+  let pfoo1 = foo[int]
+  pfoo1(1)
+
+  let pfoo2: proc (x: int) = foo
+  pfoo2(2)
+
+  let pfoo3 = (proc (x: int))foo
+  pfoo3(3)
+
+.. code-block:: nim
+
+  proc foo(x: int or string) = echo x
+
+  # Compile error
+  #let pfoo = foo
+
+  let pfoo1: proc (x: int) = foo
+  pfoo1(1)
+
+  let pfoo2 = (proc (x: int))foo
+  pfoo2(2)
+
+  proc bar[T](x: int or string; y: T) = echo x, y
+
+  let pbar1: proc (x: int; y: string) = bar
+  pbar1(1, "bar")
+
+  let pbar2 = (proc (x: int; y: string))bar
+  pbar2(2, "bar")
+
 ### How to pass a specific overload to a macro?
 
 - https://forum.nim-lang.org/t/8369
