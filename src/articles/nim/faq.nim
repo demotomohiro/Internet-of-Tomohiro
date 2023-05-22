@@ -195,6 +195,8 @@ Example output:
 
   Foo: 123
 
+Or use https://github.com/treeform/pretty
+
 ### sizeof(ref object/seq/string) returns incorrect size
 
 `ref object`, `seq` and `string` are actually pointer to the heap memory that contains the content.
