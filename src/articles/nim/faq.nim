@@ -1580,7 +1580,7 @@ For example:
 
 - https://github.com/nim-lang/Nim/wiki/Curated-Packages
 - https://nimble.directory
-- https://github.com/xflywind/awesome-nim
+- https://github.com/ringabout/awesome-nim
 
 ### Is there GUI libraries for Nim?
 
