@@ -555,6 +555,33 @@ For enum types that can be non-holey or holey:
   # Error: unhandled exception: 4 cannot be converted to the enum: HoleyEnum [ValueError]
   let c = 4.toEnum(HoleyEnum)
 
+### Can I use unicode for variable or procedure name?
+
+Yes you can.
+
+.. code-block:: nim
+
+  const π  = 3.141
+
+  proc area□(w, h: float): float = w * h
+  proc area○(radius: float): float = π  * radius * radius
+
+  echo area□(3.0, 5.0)
+  echo area○(2.0)
+
+You can use specific unicodes for operators:
+https://nim-lang.org/docs/manual.html#lexical-analysis-unicode-operators
+
+.. code-block:: nim
+
+  func `±`[T](x: T): (T, T) = (x, -x)
+  doAssert ±3 == (3, -3)
+
+  func `∪`[T](x, y: set[T]): set[T] = x + y
+  doAssert ({{1, 2, 3}} ∪ {{2, 3, 4}}) == {{1, 2, 3, 4}}
+
+https://forum.nim-lang.org/t/10353
+
 ## Type
 
 ### What is the difference between cint/cfloat and int/float?
