@@ -1818,7 +1818,22 @@ Please do not write malware in Nim.
 
 ### Which compiler option generate fastest executable?
 
-`-d:danger`: Turns off all runtime checks and turns on the optimizer.
+- `-d:danger`
+  Turns off all runtime checks and turns on the optimizer.
+- `-d:lto`
+  Enables link time optimization.
+If you use gcc or clang backend compiler,
+- `--passC:"-march=native"`
+  Produces code optimized for the local machine.
+  The produced code might not run on different machines because it enables all instruction subsets supported by the local machine.
+  See:
+  https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html#index-march-16
+
+Example command:
+
+.. code-block:: console
+
+  $$ nim c -d:danger -d:lto --passC:"-march=native" test.nim
 
 ### Which compiler option generate smallest executable?
 
@@ -1828,10 +1843,10 @@ Please do not write malware in Nim.
   Set Memory Management Strategies to ARC that produce less code compared to other memory managements.
   But it might leak memory if there is a circular reference.
   See `Nim's Memory Management <https://nim-lang.org/docs/mm.html>`_ for more details.
+- `-d:lto`
+  Enables link time optimization and reduce code size.
 If you use gcc or clang backend compiler,
-- `--passC:-flto --passL:-flto`
-  Enables gcc/clang's link time optimization and reduce code size.
-- `--passL:-s`
+- `-d:strip`
   Further reduce size by removing symbols and sections from your executable file.
   `strip <your executable file>` command do same thing.
 
@@ -1839,7 +1854,7 @@ Example command:
 
 .. code-block:: console
 
-  $$ nim c -d:danger --mm:arc --passC:-flto --passL:"-s -flto" --opt:size test.nim
+  $$ nim c -d:danger --mm:arc -d:lto -d:strip --opt:size test.nim
 
 See `Nim Compiler User Guide<https://nim-lang.org/docs/nimc.html>`_ for more details.
 
