@@ -132,32 +132,32 @@ Or you can download it from `TDM-GCC`_.
    nim-gdb test
 
 【
-【ja:もしnim-gdbが無い場合は `Nim repository`_ から ``Nim/bin/nim-gdb`` と ``Nim/tools/nim-gdb.py`` をダウンロードして下さい。
-nim-gdbを使わない場合はGDBを起動した後に ``source Nim/tools/nim-gdb.py`` を実行して下さい。
-nim-gdbはGDBを実行し ``Nim/tools/nim-gdb.py`` を読み込ませるbashスクリプトです。
+【ja:もしnim-gdbが無い場合は `Nim repository`_ から ``bin/nim-gdb`` (Windowsの場合 ``bin/nim-gdb.bat``)と ``tools/debug/nim-gdb.py`` をダウンロードして下さい。
+nim-gdbを使わない場合はGDBを起動した後に ``source tools/debug/nim-gdb.py`` を実行して下さい。
+nim-gdbはGDBを実行し ``tools/debug/nim-gdb.py`` を読み込ませるbashスクリプトです。
 nim-gdb.pyはNimの変数がGDBで綺麗に表示されるようにするためのPythonスクリプトです。
 】
-【en:If you cannot find nim-gdb, you can download ``Nim/bin/nim-gdb`` and ``Nim/tools/nim-gdb.py`` from `Nim repository`_.
-If you don't use nim-gdb, execute ``source Nim/tools/nim-gdb.py`` command after you run gdb.
-nim-gdb is a bash script that execute GDB and let GDB load ``Nim/tools/nim-gdb.py``.
+【en:If you cannot find nim-gdb, you can download ``bin/nim-gdb`` (or ``bin/nim-gdb.bat`` for Windows) and ``tools/debug/nim-gdb.py`` from `Nim repository`_.
+If you don't use nim-gdb, execute ``source tools/debug/nim-gdb.py`` command on gdb.
+nim-gdb is a bash script that execute GDB and let GDB load ``tools/debug/nim-gdb.py``.
 And nim-gdb.py is a Python script that make GDB print Nim variables nicely.
 】
 】
 
 【
 【ja:nim-gdbはbashスクリプトなのでWindowsではbash等をインストールしないとそのまま使えません。
-なので以下のようにして ``tools\nim-gdb.py`` をGDBに読み込む必要があります。
+なので以下のようにして ``tools\debug\nim-gdb.py`` をGDBに読み込む必要があります。
 GDB起動後に
 】
 【en:On Windows, nim-gdb is a bash script and you cannot use it without bash.
-So you need to load ``tools\nim-gdb.py`` using ``source`` command.
+So you need to load ``tools\debug\nim-gdb.py`` using ``source`` command.
 Please run following command on GDB:
 】
 】
 
 .. code::
 
-  source {path-to-nim}\tools\nim-gdb.py
+  source {path-to-nim}\tools\debug\nim-gdb.py
 
 【
 【ja:を実行するか以下のようにGDBを起動して下さい。
@@ -168,7 +168,7 @@ Please run following command on GDB:
 
 .. code::
 
-  gdb -eval-command "source {path-to-nim}\tools\nim-gdb.py" test
+  gdb -eval-command "source {path-to-nim}\tools\debug\nim-gdb.py" test
 
 【
 【ja:nim-gdbが実行されると以下のようなメッセージが表示されます。
