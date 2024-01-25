@@ -1330,6 +1330,24 @@ We call a procedure `p` GC safe when it doesn't access any global variable that 
 
 It is related to `Nim's memory model for threads <https://nim-lang.org/docs/manual.html#threads>`_.
 
+### What is a calling convention?
+
+Meaning of "Calling convention" in C/Assembler and Nim is bit different.
+
+In C/Assembler, calling convention is about how parameters are passed to a function, result is returned and other low level rules for functions.
+https://en.wikipedia.org/wiki/Calling_convention
+
+In C or Nim language, you see no differences between functions with different calling conventions excepts function signature has different calling convention name. But they are different in assembly or machine language level.
+
+In some platforms, many calling conventions are used.
+When you call a function using a pointer to function, calling convention of the function pointer type and the calling convention of the function being called must be the same. If they are different, it results in compile error or undefined behavier.
+When you call a C function from Nim and pass a pointer to Nim procedure to the C function, calling convention of the Nim procedure must be the same calling convention to the C function pointer type of the parameter.
+
+stdcall, cdecl, safecall, fastcall, thiscall, syscall are C/C++/Assembler calling conventions and they are explained here: https://en.wikipedia.org/wiki/X86_calling_conventions
+
+In Nim, calling convention is about C/Assembler calling convention, how Nim generate C code from Nim procedure and higher level things. This section in Nim manual lists Nim calling conventions:
+https://nim-lang.org/docs/manual.html#types-procedural-type
+
 ## Compile Time
 
 Run your code in `nim c myprogram.nim` that completes before Nim output executable file or print error.
