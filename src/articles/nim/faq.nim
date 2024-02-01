@@ -582,6 +582,130 @@ https://nim-lang.org/docs/manual.html#lexical-analysis-unicode-operators
 
 https://forum.nim-lang.org/t/10353
 
+### What is the difference between variables inside procedures and outside procedures?
+
+Variables declared outside procedures are global variables and declared inside procedures are local variables.
+
+.. code-block:: nim
+
+  # Global variable
+  var globalVar = 123
+
+  proc bar() =
+    # Local variable
+    var localVar = 456
+
+You can add an export maker '`*`' to a global variable to make it accessible in other modules, but you cannot add it to local variables.
+
+.. code-block:: nim
+
+  var globalVar* = 123
+
+  proc bar() =
+    # Compile error: 'export' is only allowed at top level
+    var localVar* = 456
+
+Global variables lives while the program is running. Local variables are valid until exiting enclosing block or procedure.
+That means returning an address of global variable in a procedure is safe but returning an address of local variable is unsafe.
+
+.. code-block:: nim
+
+  type
+    SomeObj = object
+      name: string
+
+  proc `=destroy`(x: var SomeObj) =
+    echo "Destory ", x.name
+
+  var globalVar = SomeObj(name: "globalVar")
+
+  proc bar() =
+    block:
+      var localVarInBlock = SomeObj(name: "localVarInBlock")
+      echo localVarInBlock
+
+    var localVar = SomeObj(name: "localVar")
+    echo localVar
+
+  echo globalVar
+  bar()
+
+  echo "End of program"
+
+Output:
+
+.. code-block:: console
+
+  (name: "globalVar")
+  (name: "localVarInBlock")
+  Destory localVarInBlock
+  (name: "localVar")
+  Destory localVar
+  End of program
+  Destory globalVar
+
+Global variables are stored in data segment (translated to C global variables when compiled with C backend) and local variables are stored in stack.
+So declaring a large global variable works as long as there are enough memory but a large local variable can cause segmentation fault.
+
+.. code-block:: nim
+
+  import std/os
+
+  var globalArray: array[10_000_000, int]
+
+  proc bar() =
+    # Segmentatioon fault
+    var localArray: array[10_000_000, int]
+    echo "localArray: ", localArray[paramCount()]
+
+  echo "globalArray: ", globalArray[paramCount()]
+  bar()
+
+When multiple threads are created, global variables without `threadvar` pragma are not created for each threads and shared by threads. So you need to use a lock to access global variables because reading and writing to the same memory location from multiple threads at the same time is undefined behavier unless it is an atomic variable.
+Local variables are created for each threads and not shared. So local variables in one thread are not read or written by other thread (as long as you don't share an address of local variabe to other thread) and you don't need to use a lock to access them.
+
+.. code-block:: nim
+
+  import std/locks
+
+  var
+    globalVar = 1
+    thread1, thread2: Thread[int]
+    lock: Lock
+
+  proc threadProc(threadID: int) {{.thread.}} =
+    var localVar: int
+    withLock(lock):
+      localVar = globalVar
+      echo "ThreadID: ", threadID
+      echo "globalVar: ", globalVar
+      echo "localVar: ", localVar
+      echo "addr localVar: ", cast[uint](addr localVar)
+      echo "addr globalVar: ", cast[uint](addr globalVar)
+      inc globalVar
+
+  initLock(lock)
+  createThread(thread1, threadProc, 1)
+  createThread(thread2, threadProc, 2)
+  joinThread(thread1)
+  joinThread(thread2)
+  deinitLock(lock)
+
+Output:
+
+.. code-block:: console
+
+  ThreadID: 2
+  globalVar: 1
+  localVar: 1
+  addr localVar: 140647661780424
+  addr globalVar: 94229087072600
+  ThreadID: 1
+  globalVar: 2
+  localVar: 2
+  addr localVar: 140647663893960
+  addr globalVar: 94229087072600
+
 ## Type
 
 ### What is the difference between cint/cfloat and int/float?
