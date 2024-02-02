@@ -614,8 +614,8 @@ That means returning an address of global variable in a procedure is safe but re
     SomeObj = object
       name: string
 
-  proc `=destroy`(x: var SomeObj) =
-    echo "Destory ", x.name
+  proc `=destroy`(x: SomeObj) =
+    echo "Destroy ", x.name
 
   var globalVar = SomeObj(name: "globalVar")
 
@@ -638,11 +638,11 @@ Output:
 
   (name: "globalVar")
   (name: "localVarInBlock")
-  Destory localVarInBlock
+  Destroy localVarInBlock
   (name: "localVar")
-  Destory localVar
+  Destroy localVar
   End of program
-  Destory globalVar
+  Destroy globalVar
 
 Global variables are stored in data segment (translated to C global variables when compiled with C backend) and local variables are stored in stack.
 So declaring a large global variable works as long as there are enough memory but a large local variable can cause segmentation fault.
@@ -705,6 +705,33 @@ Output:
   localVar: 2
   addr localVar: 140647663893960
   addr globalVar: 94229087072600
+
+If the `global pragma<https://nim-lang.org/docs/manual.html#pragmas-global-pragma>`_ is applied to a local variable, it works like a global variable but you cannot access it outside the enclosing procedure.
+It is initialized once at program startup and holds the value after exiting the procedure.
+
+.. code-block:: nim
+
+  import os
+
+  proc foo(x: int) =
+    var g {{.global.}} = 0
+    g += x
+    echo g
+
+  foo(1)
+  foo(2)
+  foo(3)
+
+  # Compile Error: undeclared identifier: 'g'
+  #echo g
+
+Output:
+
+.. code-block:: console
+
+  1
+  3
+  6
 
 ## Type
 
