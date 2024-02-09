@@ -1499,6 +1499,41 @@ stdcall, cdecl, safecall, fastcall, thiscall, syscall are C/C++/Assembler callin
 In Nim, calling convention is about C/Assembler calling convention, how Nim generate C code from Nim procedure and higher level things. This section in Nim manual lists Nim calling conventions:
 https://nim-lang.org/docs/manual.html#types-procedural-type
 
+### Why assigning procedures to variables causes compile error?
+
+`Procedural type<https://nim-lang.org/docs/manual.html#types-procedural-type>`_
+
+> A subtle issue with procedural types is that the calling convention of the procedure influences the type compatibility: procedural types are only compatible if they have the same calling convention. As a special extension, a procedure of the calling convention nimcall can be passed to a parameter that expects a proc of the calling convention closure.
+
+Example code:
+
+.. code-block:: nim
+
+  type
+    # MyProcType is closure
+    MyProcType = proc (x: int)
+
+  # Calling convention of myProc is `nimcall` and not closure.
+  proc myProc(x: int) =
+    echo x
+
+  echo MyProcType is proc (x: int) {{.closure.}} # true
+  echo MyProcType is proc (x: int) {{.nimcall.}} # false
+  echo myProc is proc (x: int) {{.closure.}}     # false
+  echo myProc is proc (x: int) {{.nimcall.}}     # true
+
+  var a: MyProcType = myProc
+  a(123)
+  type MyProcType2 = proc (x: int) {{.nimcall.}}
+  var b: array[2, MyProcType2] = [myproc, myproc]
+  b[0](123)
+
+  # type mismatch: got 'array[0..1, proc (x: int){{.gcsafe.}}]' for '[myProc, myProc]' but expected 'array[0..1, MyProcType]'
+  # Calling convention mismatch: got '{{.nimcall.}}', but expected '{{.closure.}}'
+  #var c: array[2, MyProcType] = [myproc, myproc]
+  #c[0](321)
+
+
 ## Compile Time
 
 Run your code in `nim c myprogram.nim` that completes before Nim output executable file or print error.
