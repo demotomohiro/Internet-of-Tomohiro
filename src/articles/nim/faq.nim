@@ -1976,9 +1976,11 @@ Many people reported Nim and executables compiled with Nim were detected by anti
 - https://forum.nim-lang.org/t/10820
 - https://forum.nim-lang.org/t/10824
 - https://forum.nim-lang.org/t/10851
+- https://forum.nim-lang.org/t/11031
 - `Nim and Go programs identified by Carbon Black as malware on Windows <https://news.ycombinator.com/item?id=34594743>`_
 - https://github.com/nim-lang/Nim/issues/17820
 - https://github.com/nim-lang/Nim/issues/23151
+- https://github.com/nim-lang/Nim/issues/23307
 
 It seems Nim was used to write malware and it might related to false detections by many Antivirus softwares:
 - https://thehackernews.com/2021/03/researchers-spotted-malware-written-in.html
