@@ -1803,7 +1803,10 @@ For example:
 ### Is there a way to use Nim interactively? REPL for Nim?
 
 - Run `nim secret` command
+  - There are `restrictions <https://nim-lang.org/docs/manual.html#restrictions-on-compileminustime-execution>`_
 - https://github.com/inim-repl/INim
+- Install `nlvm <https://github.com/arnetheduck/nlvm>`_ and run `nlvm r <https://github.com/arnetheduck/nlvm?tab=readme-ov-file#repl--running-your-code>`_
+  - https://forum.nim-lang.org/t/10697
 
 ## Libraries
 
@@ -1977,6 +1980,7 @@ Many people reported Nim and executables compiled with Nim were detected by anti
 - https://forum.nim-lang.org/t/10824
 - https://forum.nim-lang.org/t/10851
 - https://forum.nim-lang.org/t/11031
+- https://forum.nim-lang.org/t/11087
 - `Nim and Go programs identified by Carbon Black as malware on Windows <https://news.ycombinator.com/item?id=34594743>`_
 - https://github.com/nim-lang/Nim/issues/17820
 - https://github.com/nim-lang/Nim/issues/23151
