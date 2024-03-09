@@ -3,12 +3,6 @@
 set -e
 set -u
 
-: ${NETLIFY_BUILD_BASE="/opt/buildhome"}
-NETLIFY_CACHE_DIR="$NETLIFY_BUILD_BASE/cache"
-NIM_INSTALL_DIR="$NETLIFY_CACHE_DIR"
-
-export PATH=$NIM_INSTALL_DIR/nim/bin:$PATH
-
 install_nim() {
   if [ -z "$1" ]
   then
@@ -18,24 +12,18 @@ install_nim() {
 
   local nimver=$1
 
-  rm -rf $NIM_INSTALL_DIR/nim
+  wget -N -nv https://nim-lang.org/download/nim-$nimver-linux_x64.tar.xz
+  wget -N -nv https://nim-lang.org/download/nim-$nimver-linux_x64.tar.xz.sha256
 
-  wget -N -nv https://nim-lang.org/download/nim-$nimver.tar.xz
-  wget -N -nv https://nim-lang.org/download/nim-$nimver.tar.xz.sha256
-
-  sha256sum -c nim-$nimver.tar.xz.sha256
+  sha256sum -c nim-$nimver-linux_x64.tar.xz.sha256
 
   if [ ! $? = 0 ]; then
-    echo "Failed to download nim source code"
+    echo "Failed to download pre-built Nim"
   fi
 
-  tar xf nim-$nimver.tar.xz
-  pushd nim-$nimver
-  sh build.sh
-  bin/nim c koch
-  ./koch tools
-  ./koch install $NIM_INSTALL_DIR
-  popd
+  tar xf nim-$nimver-linux_x64.tar.xz
+
+  export PATH=`pwd`/nim-$nimver/bin:$PATH
 }
 
 install_nim_check() {
@@ -46,11 +34,13 @@ install_nim_check() {
   fi
 
   local nimver="$1"
+  install_nim $nimver
   local src_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
   if command -v nim && nim e "$src_dir/checknimver.nims" $nimver
   then
-    echo skip installing nim
+    echo "Installing nim done"
   else
-    install_nim $nimver
+    echo "Failed to install Nim"
+    exit 1
   fi
 }
