@@ -266,7 +266,7 @@ OpengL programs need to be run with ``vglrun`` command or it uses software GLX/O
 
   $$ DISPLAY=:1 vglrun firefox &
 
-### Shadertoy
+### Run Shadertoy
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_shadertoy.png
    :width: 100%
@@ -288,7 +288,7 @@ OpengL programs need to be run with ``vglrun`` command or it uses software GLX/O
 【en:Then, open `Shadertoy`_ on the firefox.】
 】
 
-### Unigine Valley
+### Run Unigine Valley
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_unigine_valley.png
    :width: 100%
@@ -309,7 +309,7 @@ Then, extract the file and run it like following command.
   $$ cd Unigine_Valley-1.0
   $$ vglrun ./valley
 
-### Blender
+### Use Blender
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_blender.png
    :width: 100%
@@ -329,7 +329,7 @@ Then, extract the file and run it like following command.
   $$ cd blender-2.79b-linux-glibc219-x86_64
   $$ vglrun ./blender
 
-### Godot
+### Use Godot
 
 .. image:: https://gist.github.com/demotomohiro/53d631aaf5b9680ddaefa55a98b1ac60/raw/99fbf1cb0aea4896fcb9cadf2e9758bfb7b7561b/googlecolab_vnc_godot.png
    :width: 100%
