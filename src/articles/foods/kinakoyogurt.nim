@@ -6,15 +6,25 @@ const rstText = """
 
 .. image:: https://gist.githubusercontent.com/demotomohiro/f3ae06fe68f32fa9626f429b6e3f33ec/raw/74dcb3267bee0a4e6a1e42a62c43f9fc84da2b53/kinakoyogurt.jpg
 
-きな粉に水を加えて乳酸菌で発酵することによって作られるヨーグルトのような食品について紹介します。
+【
+【ja:きな粉に水を加えて乳酸菌で発酵することによって作られるヨーグルトのような食品について紹介します。
 味は牛乳で作ったヨーグルトに似ています。
 きな粉ヨーグルトで検索するとヨーグルトにきな粉を加えたものに関する情報ばかりでてくるので
 ここではきな粉に水を加えて発酵させたものをきな粉のヨーグルトと呼びます。
 この記事の内容を試す場合は自己責任で行ってください。
+】
+【en:This article explains about food produced by bacterial fermentation of kinako (roasted soy flour).
+It tastes like a yogurt made of milk.
+Use this recipe at your own risk.
+】
+】
 
 .. contents::
 
-## きな粉のヨーグルトを作るメリット
+## 【
+【ja:きな粉のヨーグルトを作るメリット】
+【en:The merits of making kinako yogurt】
+】
 
 ### 安い
 
