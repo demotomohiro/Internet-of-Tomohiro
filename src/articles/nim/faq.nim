@@ -1383,14 +1383,17 @@ Specify all generic parameters or use type conversion.
 
 - https://forum.nim-lang.org/t/8369
 
-### How to define constructor?
+### How to define constructors?
 
-In Nim, everything is initialized as all bits zero.
+In Nim, everything is initialized as all bits zero in default.
 
 See:
 - https://nim-lang.org/docs/manual.html#statements-and-expressions-var-statement
 
-If you want to initialize objects with other value, people usually create `createFoo` or `initFoo` procedure.
+You can assign a constant default value to an object field. But you cannot use a runtime value as a default value:
+- https://nim-lang.org/docs/manual.html#types-default-values-for-object-fields
+
+If you want to initialize objects with arguments and initializing code, people usually create `createFoo` or `initFoo` procedure.
 
 Example code:
 
