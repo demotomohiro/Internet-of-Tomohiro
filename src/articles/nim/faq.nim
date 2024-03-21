@@ -370,9 +370,25 @@ https://github.com/demotomohiro/littlesugar
 
     dec x
 
-### How to Iterate over every field of object or tuple types?
+### How to iterate over every field of object or tuple types?
 
+`fieldPairs` and `fields` iterators in `iterators` standard module can do:
 https://nim-lang.org/docs/iterators.html
+
+For example:
+
+.. code-block:: nim
+
+  type
+    MyObj = object
+      name: string
+      num: int
+      value: float
+
+  var x = MyObj(name: "foo", num: 2, value: 3.1)
+
+  for i in x.fields:
+    echo i
 
 ### Can I define operators for my type?
 
