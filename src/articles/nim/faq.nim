@@ -390,6 +390,24 @@ For example:
   for i in x.fields:
     echo i
 
+### How to modify each item inside for loop?
+
+When `for` loop is used without explicitly specifying the iterator, `item` or `pairs` iterator is implicitly invoked.
+These iterators forbid modifying items.
+
+`mitems` and `mpairs` iterators in `iterators` standard module allow modifying items: https://nim-lang.org/docs/iterators.html
+
+For example:
+
+.. code-block:: nim
+
+  var myarray = [1, 2, 3]
+
+  for i in myarray.mitems:
+    i += 2
+
+  echo myarray
+
 ### Can I define operators for my type?
 
 You can define procedures that can be used like operators.
