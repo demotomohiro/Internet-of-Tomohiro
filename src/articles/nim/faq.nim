@@ -1947,6 +1947,7 @@ https://nim-lang.org/docs/nims.html
 
 - https://github.com/treeform/nim_emscripten_tutorial
 - https://forum.nim-lang.org/t/8827
+- `nlvm supports wasm32<https://github.com/arnetheduck/nlvm?tab=readme-ov-file#wasm32-support>`_
 
 ### Can I get precompiled latest devel Nim?
 
