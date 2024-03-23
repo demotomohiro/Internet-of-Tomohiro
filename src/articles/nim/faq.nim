@@ -1328,6 +1328,38 @@ It doesn't works when an object inherits from `RootObj`.
 
 - https://nim-lang.org/docs/manual.html#pragmas-pure-pragma
 
+
+### Why proc type doesn't match even if proc signature is same?
+
+Even if proc signature is the same, proc types doesn't match if the calling conventions were different:
+https://nim-lang.org/docs/manual.html#types-procedural-type
+
+For example:
+
+.. code-block:: nim
+
+    proc foo(x: int): int =
+      x + x
+
+    proc bar(x: int): int {{.cdecl.}} =
+      x * x
+
+    proc calls(x: int; callback: proc(x: int): int {{.nimcall.}}): int =
+      callback(x * 2)
+
+    echo calls(3, foo)
+    # Error: type mismatch
+    echo calls(4, bar)
+
+    proc calls2(x: int; callback: proc(x: int): int {{.closure.}}): int =
+      callback(x + 1)
+
+    echo calls2(3, foo)
+    # Error: type mismatch
+    echo calls2(4, bar)
+
+See also: `Why assigning procedures to variables causes compile error?`_
+
 ## Procedures
 
 ### How to pass iterator to procedure?
@@ -1569,6 +1601,42 @@ Example code:
   # Calling convention mismatch: got '{{.nimcall.}}', but expected '{{.closure.}}'
   #var c: array[2, MyProcType] = [myproc, myproc]
   #c[0](321)
+
+.. code-block:: nim
+
+  proc foo(x: int): int =
+    echo x
+    x + 1
+
+  # The type of myProc is the same to the type of foo.
+  # Because nimcall is the default calling convention used for a Nim proc,
+  # the calling convention of myProc is nimcall.
+  var myProc = foo
+
+  # if the calling convention of myProc was closure, there is no compile error.
+  # closure is the default calling convention for a procedural type that lacks any pragma annotations.
+  # You can assign a procedure of the calling convention nimcall to a procedual type variable of the calling convention closure.
+  #var myProc: proc (x: int): int = foo
+
+  echo myProc is proc (x: int): int {{.nimcall.}}   # true
+  echo myProc is proc (x: int): int               # false
+
+  let y = 3
+  # This compiles as this proc is not a closure.
+  myProc = proc (x: int): int =
+    x + y
+  echo myProc(2)
+
+  proc getSomeProc(y: int): proc (x: int): int =
+    let z = y * y
+    # Only closure calling convention can capture local variables.
+    proc (x: int): int =
+      x + z
+
+  # Error: type mismatch
+  # Because getSomeProc return a proc with closure calling convention.
+  myProc = getSomeProc(100)
+  echo myProc(1)
 
 
 ## Compile Time
