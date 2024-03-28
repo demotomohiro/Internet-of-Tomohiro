@@ -1639,6 +1639,17 @@ Example code:
   echo myProc(1)
 
 
+### Method call syntax with generics parameter causes compile error
+
+.. code-block:: nim
+
+  proc foo[T](x: string) =
+    echo T, x
+
+  "Test".foo[:int]
+
+See: `Method call syntax <https://nim-lang.org/docs/manual.html#procedures-method-call-syntax>`_
+
 ## Compile Time
 
 Run your code in `nim c myprogram.nim` that completes before Nim output executable file or print error.
