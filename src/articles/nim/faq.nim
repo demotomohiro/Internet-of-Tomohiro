@@ -767,6 +767,20 @@ Output:
   3
   6
 
+
+### Is there a type for stack(FILO, LIFO)?
+
+You can use `seq` as stack.
+Use `add <https://nim-lang.org/docs/system.html#add%2Cseq%5BT%5D%2CsinkT>`_ for push, and `pop <https://nim-lang.org/docs/system.html#pop%2Cseq%5BT%5D>`_.
+
+.. code-block:: nim
+
+  var stack: seq[int]
+  stack.add 123
+  doAssert stack.pop == 123
+  doAssert stack.len == 0
+
+
 ## Type
 
 ### What is the difference between cint/cfloat and int/float?
