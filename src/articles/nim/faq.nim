@@ -1629,7 +1629,7 @@ Example code:
 
   # if the calling convention of myProc was closure, there is no compile error.
   # closure is the default calling convention for a procedural type that lacks any pragma annotations.
-  # You can assign a procedure of the calling convention nimcall to a procedual type variable of the calling convention closure.
+  # You can assign a procedure of the calling convention nimcall to a procedural type variable of the calling convention closure.
   #var myProc: proc (x: int): int = foo
 
   echo myProc is proc (x: int): int {{.nimcall.}}   # true
@@ -1840,6 +1840,82 @@ Output:
 
   2
   6
+
+Other difference is, when a procedure is called, all arguments are evaluated before the procedure runs.
+In template, template body is inserted to the call site and all arguments are placed there as is.
+
+Example code:
+
+.. code-block:: nim
+
+  var c = 0
+  proc procWithSideEffect(): int =
+    inc c
+    echo "procWithSideEffect has been called ", c, " times"
+    c
+
+  proc testProc(cond: bool; x, y: int) =
+    echo "In testProc"
+    if cond:
+      echo "x = ", x
+    else:
+      echo "y = ", y
+
+  echo "Call testProc"
+  testProc(true, procWithSideEffect(), procWithSideEffect())
+
+  template testTmpl(cond: bool; x, y: int) =
+    echo "In testTmpl"
+    if cond:
+      echo "x = ", x
+    else:
+      echo "y = ", y
+
+  echo "\nCall testTmpl"
+  # Content of testTmpl is inserted here and x and y in it are replaced with procWithSideEffect()
+  testTmpl(true, procWithSideEffect(), procWithSideEffect())
+
+  proc squareProc(x: int) =
+    echo "In squareProc"
+    echo x, " * ", x, " = ", x * x
+
+  echo "\nCall squareProc"
+  squareProc(procWithSideEffect())
+
+  template squareTmpl(x: int) =
+    echo "In squareTmpl"
+    echo x, " * ", x, " = ", x * x
+
+  echo "\nCall squareTmpl"
+  squareTmpl(procWithSideEffect())
+
+.. code-block:: console
+
+  Call testProc
+  procWithSideEffect has been called 1 times
+  procWithSideEffect has been called 2 times
+  In testProc
+  x = 1
+
+  Call testTmpl
+  In testTmpl
+  procWithSideEffect has been called 3 times
+  x = 3
+
+  Call squareProc
+  procWithSideEffect has been called 4 times
+  In squareProc
+  4 * 4 = 16
+
+  Call squareTmpl
+  In squareTmpl
+  procWithSideEffect has been called 5 times
+  procWithSideEffect has been called 6 times
+  procWithSideEffect has been called 7 times
+  procWithSideEffect has been called 8 times
+  5 * 6 = 56
+
+You can assign a procedure to a procedural type variable, but you cannot assign a template to a variable because templates exist only at compile time.
 
 See also:
 
