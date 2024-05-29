@@ -2542,6 +2542,79 @@ For example:
   do:
     echo "bodyB"
 
+### How to get the type of a variable or expression in a macro?
+
+Make a macro with `typed` parameters and use `getType <https://nim-lang.org/docs/macros.html#getType%2CNimNode>`_ or `getTypeImpl <https://nim-lang.org/docs/macros.html#getTypeImpl%2CNimNode>`_ proc in macros module in the macro.
+
+For example:
+
+.. code-block:: nim
+
+  import macros
+
+  macro getVarType(exp: typed): untyped =
+    echo "----"
+    echo exp.treeRepr
+    echo exp.getType.treeRepr
+    echo exp.getTypeImpl.treeRepr
+
+  var x = 0
+  getVarType(x)
+
+  type
+    Foo = object
+      x: int
+
+  getVarType(Foo(x: 10))
+  getVarType([1, 4, 6])
+
+Example output:
+
+.. code-block:: console
+
+  ----
+  Sym "x"
+  Sym "int"
+  Sym "int"
+  ----
+  ObjConstr
+    Sym "Foo"
+    ExprColonExpr
+      Sym "x"
+      IntLit 10
+  ObjectTy
+    Empty
+    Empty
+    RecList
+      Sym "x"
+  ObjectTy
+    Empty
+    Empty
+    RecList
+      IdentDefs
+        Sym "x"
+        Sym "int"
+        Empty
+  ----
+  Bracket
+    IntLit 1
+    IntLit 4
+    IntLit 6
+  BracketExpr
+    Sym "array"
+    BracketExpr
+      Sym "range"
+      IntLit 0
+      IntLit 2
+    Sym "int"
+  BracketExpr
+    Sym "array"
+    Infix
+      Ident ".."
+      IntLit 0
+      IntLit 2
+    Sym "int"
+
 ## Community
 
 ### Where can I ask a question about Nim?
