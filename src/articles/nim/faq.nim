@@ -781,6 +781,67 @@ Use `add <https://nim-lang.org/docs/system.html#add%2Cseq%5BT%5D%2CsinkT>`_ for 
   doAssert stack.len == 0
 
 
+### What are unsafe language features in Nim?
+
+Nim programming language is designed so that you can write safe code.
+But there are cases you need to write unsafe code.
+Using C/C++ functions, writing low level code or faster code might requires to write unsafe code.
+Nim provides features for such cases.
+
+When you use unsafe features, your program passes all tests and looks like work correctly doesn't mean unsafe code is written correclty.
+Invalid code doesn't always crach your program or return random results.
+It might behave correclty now but it might stop working when you change other code or compile options or run it on the customers machine.
+
+Unsafe code can be found by searching following keywords.
+
+- `pointer`, `ptr` and `addr`
+
+  You can use raw pointers and Nim doesn't stop you to write unsafe code.
+  https://nim-lang.org/docs/manual.html#statements-and-expressions-the-addr-operator
+
+  C functions often have pointer type parameters and a return type.
+  You need to know how C, Nim and the C function use the memory to write safe code.
+  You cannot know how to safely pass pointers to the C function only from the C function declaration.
+  You would need to read the manual or reference of the library to safely use it.
+
+- Type casts
+
+  https://nim-lang.org/docs/manual.html#statements-and-expressions-type-casts
+  > Type casts are a crude mechanism to interpret the bit pattern of an expression as if it would be of another type. Type casts are only needed for low-level programming and are inherently unsafe.
+
+  `cast` doesn't convert float value `1.0` to int value `1`.
+  `cast[int](1.0)` would looks like a random number, if you don't know about [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754).
+  If you just want to convert float to int, do [type conversion](https://nim-lang.org/docs/manual.html#statements-and-expressions-type-conversions) like `int(floatVar)`.
+
+  `cast[array[2, int]](@[10, 100])` doesn't return `[10, 100]` as `seq` has the different data structure from `array`.
+
+- `noinit` pragma
+
+  https://nim-lang.org/docs/manual.html#statements-and-expressions-var-statement
+
+  You might get random values from variables with `noinit` pragma when you read them without initializing them.
+
+- `emit` pragma and `asm` statement
+
+  - https://nim-lang.org/docs/manual.html#implementation-specific-pragmas-emit-pragma
+  - https://nim-lang.org/docs/manual.html#statements-and-expressions-assembler-statement
+
+  Nim doesn't check errors in the code in `emit` pragma or `asm` statement.
+
+- `-d:danger`
+
+  https://nim-lang.org/docs/nimc.html#additional-compilation-switches
+
+  Turn off all runtime checks.
+
+- `--mm:none`
+
+  https://nim-lang.org/docs/mm.html
+  > No memory management strategy nor a garbage collector. Allocated memory is simply never freed.
+
+  You should check if manual memory management really makes your program faster than `--mm:arc`.
+
+
 ## Type
 
 ### What is the difference between cint/cfloat and int/float?
