@@ -37,7 +37,9 @@ People don't use Nim says case insensitivity cause confusion but I have never he
 
 ### Why Nim use garbage collecter?
 
-It makes managing heap memory easy.
+ORC is the default memory management strategy in current Nim.
+For more details:
+https://nim-lang.org/docs/mm.html
 
 ### Why Nim generate C/C++ code?
 
@@ -841,6 +843,9 @@ Unsafe code can be found by searching following keywords.
 
   You should check if manual memory management really makes your program faster than `--mm:arc`.
 
+- Importing a C/C++ function with a wrong parameter/return type or calling convention
+
+- Importing a C/C++ struct/class with a wrong field type
 
 ## Type
 
