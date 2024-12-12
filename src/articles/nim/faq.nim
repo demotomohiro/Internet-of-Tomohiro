@@ -73,6 +73,7 @@ For example, many image file formats or pixel buffer format uses 8 bit unsigned 
 
 - https://narimiran.github.io/2019/07/01/nim-import.html
 
+
 ## Coding
 
 ### Can I write expressions like `x == a or x == b` shorter?
@@ -847,6 +848,7 @@ Unsafe code can be found by searching following keywords.
 
 - Importing a C/C++ struct/class with a wrong field type
 
+
 ## Type
 
 ### What is the difference between cint/cfloat and int/float?
@@ -1440,6 +1442,7 @@ For example:
 
 See also: `Why assigning procedures to variables causes compile error?`_
 
+
 ## Procedures
 
 ### How to pass iterator to procedure?
@@ -1730,6 +1733,7 @@ Example code:
 
 See: `Method call syntax <https://nim-lang.org/docs/manual.html#procedures-method-call-syntax>`_
 
+
 ## Compile Time
 
 Run your code in `nim c myprogram.nim` that completes before Nim output executable file or print error.
@@ -1805,6 +1809,7 @@ Yes, there is `restrictions <https://nim-lang.org/docs/manual.html#restrictions-
 
 - `staticExec <https://nim-lang.org/docs/system.html#staticExec,string,string,string>`_
 - `gorgeEx <https://nim-lang.org/docs/system.html#gorgeEx%2Cstring%2Cstring%2Cstring>`_
+
 
 ## Template
 
@@ -2059,6 +2064,7 @@ For example:
   do:
     echo "bodyB"
 
+
 ## Tools
 
 ### IDE or editor support for Nim?
@@ -2079,6 +2085,7 @@ For example:
 - https://github.com/inim-repl/INim
 - Install `nlvm <https://github.com/arnetheduck/nlvm>`_ and run `nlvm r <https://github.com/arnetheduck/nlvm?tab=readme-ov-file#repl--running-your-code>`_
   - https://forum.nim-lang.org/t/10697
+
 
 ## Libraries
 
@@ -2107,6 +2114,7 @@ For example:
 ### Is there a list of programming language libraries for Nim or implementations written by Nim?
 
 - https://gist.github.com/haxscramper/3562fa8fee4726d7a30a013a37977df6
+
 
 ## Use Nim with other language
 
@@ -2155,6 +2163,7 @@ For example:
 
 - https://github.com/Clonkk/nim-cppstl
 - https://forum.nim-lang.org/t/9007
+
 
 ## Nim Compiler
 
@@ -2269,6 +2278,7 @@ Please do not write malware in Nim.
 
 - `The Nim team's latest efforts in mitigating the false postives on the Nim binaries <https://forum.nim-lang.org/t/9358>`_
 - https://github.com/nim-lang/virus_checker
+
 
 ## Optimization
 
@@ -2389,6 +2399,7 @@ As they don't use atomic instruction, cost of incrementing/decrementing counter 
 ### If there are unused procedures, they makes executable file bigger?
 
 Nim do dead code elimination.
+
 
 ## Macro
 
@@ -2680,6 +2691,7 @@ Example output:
       IntLit 0
       IntLit 2
     Sym "int"
+
 
 ## Community
 
