@@ -2730,6 +2730,8 @@ Chat:
 
 ### Where is Nim Community Survey Results?
 
+- `2023 <https://nim-lang.org/blog/2024/01/31/community-survey-results-2023.html>`_
+- 2022 (No survey)
 - `2021 <https://nim-lang.org/blog/2022/01/14/community-survey-results-2021.html>`_
 - `2020 <https://nim-lang.org/blog/2021/01/20/community-survey-results-2020.html>`_
 - `2019 <https://nim-lang.org/blog/2020/02/18/community-survey-results-2019.html>`_
